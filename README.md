@@ -12,3 +12,21 @@ The project is divided into an SPI module whcih contains these concepts plus a s
 
 The Cluster SPI is also provided to solve registration and lookup for different nodes using the APIs to keep in sync. A local implementation is provided for testing, but a distributed registry will be needed for real life scenarios.
 
+
+# Container Instance
+By using the provided APIs we will end up creating container instances, no matter the provider that we choose to use. 
+These container instances should provide a way for the end users to execute operations and get information about state:
+- public void start();
+- public void stop();
+- public void restart();
+- public ContainerInstanceInfo getInfo();
+- public ContainerInstanceState getState();
+
+# Container Provisioning Services
+
+A service layer is provided using JAX-RS services, so remote clients can register their provider instances and remotely provision new container instances.
+
+Multiple instances of the services can be started in different nodes and by using the Cluster module, they should be able to share the information about ContainerProvidersInstances, Containers and ContainerInstances.
+
+
+
