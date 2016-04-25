@@ -30,5 +30,18 @@ A service layer is provided using JAX-RS services, so remote clients can registe
 
 Multiple instances of the services can be started in different nodes and by using the Cluster module, they should be able to share the information about ContainerProvidersInstances, Containers and ContainerInstances.
 
+Current Methods:
+ - GET /api/containers/providers 
+ - GET /api/containers/providers/instances
+ - GET /api/containers/instances
+
+ - POST /api/containers/providers/instances
+ - POST /api/containers/instances
+ - POST /api/containers/instances/<id>/start
+ - POST /api/containers/instances/<id>/stop
+ - DELETE /api/containers/instances/<id>
+
+
+
 
 
