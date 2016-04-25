@@ -10,3 +10,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/uberfire-provisioning-spi/target/
+/uberfire-provisioning-docker-provider/target/
+/uberfire-provisioning-kubernetes-provider/target/
+/uberfire-provisioning-cluster/target/
+/uberfire-provisioning-services/target/
+/uberfire-provisioning-wildfly-provider/target/
+/uberfire-provisioning-cluster-spi/target/
+/uberfire-provisioning-cluster-local/target/
+/wildfly-util/target/
