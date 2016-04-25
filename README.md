@@ -16,11 +16,13 @@ The Cluster SPI is also provided to solve registration and lookup for different 
 # Container Instance
 By using the provided APIs we will end up creating container instances, no matter the provider that we choose to use. 
 These container instances should provide a way for the end users to execute operations and get information about state:
+```
 - public void start();
 - public void stop();
 - public void restart();
 - public ContainerInstanceInfo getInfo();
 - public ContainerInstanceState getState();
+```
 
 # Container Provisioning Services
 
