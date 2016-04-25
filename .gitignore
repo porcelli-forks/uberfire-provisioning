@@ -19,3 +19,4 @@ hs_err_pid*
 /uberfire-provisioning-cluster-spi/target/
 /uberfire-provisioning-cluster-local/target/
 /wildfly-util/target/
+/sample-war/target/

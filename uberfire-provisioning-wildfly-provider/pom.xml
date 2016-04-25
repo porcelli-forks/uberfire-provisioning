@@ -29,5 +29,9 @@
             <version>7.0</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>wildfly-util</artifactId>
+        </dependency>
     </dependencies>
 </project>
