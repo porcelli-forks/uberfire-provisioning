@@ -15,8 +15,10 @@
         <module>uberfire-provisioning-cluster-spi</module>
         <module>uberfire-provisioning-cluster-local</module>
         <module>wildfly-util</module>
-    <module>sample-war</module>
-  </modules>
+        <module>sample-war</module>
+        <module>uberfire-provisioning-pipeline-spi</module>
+        <module>uberfire-provisioning-pipeline-local</module>
+    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.wildfly-swarm>1.0.0.CR1-SNAPSHOT</version.wildfly-swarm>
@@ -71,6 +73,16 @@
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
                 <artifactId>uberfire-provisioning-cluster-local</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-pipeline-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-pipeline-local</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

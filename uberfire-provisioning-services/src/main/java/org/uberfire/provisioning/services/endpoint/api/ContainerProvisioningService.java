@@ -28,7 +28,7 @@ import org.uberfire.provisioning.spi.providers.info.ContainerProviderInfo;
  * @author salaboy
  */
 @Path("containers")
-public interface ContainerManagerService {
+public interface ContainerProvisioningService {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)

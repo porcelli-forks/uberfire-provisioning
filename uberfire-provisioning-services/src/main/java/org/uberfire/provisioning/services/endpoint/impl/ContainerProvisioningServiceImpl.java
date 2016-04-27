@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import org.uberfire.provisioning.cluster.ContainerRegistry;
 
-import org.uberfire.provisioning.services.endpoint.api.ContainerManagerService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 import org.uberfire.provisioning.services.endpoint.impl.factories.ContainerProviderInstanceFactory;
 import org.uberfire.provisioning.services.info.ContainerInstanceProviderInfo;
@@ -29,13 +28,14 @@ import org.uberfire.provisioning.spi.providers.info.ContainerProviderInfo;
 import org.uberfire.provisioning.spi.providers.info.ContainerProviderInfoImpl;
 import org.uberfire.provisioning.spi.providers.info.ContainerProviderInstanceInfo;
 import org.uberfire.provisioning.spi.providers.info.ContainerProviderInstanceInfoImpl;
+import org.uberfire.provisioning.services.endpoint.api.ContainerProvisioningService;
 
 /**
  *
  * @author salaboy
  */
 @ApplicationScoped
-public class ContainerManagerServiceImpl implements ContainerManagerService {
+public class ContainerProvisioningServiceImpl implements ContainerProvisioningService {
 
     @Context
     private SecurityContext context;
@@ -51,7 +51,7 @@ public class ContainerManagerServiceImpl implements ContainerManagerService {
 
     private boolean initialized = false;
 
-    public ContainerManagerServiceImpl() {
+    public ContainerProvisioningServiceImpl() {
 
     }
 
@@ -122,7 +122,7 @@ public class ContainerManagerServiceImpl implements ContainerManagerService {
                 return cpi.getContainerInstanceInfo().getId();
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Logger.getLogger(ContainerManagerServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ContainerProvisioningServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return "error";

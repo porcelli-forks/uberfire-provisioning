@@ -25,4 +25,6 @@ public interface ContainerInstance {
     public void restart();
 
     public ContainerInstanceInfo getInfo();
+    
+    public ContainerInstanceState getState();
 }

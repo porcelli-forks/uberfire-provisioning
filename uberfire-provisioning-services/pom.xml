@@ -21,6 +21,12 @@
             <artifactId>uberfire-provisioning-cluster-local</artifactId>
         </dependency>
         
+        <!-- Pipeline Local Mock Implementation --> 
+        <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>uberfire-provisioning-pipeline-local</artifactId>
+        </dependency>
+        
         <!-- Providers --> 
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>
