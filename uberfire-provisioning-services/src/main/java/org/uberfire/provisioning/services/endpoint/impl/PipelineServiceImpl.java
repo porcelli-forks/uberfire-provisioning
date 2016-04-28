@@ -1,20 +1,19 @@
 package org.uberfire.provisioning.services.endpoint.impl;
 
-import com.spotify.docker.client.shaded.javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
-import org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext;
 import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
 import org.uberfire.provisioning.pipeline.spi.Pipeline;
 import org.uberfire.provisioning.pipeline.spi.PipelineContext;
+import org.uberfire.provisioning.services.endpoint.api.ContainerProvisioningService;
 import org.uberfire.provisioning.services.endpoint.api.PipelineService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
@@ -29,17 +28,17 @@ public class PipelineServiceImpl implements PipelineService {
     private SecurityContext context;
 
     private Map<String, Pipeline> pipelines = new HashMap<String, Pipeline>();
+    
+    @Inject
+    private ContainerProvisioningService provisioningService;
 
     public PipelineServiceImpl() {
-
+        
     }
 
     @PostConstruct
     public void init() {
-        SimplePipeline simplePipeline = new SimplePipeline("my pipe");
-        simplePipeline.addStage(new PrintOutStage("Simple PrintOut Stage"));
-        simplePipeline.addStage(new PrintOutStage("Simple PrintOut 2 Stage"));
-        pipelines.put(simplePipeline.getId(), simplePipeline);
+        System.out.println("Post Construct Pipeline ServiceImpl here!");
     }
 
     @Override
@@ -56,11 +55,9 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public void runPipeline(String id) throws BusinessException {
-        PipelineContext simplePipelineContext = new SimplePipelineContext();
-        simplePipelineContext.getData().put("message", " -> print out stage is printing this");
-
-        new SimplePipelineInstance(pipelines.get(id)).run(simplePipelineContext);
+    public void runPipeline(String id, PipelineContext context) throws BusinessException {
+        context.getServices().put("provisioningService", provisioningService);
+        new SimplePipelineInstance(pipelines.get(id)).run(context);
     }
 
 }

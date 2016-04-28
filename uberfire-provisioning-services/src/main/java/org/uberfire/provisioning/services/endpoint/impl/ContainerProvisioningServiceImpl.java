@@ -106,16 +106,12 @@ public class ContainerProvisioningServiceImpl implements ContainerProvisioningSe
     public String newContainerInstance(BaseContainerInstanceConfiguration conf) throws BusinessException {
 
         String providerString = conf.getProperties().get("providerName");
-        String name = conf.getProperties().get("name");
-        System.out.println(">>>> Name: " + name);
         System.out.println(">>>> Provider: " + providerString);
 
         ContainerProviderInstanceInfo providerInfo = registry.getContainerProviderInstanceByName(providerString);
 
         if (providerInfo != null) {
-
             try {
-
                 ContainerProviderInstance cpi = ContainerProviderInstanceFactory.newContainerProviderInstance(providerInfo, conf);
                 containerInstanceProviders.put(cpi.getContainerInstanceInfo().getId(), cpi);
                 registry.registerContainerInstanceByProvider(cpi.getProviderName(), cpi.getContainerInstanceInfo());

@@ -79,6 +79,8 @@ public class WildflyRemoteClient {
 
         try {
             HttpResponse response = httpclient.execute(post);
+            System.out.println(">>> Deploying Response Entity: "+response.getEntity());
+            System.out.println(">>> Deploying Response Satus: "+response.getStatusLine().getStatusCode());
         } catch (IOException ex) {
             ex.printStackTrace();
             Logger.getLogger(WildflyRemoteClient.class.getName()).log(Level.SEVERE, null, ex);

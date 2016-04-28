@@ -11,33 +11,27 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.uberfire.provisioning.pipeline.spi.Pipeline;
-import org.uberfire.provisioning.pipeline.spi.PipelineContext;
+import org.uberfire.provisioning.build.spi.Build;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
 /**
  *
  * @author salaboy
  */
-@Path("pipelines")
-public interface PipelineService {
+@Path("build")
+public interface BuildService {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
     @Path("")
-    List<Pipeline> getAllPipelines() throws BusinessException;
+    List<Build> getAllBuilds() throws BusinessException;
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Path("")
-    String newPipeline(@NotNull Pipeline pipeline) throws BusinessException;
+    String newBuild(@NotNull Build build) throws BusinessException;
 
-    @POST
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    @Path("{id}/run")
-    void runPipeline(@PathParam("id") String id, @NotNull PipelineContext context) throws BusinessException;
 
 }

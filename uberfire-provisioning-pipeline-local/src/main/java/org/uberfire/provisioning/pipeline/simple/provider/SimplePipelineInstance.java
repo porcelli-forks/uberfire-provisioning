@@ -25,6 +25,7 @@ public class SimplePipelineInstance implements PipelineInstance {
     @Override
     public void run(PipelineContext context) {
         System.out.println(" >> Running Pipeline: " + pipeline.getName());
+        
         for (Stage s : pipeline.getStages()) {
             System.out.println(" Executing Stage: " + s.getName());
             s.execute(context);
