@@ -20,7 +20,7 @@ import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
  *
  * @author salaboy
  */
-@Path("build")
+@Path("builds")
 public interface BuildService {
 
     @GET
