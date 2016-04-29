@@ -9,10 +9,11 @@ There are 5 building blocks
 - Pipeline (a way to control and chain the previous elements to we can move from source to runtime in just one service call)
 - Registry (a way to keep track where our projects, runtimes and pipelines are)
 
-On top of these building blocks you will find the Service Layer that allows you to interact with each step separately.
+On top of these building blocks you will find the Service Layer that allows you to interact with each step separately or with the pipelines to chain different steps together.
 
 
-#Source
+#Source / Workspace (???)
+ (TBD)
 
 #Build
 This block will be in charge of taking a project path and building the necesarry binaries. The binaries are placed in the target directory and can be picked up by the provisioning layer.
