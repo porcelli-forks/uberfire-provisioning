@@ -37,7 +37,8 @@ These container instances should provide a way for the end users to execute oper
 - public RuntimeInfo getInfo();
 - public RuntimeState getState();
 ```
-
+# Pipeline
+An API to define a set of Stages that can be chained to achieve different outputs. 
 
 # Services
 
