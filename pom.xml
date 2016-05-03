@@ -7,20 +7,21 @@
     <name>Uberfire Provisioning :: Parent</name>
     <packaging>pom</packaging>
     <modules>
-        <module>uberfire-provisioning-spi</module>
+        <module>uberfire-provisioning-pipeline-spi</module>
+        <module>uberfire-provisioning-pipeline-local</module>
         <module>uberfire-provisioning-docker-provider</module>
         <module>uberfire-provisioning-kubernetes-provider</module>
         <module>uberfire-provisioning-wildfly-provider</module>
         <module>uberfire-provisioning-services</module>
-        <module>uberfire-provisioning-cluster-spi</module>
-        <module>uberfire-provisioning-cluster-local</module>
-        <module>wildfly-util</module>
-        <module>sample-war</module>
-        <module>uberfire-provisioning-pipeline-spi</module>
-        <module>uberfire-provisioning-pipeline-local</module>
         <module>uberfire-provisioning-build-spi</module>
         <module>uberfire-provisioning-build-maven</module>
+        <module>uberfire-provisioning-runtime-spi</module>
+        <module>uberfire-provisioning-registry-local</module>
+        <module>uberfire-provisioning-registry-spi</module>
+        <module>wildfly-util</module>
+        <module>sample-war</module>
     </modules>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.wildfly-swarm>1.0.0.CR1-SNAPSHOT</version.wildfly-swarm>
@@ -28,11 +29,15 @@
         <version.kubernetes-api>2.2.96</version.kubernetes-api>
         <version.cdi>1.2</version.cdi>
         <version.aether>1.1.0</version.aether>
+        <version.jackson>2.7.0</version.jackson>
+        <version.arquillian>1.1.10.Final</version.arquillian>
         <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
         <maven.min.version>3.2.3</maven.min.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <junit.version>4.11</junit.version>
+        <version.junit>4.12</version.junit>
+        <version.weld.se.embedded>1.0.0.CR9</version.weld.se.embedded>
+        <version.weld.core>2.3.0.Final</version.weld.core>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -44,8 +49,15 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
-                <artifactId>uberfire-provisioning-spi</artifactId>
+                <artifactId>uberfire-provisioning-runtime-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -70,12 +82,12 @@
             </dependency>
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
-                <artifactId>uberfire-provisioning-cluster-spi</artifactId>
+                <artifactId>uberfire-provisioning-registry-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
-                <artifactId>uberfire-provisioning-cluster-local</artifactId>
+                <artifactId>uberfire-provisioning-registry-local</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -127,6 +139,28 @@
                 <groupId>org.eclipse.aether</groupId>
                 <artifactId>aether-impl</artifactId>
                 <version>${version.aether}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-weld-se-embedded-1.1</artifactId>
+                <version>${version.weld.se.embedded}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${version.weld.core}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

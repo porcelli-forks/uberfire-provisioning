@@ -13,9 +13,9 @@ import javax.ws.rs.core.SecurityContext;
 import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
 import org.uberfire.provisioning.pipeline.spi.Pipeline;
 import org.uberfire.provisioning.pipeline.spi.PipelineContext;
-import org.uberfire.provisioning.services.endpoint.api.ContainerProvisioningService;
 import org.uberfire.provisioning.services.endpoint.api.PipelineService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
+import org.uberfire.provisioning.services.endpoint.api.RuntimeProvisioningService;
 
 /**
  *
@@ -30,7 +30,7 @@ public class PipelineServiceImpl implements PipelineService {
     private Map<String, Pipeline> pipelines = new HashMap<String, Pipeline>();
     
     @Inject
-    private ContainerProvisioningService provisioningService;
+    private RuntimeProvisioningService provisioningService;
 
     public PipelineServiceImpl() {
         

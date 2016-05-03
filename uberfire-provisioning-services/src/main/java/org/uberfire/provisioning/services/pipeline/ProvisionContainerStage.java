@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.uberfire.provisioning.pipeline.spi.PipelineContext;
 import org.uberfire.provisioning.pipeline.spi.Stage;
-import org.uberfire.provisioning.services.endpoint.api.ContainerProvisioningService;
+import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
-import org.uberfire.provisioning.spi.base.BaseContainerInstanceConfiguration;
+import org.uberfire.provisioning.services.endpoint.api.RuntimeProvisioningService;
 
 /**
  *
@@ -30,8 +30,8 @@ public class ProvisionContainerStage implements Stage {
 
     @Override
     public void execute(PipelineContext context) {
-        ContainerProvisioningService provisioningService = (ContainerProvisioningService) context.getServices().get("provisioningService");
-        BaseContainerInstanceConfiguration conf = new BaseContainerInstanceConfiguration();
+        RuntimeProvisioningService provisioningService = (RuntimeProvisioningService) context.getServices().get("provisioningService");
+        BaseRuntimeConfiguration conf = new BaseRuntimeConfiguration();
         Map<String, String> props = new HashMap<String, String>();
 
         for (String key : context.getData().keySet()) {
@@ -39,7 +39,7 @@ public class ProvisionContainerStage implements Stage {
         }
         conf.setProperties(props);
         try {
-            provisioningService.newContainerInstance(conf);
+            provisioningService.newRuntime(conf);
         } catch (BusinessException ex) {
             Logger.getLogger(ProvisionContainerStage.class.getName()).log(Level.SEVERE, null, ex);
         }

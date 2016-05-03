@@ -13,12 +13,12 @@
     <dependencies>
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>
-            <artifactId>uberfire-provisioning-spi</artifactId>
+            <artifactId>uberfire-provisioning-runtime-spi</artifactId>
         </dependency>
         <!-- Cluster Local Mock Implementation --> 
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>
-            <artifactId>uberfire-provisioning-cluster-local</artifactId>
+            <artifactId>uberfire-provisioning-registry-local</artifactId>
         </dependency>
         
          <!-- Build Local Aether Implementation --> 
