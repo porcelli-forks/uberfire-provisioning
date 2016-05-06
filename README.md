@@ -26,7 +26,12 @@ In order to provision runtimes there are 3 main concepts to understand:
 
 The project is divided into an SPI module whcih contains these concepts plus a set of providers that automatically register to the service via classpath resolution.
 
-Once we have our new provisioned runtimeswe can manage their state and control them remotely. 
+The current providers implementations are:
+- Docker (uberfire-provisioning-docker-provider)
+- Kubernetes (uberfire-provisioning-kubernetes-provider)
+- Wildfly (uberfire-provisioning-wildfly-provider)
+
+Once we have our new provisioned runtimes we can manage their state and control them remotely. 
 
 By using the provided APIs we will end up creating runtimes, no matter the provider that we choose to use. 
 These container instances should provide a way for the end users to execute operations and get information about state:
@@ -36,6 +41,8 @@ These container instances should provide a way for the end users to execute oper
 - public void restart();
 - public RuntimeInfo getInfo();
 - public RuntimeState getState();
+- public Provider getProvider();
+- public RuntimeConfiguration getConfig();
 ```
 # Pipeline
 An API to define a set of Stages that can be chained to achieve different outputs. 
@@ -66,7 +73,7 @@ Current Methods:
 - Pipelines
  - GET /api/pipelines (Get All Pipelines)
  - POST /api/pipelines (New Pipeline)
- - POST /api/<id>/run (Run Pipeline)
+ - POST /api/pipelines/<id>/run (Run Pipeline)
 
  
 
