@@ -53,15 +53,15 @@ Current Methods:
  - POST /api/builds  (new build)
 
 - Runtime
- - GET /api/runtime/providers (Get All Providers)
- - GET /api/runtime/providers/instances (Get All Provider Instances)
- - GET /api/runtime/instances (Get All Container Instances)
+ - GET /api/providerstypes (Get All Provider Types)
+ - GET /api/providers (Get All Providers)
+ - GET /api/runtimes (Get All Runtimes)
 
- - POST /api/runtime/providers/instances (New Provider Instance)
- - POST /api/runtime/instances (New Container Instance)
- - POST /api/runtime/instances/<id>/start (Start Container Instance)
- - POST /api/runtime/instances/<id>/stop (Stop Container Instance)
- - DELETE /api/runtime/instances/<id> (Remove Container Instance)
+ - POST /api/providers (New Provider)
+ - POST /api/runtimes (New Runtime)
+ - POST /api/runtimes/<id>/start (Start Runtime)
+ - POST /api/runtimes/<id>/stop (Stop Runtime)
+ - DELETE /api/runtimes/<id> (Remove Runtime)
 
 - Pipelines
  - GET /api/pipelines (Get All Pipelines)
