@@ -5,6 +5,7 @@
  */
 package org.uberfire.provisioning.wildfly.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,14 +31,17 @@ import org.jboss.dmr.ModelNode;
  *
  * @author salaboy Based on: https://github.com/heiko-braun/http-upload
  */
+@JsonIgnoreType
 public class WildflyRemoteClient {
-
-    public void deploy(String user, String password, String host, int port, String filePath) {
+    /*
+     * return the HTTP status from deploying the app or -1 if there is an exception which is logged.
+    */
+    public int deploy(String user, String password, String host, int port, String filePath) {
 
         // the digest auth backend
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
-                new AuthScope("localhost", 9990),
+                new AuthScope(host, port),
                 new UsernamePasswordCredentials(user, password));
 
         CloseableHttpClient httpclient = HttpClients.custom()
@@ -79,12 +83,14 @@ public class WildflyRemoteClient {
 
         try {
             HttpResponse response = httpclient.execute(post);
-            System.out.println(">>> Deploying Response Entity: "+response.getEntity());
-            System.out.println(">>> Deploying Response Satus: "+response.getStatusLine().getStatusCode());
+
+            System.out.println(">>> Deploying Response Entity: " + response.getEntity());
+            System.out.println(">>> Deploying Response Satus: " + response.getStatusLine().getStatusCode());
+            return response.getStatusLine().getStatusCode();
         } catch (IOException ex) {
             ex.printStackTrace();
             Logger.getLogger(WildflyRemoteClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return -1;
     }
 }

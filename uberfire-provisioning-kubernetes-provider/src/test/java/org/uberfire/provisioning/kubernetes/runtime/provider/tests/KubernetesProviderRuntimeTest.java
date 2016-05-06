@@ -23,12 +23,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider;
+import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfiguration;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderType;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntime;
+import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration;
 
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
 
@@ -89,16 +92,16 @@ public class KubernetesProviderRuntimeTest {
     @Test
     public void newKubeProviderWithoutKubeClientSetupTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
+        KubernetesProviderConfiguration config = new KubernetesProviderConfiguration("kubernetes @ openshift");
         KubernetesProvider kubernetesProvider = new KubernetesProvider(config, dockerProviderType);
 
         Assert.assertNotNull(kubernetesProvider.getKubernetes());
-        RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
-        runtimeConfig.getProperties().put("namespace", "default");
-        runtimeConfig.getProperties().put("replicationController", "test");
-        runtimeConfig.getProperties().put("label", "uberfire");
-        runtimeConfig.getProperties().put("serviceName", "test");
-        runtimeConfig.getProperties().put("image", "kitematic/hello-world-nginx");
+        KubernetesRuntimeConfiguration runtimeConfig = new KubernetesRuntimeConfiguration();
+        runtimeConfig.setNamespace("default");
+        runtimeConfig.setReplicationController("test");
+        runtimeConfig.setLabel("uberfire");
+        runtimeConfig.setServiceName("test");
+        runtimeConfig.setImage("kitematic/hello-world-nginx");
 
         Runtime newRuntime;
         try {
@@ -108,9 +111,8 @@ public class KubernetesProviderRuntimeTest {
             //   kubernetes deamon are not set, this is expected to fail.
             // If you are openshift origin you need to be logged in with the remote client
             //  for the kubernetes-api to pick up your configuration
-            Assert.assertTrue(ex instanceof KubernetesClientException);
-            Assert.assertTrue(((KubernetesClientException) ex).getMessage().contains("Failure executing: GET") || 
-                    ((KubernetesClientException) ex).getMessage().contains("Error executing: GET"));
+            Assert.assertTrue(ex instanceof ProvisioningException);
+            
         }
         
         
@@ -118,9 +120,9 @@ public class KubernetesProviderRuntimeTest {
     }
     @Test
     @Ignore
-    public void newWildflyProviderWithWildflyRunningTest() {
+    public void newKubeProviderWithKubeRunningTest() throws ProvisioningException {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
+        KubernetesProviderConfiguration config = new KubernetesProviderConfiguration("kubernetes @ openshift");
         
         
         KubernetesProvider kubernetesProvider = new KubernetesProvider(config, dockerProviderType);

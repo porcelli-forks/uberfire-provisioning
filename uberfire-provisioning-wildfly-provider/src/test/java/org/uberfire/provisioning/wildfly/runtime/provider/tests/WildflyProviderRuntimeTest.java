@@ -5,10 +5,11 @@ package org.uberfire.provisioning.wildfly.runtime.provider.tests;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import org.apache.http.conn.HttpHostConnectException;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -25,11 +26,14 @@ import org.junit.runner.RunWith;
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider;
+import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderType;
 import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntime;
+import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration;
 
 /**
  *
@@ -88,58 +92,58 @@ public class WildflyProviderRuntimeTest {
     @Test
     public void newWildflyProviderWithoutWildflyRunningTest() {
         ProviderType wildlyProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
-        
-        config.getProperties().put("host", "localhost");
-        config.getProperties().put("port", "9990");
-        config.getProperties().put("user", "someuser");
-        config.getProperties().put("password", "somepassword");
-        
+        WildflyProviderConfiguration config = new WildflyProviderConfiguration("wildfly @ 9990");
+
+        config.setHost("localhost");
+        config.setManagementPort("9990");
+        config.setUser("someuser");
+        config.setPassword("somepassword");
+
         WildflyProvider wildflyProvider = new WildflyProvider(config, wildlyProviderType);
 
         Assert.assertNotNull(wildflyProvider.getWildfly());
-        RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
-        runtimeConfig.getProperties().put("warPath", "");
+        WildflyRuntimeConfiguration runtimeConfig = new WildflyRuntimeConfiguration();
+        runtimeConfig.setWarPath("");
 
         Runtime newRuntime = null;
-        
+
         try {
             newRuntime = wildflyProvider.create(runtimeConfig);
         } catch (Exception ex) {
-            // If the wildfly is not running this is expected to fail.
-            Assert.assertTrue(ex instanceof HttpHostConnectException);
-            Assert.assertTrue(ex.getMessage().contains("Connection refused"));
+            Assert.assertTrue(ex instanceof ProvisioningException);
         }
 
     }
-    
-    
-    
+
     @Test
     @Ignore
     public void newWildflyProviderWithWildflyRunningTest() {
         ProviderType wildflyProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
         
-        config.getProperties().put("host", "localhost");
-        config.getProperties().put("port", "9990");
-        config.getProperties().put("user", "salaboy");
-        config.getProperties().put("password", "salaboy123$");
-        
+        WildflyProviderConfiguration config = new WildflyProviderConfiguration("wildfly @ 9990");
+
+        config.setHost("localhost");
+        config.setManagementPort("9990");
+        config.setUser("someuser");
+        config.setPassword("somepassword");
+
         WildflyProvider wildflyProvider = new WildflyProvider(config, wildflyProviderType);
 
         Assert.assertNotNull(wildflyProvider.getWildfly());
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
         runtimeConfig.getProperties().put("warPath", "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war");
 
-        Runtime newRuntime;
-      
-        newRuntime = wildflyProvider.create(runtimeConfig);
-        
+        Runtime newRuntime = null;
+
+        try {
+            newRuntime = wildflyProvider.create(runtimeConfig);
+        } catch (ProvisioningException ex) {
+            Logger.getLogger(WildflyProviderRuntimeTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         Assert.assertNotNull(newRuntime);
         Assert.assertNotNull(newRuntime.getId());
 
     }
-
 
 }

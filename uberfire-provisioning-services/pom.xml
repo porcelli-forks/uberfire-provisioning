@@ -15,7 +15,7 @@
             <groupId>org.uberfire.provisioning</groupId>
             <artifactId>uberfire-provisioning-runtime-spi</artifactId>
         </dependency>
-        <!-- Cluster Local Mock Implementation --> 
+        <!-- Registry Local Mock Implementation --> 
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>
             <artifactId>uberfire-provisioning-registry-local</artifactId>

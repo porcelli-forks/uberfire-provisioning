@@ -12,3 +12,4 @@
 hs_err_pid*
 target/
 /uberfire-provisioning-docker-provider/nbproject/
+/uberfire-provisioning-integration-tests/nbproject/

@@ -5,8 +5,10 @@
  */
 package org.uberfire.provisioning.runtime.spi.providers;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.Runtime;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 
 /**
  *
@@ -17,6 +19,7 @@ import org.uberfire.provisioning.runtime.spi.Runtime;
  * etc)
  *
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Provider {
 
     public String getName();
@@ -25,8 +28,8 @@ public interface Provider {
 
     public ProviderType getProviderType();
 
-    public Runtime create(RuntimeConfiguration config) throws Exception;
+    public Runtime create(RuntimeConfiguration config) throws ProvisioningException;
 
-    public void destroy(String runtimeId) throws Exception;
+    public void destroy(String runtimeId) throws ProvisioningException;
 
 }

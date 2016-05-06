@@ -21,10 +21,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
 import org.uberfire.provisioning.runtime.spi.Runtime;
+import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 
 /**
@@ -41,10 +42,8 @@ public class DockerProvider extends BaseProvider {
     }
 
     public DockerProvider(ProviderConfiguration config, ProviderType type) {
-        super("Docker Client", type);
-        System.out.println(">>> New DockerProvider Instance... " + this.hashCode());
+        super(config.getName(), type);
         this.config = config;
-
         try {
             // If I wanted a custom connection to a custom configured docker deamon I should use here the information contained in CPI
             docker = DefaultDockerClient.fromEnv().build();
@@ -55,60 +54,45 @@ public class DockerProvider extends BaseProvider {
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration runtimeConfig) throws DockerCertificateException, DockerException, InterruptedException {
+    public Runtime create(RuntimeConfiguration runtimeConfig) throws ProvisioningException {
 
-        // Create a client based on DOCKER_HOST and DOCKER_CERT_PATH env vars
-        // Pull an image
-        // docker.pull(m.getConfiguration().getProperty("name"));
-        // Bind container ports to host ports
+        if (runtimeConfig.getProperties().get("pull") != null && runtimeConfig.getProperties().get("pull").equals("true")) {
+            try {
+                docker.pull(runtimeConfig.getProperties().get("image"));
+            } catch (DockerException | InterruptedException ex) {
+                Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ProvisioningException("Error Pulling Docker Image: " + runtimeConfig.getProperties().get("image") + "with error: " + ex.getMessage());
+            }
+        }
+
         final String[] ports = {"8080"};
         final Map<String, List<PortBinding>> portBindings = new HashMap<String, List<PortBinding>>();
-//        for (String port : ports) {
-//            List<PortBinding> hostPorts = new ArrayList<PortBinding>();
-//            hostPorts.add(PortBinding.of("0.0.0.0", port));
-//            portBindings.put(port, hostPorts);
-//        }
 
-// Bind container port 443 to an automatically allocated available host port.
         List<PortBinding> randomPort = new ArrayList<PortBinding>();
         PortBinding randomPortBinding = PortBinding.randomPort("0.0.0.0");
-        System.out.println("Random Port Binding: " + randomPortBinding.hostPort());
         randomPort.add(randomPortBinding);
         portBindings.put("8080", randomPort);
 
         final HostConfig hostConfig = HostConfig.builder().portBindings(portBindings).build();
 
-// Create container with exposed ports
         final ContainerConfig containerConfig = ContainerConfig.builder()
                 .hostConfig(hostConfig)
-                .image(runtimeConfig.getProperties().get("name")).exposedPorts(ports)
-                //                .cmd("sh", "-c", "while :; do sleep 1; done")
+                .image(runtimeConfig.getProperties().get("image")).exposedPorts(ports)
                 .build();
 
-        final ContainerCreation creation = docker.createContainer(containerConfig);
+        ContainerCreation creation = null;
+        try {
+            creation = docker.createContainer(containerConfig);
+        } catch (DockerException | InterruptedException ex) {
+            Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ProvisioningException("Error Creating Docker Container with image: " + runtimeConfig.getProperties().get("image") + "with error: " + ex.getMessage());
+        }
 
         final String id = creation.id();
-        System.out.println(">>> ID: " + id);
-// Inspect container
-        final ContainerInfo info = docker.inspectContainer(id);
-        System.out.println(">>> INFO: " + info);
         String shortId = id.substring(0, 12);
-        Runtime runtime = new DockerRuntime(shortId, runtimeConfig, this);
 
-        return runtime;
+        return new DockerRuntime(shortId, runtimeConfig, this);
 
-// Start container
-//        docker.startContainer(id);
-// Exec command inside running container with attached STDOUT and STDERR
-//        final String[] command = {"bash", "-c", "ls"};
-//        final String execId = docker.execCreate(id, command, DockerClient.ExecCreateParam.attachStdout(), DockerClient.ExecCreateParam.attachStderr());
-//        final LogStream output = docker.execStart(execId);
-//        final String execOutput = output.readFully();
-//// Kill container
-//        docker.killContainer(id);
-//
-//// Remove container
-//        docker.removeContainer(id);
     }
 
     public DockerClient getDocker() {
@@ -116,9 +100,15 @@ public class DockerProvider extends BaseProvider {
     }
 
     @Override
-    public void destroy(String runtimeId) throws DockerException, InterruptedException {
-        docker.killContainer(runtimeId);
-        docker.removeContainer(runtimeId);
+    public void destroy(String runtimeId) throws ProvisioningException {
+        try {
+            docker.killContainer(runtimeId);
+            docker.removeContainer(runtimeId);
+        } catch (DockerException | InterruptedException ex) {
+            Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ProvisioningException("Error destroying Docker Runtime: " + ex.getMessage());
+        }
+
     }
 
 }

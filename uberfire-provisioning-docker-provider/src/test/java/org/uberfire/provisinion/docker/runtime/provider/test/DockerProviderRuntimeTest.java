@@ -5,8 +5,6 @@ package org.uberfire.provisinion.docker.runtime.provider.test;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.spotify.docker.client.DockerCertificateException;
-import com.spotify.docker.client.DockerException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
@@ -26,11 +24,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.docker.runtime.provider.DockerProvider;
+import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration;
 import org.uberfire.provisioning.docker.runtime.provider.DockerProviderType;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntime;
+import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
 
@@ -91,21 +92,20 @@ public class DockerProviderRuntimeTest {
     @Test
     public void newDockerProviderWithoutDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
+        DockerProviderConfiguration config = new DockerProviderConfiguration("docker local deamon");
         DockerProvider dockerProvider = new DockerProvider(config, dockerProviderType);
 
         Assert.assertNotNull(dockerProvider.getDocker());
-        RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
-        runtimeConfig.getProperties().put("name", "kitematic/hello-world-nginx");
+        DockerRuntimeConfiguration runtimeConfig = new DockerRuntimeConfiguration();
+        runtimeConfig.setImage("kitematic/hello-world-nginx");
 
         Runtime newRuntime;
         try {
             newRuntime = dockerProvider.create(runtimeConfig);
-        } catch (DockerCertificateException | DockerException | InterruptedException ex) {
+        } catch (Exception ex) {
             // If the docker deamon is not running and the system variables for locating the
             //   docker deamon are not set, this is expected to fail.
-            Assert.assertTrue(ex instanceof DockerException);
-            Assert.assertTrue(((DockerException) ex).getMessage().contains("Connection refused"));
+            Assert.assertTrue(ex instanceof ProvisioningException);   
         }
 
     }
@@ -114,7 +114,7 @@ public class DockerProviderRuntimeTest {
     @Ignore
     public void newDockerProviderWithDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        BaseProviderConfiguration config = new BaseProviderConfiguration();
+        DockerProviderConfiguration config = new DockerProviderConfiguration("docker local deamon");
         DockerProvider dockerProvider = new DockerProvider(config, dockerProviderType);
 
         Assert.assertNotNull(dockerProvider.getDocker());
@@ -127,9 +127,10 @@ public class DockerProviderRuntimeTest {
         Runtime newRuntime = null;
         try {
             newRuntime = dockerProvider.create(runtimeConfig);
-        } catch (DockerCertificateException | DockerException | InterruptedException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail("Docker client is not configured");
+            
         }
         Assert.assertNotNull(newRuntime);
 
@@ -140,8 +141,9 @@ public class DockerProviderRuntimeTest {
   
         try {
             dockerProvider.destroy(newRuntime.getId());
-        } catch (DockerException | InterruptedException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DockerProviderRuntimeTest.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
 
     }

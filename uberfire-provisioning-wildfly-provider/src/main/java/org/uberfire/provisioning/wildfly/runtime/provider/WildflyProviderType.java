@@ -18,7 +18,6 @@ public class WildflyProviderType extends BaseProviderType {
 
     public WildflyProviderType() {
         super("wildfly", "10.0.0");
-        System.out.println(" >>> New WildflyProviderType Instance: " + this.hashCode());
     }
 
 }

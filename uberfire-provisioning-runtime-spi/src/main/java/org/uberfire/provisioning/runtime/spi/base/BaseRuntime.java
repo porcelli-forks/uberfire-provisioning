@@ -5,6 +5,7 @@
  */
 package org.uberfire.provisioning.runtime.spi.base;
 
+import javax.xml.bind.annotation.XmlTransient;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.providers.Provider;
 import org.uberfire.provisioning.runtime.spi.Runtime;
@@ -17,6 +18,7 @@ public abstract class BaseRuntime implements Runtime {
 
     private String id;
     protected RuntimeConfiguration config;
+    @XmlTransient
     protected Provider provider;
 
     public BaseRuntime(String id, RuntimeConfiguration config, Provider provider) {
@@ -40,14 +42,17 @@ public abstract class BaseRuntime implements Runtime {
         return config;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public void setConfig(RuntimeConfiguration config) {
         this.config = config;
     }
 
+    @Override
     public void setProvider(Provider provider) {
         this.provider = provider;
     }

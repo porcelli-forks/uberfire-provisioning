@@ -19,7 +19,7 @@ import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 public class ProviderFactory {
 
     public static Provider newProvider(ProviderConfiguration config) {
-        String provider = config.getProperties().get("provider");
+        String provider = config.getProvider();
         try {
             Constructor<?> constructor = Class.forName(provider).getConstructor(ProviderConfiguration.class);
             return (Provider) constructor.newInstance(config);

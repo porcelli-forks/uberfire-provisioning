@@ -20,6 +20,7 @@
         <module>uberfire-provisioning-registry-spi</module>
         <module>wildfly-util</module>
         <module>sample-war</module>
+        <module>uberfire-provisioning-integration-tests</module>
     </modules>
     
     <properties>

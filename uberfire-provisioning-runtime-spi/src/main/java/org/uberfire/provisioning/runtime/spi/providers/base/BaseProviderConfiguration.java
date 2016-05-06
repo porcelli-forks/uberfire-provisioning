@@ -18,6 +18,13 @@ import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 public class BaseProviderConfiguration implements ProviderConfiguration {
 
     private Map<String, String> properties = new HashMap<>();
+    private String name;
+    private String provider;
+
+    public BaseProviderConfiguration(String name, String provider) {
+        this.name = name;
+        this.provider = provider;
+    }
 
     @Override
     public Map<String, String> getProperties() {
@@ -28,4 +35,25 @@ public class BaseProviderConfiguration implements ProviderConfiguration {
     public void setProperties(Map<String, String> props) {
         this.properties = props;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getProvider() {
+        return provider;
+    }
+
+    @Override
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
 }

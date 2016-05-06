@@ -7,6 +7,7 @@ package org.uberfire.provisioning.registry.local.tests;
 
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
 
@@ -21,12 +22,12 @@ public class MyProvider extends BaseProvider {
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration config) throws Exception {
+    public Runtime create(RuntimeConfiguration config) throws ProvisioningException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void destroy(String runtimeId) throws Exception {
+    public void destroy(String runtimeId) throws ProvisioningException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

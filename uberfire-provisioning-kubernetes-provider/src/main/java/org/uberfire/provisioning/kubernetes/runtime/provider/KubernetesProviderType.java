@@ -18,7 +18,6 @@ public class KubernetesProviderType extends BaseProviderType {
 
     public KubernetesProviderType() {
         super("kubernetes", "1");
-        System.out.println(" >>> New KubernetesProviderType: " + this.hashCode());
     }
 
 }

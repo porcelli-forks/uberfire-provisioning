@@ -18,4 +18,12 @@ public interface ProviderConfiguration {
     public Map<String, String> getProperties();
 
     public void setProperties(Map<String, String> props);
+    
+    public String getName();
+    
+    public void setName(String name);
+    
+    public String getProvider();
+    
+    public void setProvider(String name);
 }

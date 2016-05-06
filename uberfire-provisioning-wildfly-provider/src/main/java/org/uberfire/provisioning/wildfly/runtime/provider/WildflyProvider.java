@@ -5,10 +5,12 @@
  */
 package org.uberfire.provisioning.wildfly.runtime.provider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 import javax.xml.bind.annotation.XmlTransient;
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
@@ -21,6 +23,7 @@ import org.uberfire.provisioning.wildfly.util.WildflyRemoteClient;
 public class WildflyProvider extends BaseProvider {
 
     @XmlTransient
+    @JsonIgnore
     private WildflyRemoteClient wildfly;
 
     public WildflyProvider(ProviderConfiguration config) {
@@ -29,8 +32,7 @@ public class WildflyProvider extends BaseProvider {
     }
 
     public WildflyProvider(ProviderConfiguration config, ProviderType type) {
-        super("Wildfly Client Provider", type);
-        System.out.println(">>> New WildflyProvider Instance... " + this.hashCode());
+        super(config.getName(), type);
         /*
          I should check here for the required configuration parameters for the provider
          */
@@ -39,7 +41,7 @@ public class WildflyProvider extends BaseProvider {
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration runtimeConfig) {
+    public Runtime create(RuntimeConfiguration runtimeConfig) throws ProvisioningException {
         /*
          I should check here for the required configuration parameters for the runtime
          */
@@ -50,13 +52,10 @@ public class WildflyProvider extends BaseProvider {
         String host = config.getProperties().get("host");
         String port = config.getProperties().get("port");
 
-        System.out.println("Creating container with user: " + user);
-        System.out.println("Creating container with password: " + password);
-        System.out.println("Creating container with warPath: " + warPath);
-        System.out.println("Creating container with host: " + host);
-        System.out.println("Creating container with port: " + port);
-
-        wildfly.deploy(user, password, host, new Integer(port), warPath);
+        int result = wildfly.deploy(user, password, host, new Integer(port), warPath);
+        if (result != 500) {
+            throw new ProvisioningException("Deployment to Wildfly Failed with error code: " + result);
+        }
         String id = UUID.randomUUID().toString();
         String shortId = id.substring(0, 12);
 
@@ -64,7 +63,7 @@ public class WildflyProvider extends BaseProvider {
     }
 
     @Override
-    public void destroy(String runtimeId) throws Exception {
+    public void destroy(String runtimeId) throws ProvisioningException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
