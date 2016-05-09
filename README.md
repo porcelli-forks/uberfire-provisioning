@@ -3,11 +3,11 @@
 A simple API to provision runtimes to different providers, such as Docker, Kubernetes, Servlet Containers (Wildfly, WAS, WebLogic, Tomcat, etc). This runtimes can be created based on different sources and by using a pipeline to build the binaries that needs to be provisioned. 
 
 There are 5 building blocks
-- Source (Allow us to get code locally from different sources, list all our sources, add new sources, etc)
-- Build (API & Maven build provider implementation provided)
-- Runtime (create new runtime in different providers: AppServers, Docker, Kubernetes, Openshift & control these runtimes)
-- Pipeline (a way to control and chain the previous elements to we can move from source to runtime in just one service call)
-- Registry (a way to keep track where our projects, runtimes and pipelines are)
+- **Source** (Allow us to get code locally from different sources, list all our sources, add new sources, etc)
+- **Build** (API & Maven build provider implementation provided)
+- **Runtime** (create new runtime in different providers: AppServers, Docker, Kubernetes, Openshift & control these runtimes)
+- **Pipeline** (a way to control and chain the previous elements to we can move from source to runtime in just one service call)
+- **Registry** (a way to keep track where our projects, runtimes and pipelines are)
 
 On top of these building blocks you will find the Service Layer that allows you to interact with each step separately or with the pipelines to chain different steps together.
 
