@@ -20,6 +20,8 @@
         <module>uberfire-provisioning-registry-spi</module>
         <module>uberfire-provisioning-integration-tests</module>
         <module>extras</module>
+        <module>uberfire-provisioning-source-spi</module>
+        <module>uberfire-provisioning-source-github</module>
     </modules>
     
     <properties>
@@ -108,6 +110,16 @@
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
                 <artifactId>uberfire-provisioning-build-maven</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-source-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-source-github</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
