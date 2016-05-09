@@ -3,7 +3,7 @@
 A simple API to provision runtimes to different providers, such as Docker, Kubernetes, Servlet Containers (Wildfly, WAS, WebLogic, Tomcat, etc). This runtimes can be created based on different sources and by using a pipeline to build the binaries that needs to be provisioned. 
 
 There are 5 building blocks
-- Source (not in the repo yet, but it should allow us to get code locally from different sources)
+- Source (Allow us to get code locally from different sources, list all our sources, add new sources, etc)
 - Build (API & Maven build provider implementation provided)
 - Runtime (create new runtime in different providers: AppServers, Docker, Kubernetes, Openshift & control these runtimes)
 - Pipeline (a way to control and chain the previous elements to we can move from source to runtime in just one service call)
@@ -12,8 +12,8 @@ There are 5 building blocks
 On top of these building blocks you will find the Service Layer that allows you to interact with each step separately or with the pipelines to chain different steps together.
 
 
-#Source / Workspace (???)
- (TBD)
+#Source / Workspace 
+This module allows us to get code from external repositories so we can build it locally. The main idea behind these services are to provide us with a flexible way to manage our source repositories and enable us to get that code locally so it can be built. 
 
 #Build
 This block will be in charge of taking a project path and building the necesarry binaries. The binaries are placed in the target directory and can be picked up by the provisioning layer.
@@ -55,6 +55,11 @@ Multiple instances of the services can be started in different nodes and by usin
 
 
 Current Methods:
+- Source
+ - GET /api/sources  (Get all external sources repositories)
+ - POST /api/sources  (new external repository)
+ - POST /api/sources/<id>/clone  (get sources from the remote repository locally)
+
 - Build
  - GET /api/builds  (Get all builds)
  - POST /api/builds  (new build)
