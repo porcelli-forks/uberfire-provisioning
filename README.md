@@ -45,7 +45,8 @@ These container instances should provide a way for the end users to execute oper
 - public RuntimeConfiguration getConfig();
 ```
 # Pipeline
-An API to define a set of Stages that can be chained to achieve different outputs. 
+An API to define a set of Stages that can be chained to achieve different outputs. So for example you will be able to 
+get sources from a remote repository and build those sources. Or get the generated binaries and create new runtimes into different providers. 
 
 # Services
 
