@@ -17,7 +17,7 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderType;
 public class KubernetesProviderType extends BaseProviderType {
 
     public KubernetesProviderType() {
-        super("kubernetes", "1");
+        super("kubernetes", "1", KubernetesProvider.class);
     }
 
 }

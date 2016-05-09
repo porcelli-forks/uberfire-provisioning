@@ -16,7 +16,13 @@ import java.util.Map;
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface RuntimeConfiguration {
 
+    public String getProviderName();
+    
+    public void setProviderName(String providerName);
+    
     public Map<String, String> getProperties();
 
     public void setProperties(Map<String, String> props);
+    
+    
 }

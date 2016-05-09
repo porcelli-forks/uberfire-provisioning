@@ -17,7 +17,7 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderType;
 public class WildflyProviderType extends BaseProviderType {
 
     public WildflyProviderType() {
-        super("wildfly", "10.0.0");
+        super("wildfly", "10.0.0", WildflyProvider.class);
     }
 
 }

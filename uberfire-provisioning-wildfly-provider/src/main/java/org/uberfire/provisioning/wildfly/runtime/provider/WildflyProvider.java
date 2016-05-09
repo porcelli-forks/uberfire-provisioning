@@ -53,7 +53,7 @@ public class WildflyProvider extends BaseProvider {
         String port = config.getProperties().get("port");
 
         int result = wildfly.deploy(user, password, host, new Integer(port), warPath);
-        if (result != 500) {
+        if (result != 200) {
             throw new ProvisioningException("Deployment to Wildfly Failed with error code: " + result);
         }
         String id = UUID.randomUUID().toString();

@@ -15,10 +15,12 @@ public abstract class BaseProviderType implements ProviderType {
 
     private final String providerName;
     private final String version;
+    private final Class provider;
 
-    public BaseProviderType(String providerName, String version) {
+    public BaseProviderType(String providerName, String version, Class provider) {
         this.providerName = providerName;
         this.version = version;
+        this.provider = provider;
     }
 
     @Override
@@ -29,6 +31,10 @@ public abstract class BaseProviderType implements ProviderType {
     @Override
     public String getVersion() {
         return version;
+    }
+
+    public Class getProvider() {
+        return provider;
     }
     
     

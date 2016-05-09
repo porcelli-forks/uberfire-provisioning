@@ -14,7 +14,7 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfigur
 public class KubernetesProviderConfiguration extends BaseProviderConfiguration {
 
     public KubernetesProviderConfiguration(String name) {
-        super(name, new KubernetesProviderType().getProviderTypeName());
+        super(name, new KubernetesProviderType().getProvider().getName());
     }
 
     

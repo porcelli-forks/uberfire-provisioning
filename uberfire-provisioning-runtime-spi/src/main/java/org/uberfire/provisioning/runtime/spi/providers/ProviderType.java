@@ -17,5 +17,6 @@ public interface ProviderType {
 
     public String getVersion();
 
+    public Class getProvider();
 
 }

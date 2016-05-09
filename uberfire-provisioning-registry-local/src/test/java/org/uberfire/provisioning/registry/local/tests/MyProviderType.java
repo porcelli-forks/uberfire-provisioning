@@ -14,11 +14,11 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderType;
 public class MyProviderType extends BaseProviderType {
     
     public MyProviderType(String providerName, String version) {
-        super(providerName, version);
+        super(providerName, version, MyProvider.class);
     }
     
     public MyProviderType() {
-        super("my provider", "1.0");
+        this("my provider", "1.0");
     }
     
 }

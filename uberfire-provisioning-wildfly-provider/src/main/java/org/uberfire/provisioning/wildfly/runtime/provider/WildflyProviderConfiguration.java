@@ -13,8 +13,16 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfigur
  */
 public class WildflyProviderConfiguration extends BaseProviderConfiguration {
 
+    /*
+     * This constructor shouldn't be used, The use of WildflyProviderConfiguration(String name)
+     * is strictly recommended. This constructor is here just for the serializers to work correctly
+    */
+    public WildflyProviderConfiguration() {
+        super("", new WildflyProviderType().getProvider().getName());
+    }
+    
     public WildflyProviderConfiguration(String name) {
-        super(name, new WildflyProviderType().getProviderTypeName());
+        super(name, new WildflyProviderType().getProvider().getName());
     }
     
     public void setHost(String host) {

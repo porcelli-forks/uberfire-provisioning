@@ -2,17 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>uberfire-provisioning</artifactId>
-    <groupId>org.uberfire.provisioning</groupId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-
-    <groupId>org.uberfire.provisioning</groupId>
+    	<groupId>org.uberfire.provisioning</groupId>
+	<artifactId>extras</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>sample-war</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>sample-war</name>
+    <name>Sample Web Application (WAR)</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

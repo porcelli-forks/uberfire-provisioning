@@ -5,19 +5,19 @@
  */
 package org.uberfire.provisioning.runtime.spi.providers.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 
 /**
  *
  * @author salaboy
  */
-@XmlRootElement
 public class BaseProviderConfiguration implements ProviderConfiguration {
-
+    @JsonIgnore
     private Map<String, String> properties = new HashMap<>();
+    
     private String name;
     private String provider;
 

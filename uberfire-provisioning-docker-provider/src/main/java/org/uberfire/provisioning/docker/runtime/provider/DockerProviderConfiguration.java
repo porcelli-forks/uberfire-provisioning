@@ -14,7 +14,7 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfigur
 public class DockerProviderConfiguration extends BaseProviderConfiguration {
 
     public DockerProviderConfiguration(String name) {
-        super(name, new DockerProviderType().getProviderTypeName());
+        super(name, new DockerProviderType().getProvider().getName());
     }
 
 }

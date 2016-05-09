@@ -18,7 +18,7 @@ public class DockerProviderType extends BaseProviderType {
 
     
     public DockerProviderType() {
-        super("docker", "1.9.1");
+        super("docker", "1.9.1", DockerProvider.class);
     }
 
 }

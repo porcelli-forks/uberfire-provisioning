@@ -81,7 +81,7 @@ public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningServic
 
     @Override
     public String newRuntime(RuntimeConfiguration conf) throws BusinessException {
-        String providerName = conf.getProperties().get("providerName");
+        String providerName = conf.getProviderName();
         Provider provider = registry.getProvider(providerName); 
         Runtime runtime;
         try {
