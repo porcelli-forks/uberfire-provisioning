@@ -14,5 +14,13 @@
             <groupId>org.uberfire.provisioning</groupId>
             <artifactId>uberfire-provisioning-runtime-spi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>uberfire-provisioning-source-spi</artifactId>
+        </dependency>
+         <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>uberfire-provisioning-build-spi</artifactId>
+        </dependency>
     </dependencies>
 </project>

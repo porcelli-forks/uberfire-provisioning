@@ -5,6 +5,7 @@
  */
 package org.uberfire.provisioning.source.github;
 
+import java.util.UUID;
 import org.uberfire.provisioning.source.Repository;
 
 /**
@@ -13,6 +14,7 @@ import org.uberfire.provisioning.source.Repository;
  */
 public class GitHubRepository implements Repository {
 
+    private String id;
     private String URI;
     private String name;
     private String type;
@@ -20,11 +22,17 @@ public class GitHubRepository implements Repository {
 
     public GitHubRepository() {
         this.type = "GitHub";
+        this.id = UUID.randomUUID().toString().substring(0, 12);
     }
 
     public GitHubRepository(String name) {
         this();
         this.name = name;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override

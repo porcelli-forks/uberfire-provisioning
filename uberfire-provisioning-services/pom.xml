@@ -33,6 +33,12 @@
             <artifactId>uberfire-provisioning-pipeline-local</artifactId>
         </dependency>
         
+        <!-- Source Github  Implementation --> 
+        <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>uberfire-provisioning-source-github</artifactId>
+        </dependency>
+        
         <!-- Providers --> 
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>

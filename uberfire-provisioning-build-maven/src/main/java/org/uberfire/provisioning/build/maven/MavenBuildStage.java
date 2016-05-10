@@ -5,6 +5,9 @@
  */
 package org.uberfire.provisioning.build.maven;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.uberfire.provisioning.build.spi.exceptions.BuildException;
 import org.uberfire.provisioning.pipeline.spi.PipelineContext;
 import org.uberfire.provisioning.pipeline.spi.Stage;
 
@@ -27,14 +30,25 @@ public class MavenBuildStage implements Stage {
 
     @Override
     public void execute(PipelineContext context) {
-        int buildResult = new MavenBuild().build((String) context.getData().get("projectPath"));
+        int buildResult = 0;
+        MavenBuild build = new MavenBuild();
+        MavenProject mavenProject = new MavenProject((String) context.getData().get("projectName"));
+        mavenProject.setRootPath((String) context.getData().get("projectPath"));
+        mavenProject.setExpectedBinary((String) context.getData().get("expectedBinary"));
+        try {
+
+            buildResult = build.build(mavenProject);
+        } catch (BuildException ex) {
+            Logger.getLogger(MavenBuildStage.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+
         if (buildResult != 0) {
             System.out.println(" >>> Build Failed! ");
             return;
         }
-        String warLocation = context.getData().get("projectPath") + "/target/" 
-                + context.getData().get("projectName") + "-" + context.getData().get("projectVersion") + ".war";
-        context.getData().put("warPath", warLocation);
+        String binaryLocation = build.binariesLocation(mavenProject);
+        context.getData().put("warPath", binaryLocation);
 
     }
 

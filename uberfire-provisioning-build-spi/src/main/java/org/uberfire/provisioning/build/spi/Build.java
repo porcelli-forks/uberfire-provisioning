@@ -8,6 +8,7 @@ package org.uberfire.provisioning.build.spi;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import org.uberfire.provisioning.build.spi.exceptions.BuildException;
 
 /**
  *
@@ -16,5 +17,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonTypeInfo(use = Id.CLASS, include = As.WRAPPER_OBJECT)
 public interface Build {
 
-    public int build(String projectPath);
+    public int build(Project project) throws BuildException;
+
+    public boolean binariesReady(Project project) throws BuildException;
+
+    public String binariesLocation(Project project);
 }

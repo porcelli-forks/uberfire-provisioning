@@ -63,12 +63,6 @@ public class SimpleRuntimeAPITest {
                 .addClass(WildflyProviderType.class)
                 .addClass(DockerProviderType.class)
                 .addClass(KubernetesProviderType.class)
-                //                .addClass(WildflyProvider.class)
-                //                .addClass(DockerProvider.class)
-                //                .addClass(KubernetesProvider.class)
-                //                .addClass(WildflyRuntime.class)
-                //                .addClass(DockerRuntime.class)
-                //                .addClass(KubernetesRuntime.class)
                 .addClass(InMemoryRuntimeRegistry.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));

@@ -14,6 +14,8 @@ import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.uberfire.provisioning.build.spi.Build;
+import org.uberfire.provisioning.build.spi.Project;
+import org.uberfire.provisioning.build.spi.exceptions.BuildException;
 
 /**
  *
@@ -22,9 +24,13 @@ import org.uberfire.provisioning.build.spi.Build;
 public class MavenBuild implements Build {
 
     @Override
-    public int build(String projectPath) {
+    public int build(Project project) throws BuildException {
+
+        if (!project.getType().equals("Maven")) {
+            throw new BuildException("This builder only support maven projects");
+        }
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile(new File(projectPath + "/pom.xml"));
+        request.setPomFile(new File(project.getRootPath() + "/" + project.getPath() + "/pom.xml"));
         request.setGoals(Collections.singletonList("package"));
 
         Invoker invoker = new DefaultInvoker();
@@ -37,4 +43,15 @@ public class MavenBuild implements Build {
         }
         return -1;
     }
+
+    @Override
+    public boolean binariesReady(Project project) {
+        return new File(project.getRootPath() + "/" + project.getPath() + "/target/" + project.getExpectedBinary()).exists();
+    }
+
+    @Override
+    public String binariesLocation(Project project) {
+        return project.getRootPath() + "/" + project.getPath() + "/target/" + project.getExpectedBinary();
+    }
+
 }

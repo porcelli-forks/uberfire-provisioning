@@ -9,4 +9,11 @@
     <artifactId>uberfire-provisioning-source-spi</artifactId>
     <name>Uberfire Provisioning :: Source SPI</name>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

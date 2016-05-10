@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uberfire.provisioning.services.endpoint.exceptions;
-
-import java.io.Serializable;
+package org.uberfire.provisioning.build.spi.exceptions;
 
 /**
  *
  * @author salaboy
  */
-public class BusinessException extends Exception implements Serializable {
+public class BuildException extends Exception {
 
-    public BusinessException(String message) {
+    public BuildException(String message) {
         super(message);
     }
 
-    public BusinessException(String message, Throwable cause) {
+    public BuildException(String message, Throwable cause) {
         super(message, cause);
     }
 

@@ -5,19 +5,24 @@
  */
 package org.uberfire.provisioning.source;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  *
  * @author salaboy
  */
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Repository {
 
+    public String getId();
+    
     public String getURI();
 
     public String getName();
 
     public String getType();
 
-    public boolean isBare();
+    public boolean isBare();    
 
     public void setURI(String URI);
 
