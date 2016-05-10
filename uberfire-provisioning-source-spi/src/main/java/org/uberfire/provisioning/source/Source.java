@@ -5,11 +5,13 @@
  */
 package org.uberfire.provisioning.source;
 
+import org.uberfire.provisioning.source.exceptions.SourcingException;
+
 /**
  *
  * @author salaboy
  */
 public interface Source {
 
-    public String getSource(String repository, String pathTo) throws Exception;
+    public String getSource(Repository repository) throws SourcingException;
 }

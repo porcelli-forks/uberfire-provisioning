@@ -5,12 +5,16 @@
  */
 package org.uberfire.provisioning.source.github;
 
+import java.io.File;
+import java.nio.file.Files;
+import org.eclipse.jgit.util.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
 
 /**
@@ -39,11 +43,14 @@ public class CloneTestJUnitTest {
     }
 
     @Test
-    @Ignore
     public void hello() throws Exception {
-        Source source = new GitHubSource();
-        String pathToRepo = source.getSource("https://github.com/pefernan/livespark-playground.git", "/tmp/livespark");
-        
-        
+        Source source = new GitSource();
+        Repository gitHubRepository = new GitHubRepository("Livespark Playground");
+        gitHubRepository.setURI("https://github.com/pefernan/livespark-playground.git");
+
+        String destinationPath = source.getSource(gitHubRepository);
+        System.out.println("TMP Created Dir: " + destinationPath);
+        Assert.assertTrue(new File(destinationPath).isDirectory());
+
     }
 }

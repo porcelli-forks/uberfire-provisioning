@@ -28,7 +28,6 @@ public class MavenBuild implements Build {
         request.setGoals(Collections.singletonList("package"));
 
         Invoker invoker = new DefaultInvoker();
-//        invoker.setMavenHome(new File("/usr/local/Cellar/maven32/3.2.5/libexec"));
 
         try {
             InvocationResult results = invoker.execute(request);
