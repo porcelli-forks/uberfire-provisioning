@@ -49,7 +49,12 @@ An API to define a set of Stages that can be chained to achieve different output
 get sources from a remote repository and build those sources. Or get the generated binaries and create new runtimes into different providers. 
 
 # Registry
-The registry module provides a place to store (in a distributed way) the information related with Repositories, Projects, Providers, Runtimes, Pipelines and builds.
+The registry module provides a place to store (in a distributed way) the information related with Repositories, Projects, Providers, Runtimes, Pipelines and builds. The registry is separated into different registries for different concepts:
+- Sources Registry 
+- Build Registry
+- Runtime Registry
+- Pipelines Registry
+ 
 
 The Registry project should provide a distributed implementation that allows multiple Service layers to access the same data.
 
@@ -64,7 +69,9 @@ Multiple instances of the services can be started in different nodes and by usin
 Current Methods:
 - Source
  - GET /api/sources  (Get all external sources repositories)
+ - GET /api/sources/{id} (get repository location by id)
  - POST /api/sources  (register and clone external repository for local use)
+ 
 
 - Build
  - GET /api/builds  (Get all builds)
