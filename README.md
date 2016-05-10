@@ -48,6 +48,12 @@ These container instances should provide a way for the end users to execute oper
 An API to define a set of Stages that can be chained to achieve different outputs. So for example you will be able to 
 get sources from a remote repository and build those sources. Or get the generated binaries and create new runtimes into different providers. 
 
+# Registry
+The registry module provides a place to store (in a distributed way) the information related with Repositories, Projects, Providers, Runtimes, Pipelines and builds.
+
+The Registry project should provide a distributed implementation that allows multiple Service layers to access the same data.
+
+
 # Services
 
 A service layer is provided using JAX-RS services, so remote clients can register their provider instances and remotely provision new runtimes.
