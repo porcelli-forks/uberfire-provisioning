@@ -64,8 +64,7 @@ Multiple instances of the services can be started in different nodes and by usin
 Current Methods:
 - Source
  - GET /api/sources  (Get all external sources repositories)
- - POST /api/sources  (new external repository)
- - POST /api/sources/<id>/clone  (get sources from the remote repository locally)
+ - POST /api/sources  (register and clone external repository for local use)
 
 - Build
  - GET /api/builds  (Get all builds)
