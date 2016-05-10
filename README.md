@@ -77,14 +77,14 @@ Current Methods:
 
  - POST /api/providers (New Provider)
  - POST /api/runtimes (New Runtime)
- - POST /api/runtimes/<id>/start (Start Runtime)
- - POST /api/runtimes/<id>/stop (Stop Runtime)
- - DELETE /api/runtimes/<id> (Remove Runtime)
+ - POST /api/runtimes/{id}/start (Start Runtime)
+ - POST /api/runtimes/{id}/stop (Stop Runtime)
+ - DELETE /api/runtimes/{id} (Remove Runtime)
 
 - Pipelines
  - GET /api/pipelines (Get All Pipelines)
  - POST /api/pipelines (New Pipeline)
- - POST /api/pipelines/<id>/run (Run Pipeline)
+ - POST /api/pipelines/{id}/run (Run Pipeline)
 
  
 
