@@ -67,17 +67,17 @@ Multiple instances of the services can be started in different nodes and by usin
 
 
 Current Methods:
-- Source
+- **Source**
  - GET /api/sources  (Get all external sources repositories)
  - GET /api/sources/{id} (get repository location by id)
  - POST /api/sources  (register and clone external repository for local use)
  
 
-- Build
+- **Build**
  - GET /api/builds  (Get all builds)
  - POST /api/builds  (new build)
 
-- Runtime
+- **Runtime**
  - GET /api/providerstypes (Get All Provider Types)
  - GET /api/providers (Get All Providers)
  - GET /api/runtimes (Get All Runtimes)
@@ -88,12 +88,38 @@ Current Methods:
  - POST /api/runtimes/{id}/stop (Stop Runtime)
  - DELETE /api/runtimes/{id} (Remove Runtime)
 
-- Pipelines
+- **Pipelines**
  - GET /api/pipelines (Get All Pipelines)
  - POST /api/pipelines (New Pipeline)
  - POST /api/pipelines/{id}/run (Run Pipeline)
 
- 
+# Getting Started
+You can clone the repository and build all the projects using: mvn clean install (note that you need to have the M2_HOME variable set so maven-invoker can work)
+
+In order to start the services you can do:
+```
+cd uberfire-provisioning-services/target/
+java -jar uberfire-provisioning-services-swarm.jar
+```
+
+or alternatively with Docker (this will need to download the docker image first)
+```
+docker run -p 8080:8082 salaboy/uberfire-provisioning-services 
+```
+where 8082 is the port where the services are running and 8080 is the port that I will use to access from my environment.
+
+You can also build and start your own docker image with:
+```
+cd uberfire-provisioning-services/
+mvn clean install docker:build docker:start
+```
+
+A Postman (Google Chrome add on) project is provided here, where you can execute operations against the services and sample requests are provided for most operations.
+
+https://github.com/Salaboy/uberfire-provisioning/blob/master/uberfire-provisioning.json.postman_collection
+
+You need to download/clone this file and then import it to Postman (https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
+
 
 
 
