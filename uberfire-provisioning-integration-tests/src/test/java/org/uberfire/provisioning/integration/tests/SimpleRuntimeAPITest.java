@@ -45,7 +45,7 @@ import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeCon
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.Provider;
-import org.uberfire.provisioning.wildfly.runtime.provbase.ider.WildflyProviderConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
 
 /**
