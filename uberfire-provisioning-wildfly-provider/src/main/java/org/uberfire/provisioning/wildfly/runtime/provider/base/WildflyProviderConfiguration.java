@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uberfire.provisioning.wildfly.runtime.provider;
+package org.uberfire.provisioning.wildfly.runtime.provider.base;
 
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
 /**
  *
@@ -18,11 +19,11 @@ public class WildflyProviderConfiguration extends BaseProviderConfiguration {
      * is strictly recommended. This constructor is here just for the serializers to work correctly
     */
     public WildflyProviderConfiguration() {
-        super("", new WildflyProviderType().getProvider().getName());
+        super("", new Wildfly10ProviderType().getProvider().getName());
     }
     
     public WildflyProviderConfiguration(String name) {
-        super(name, new WildflyProviderType().getProvider().getName());
+        super(name, new Wildfly10ProviderType().getProvider().getName());
     }
     
     public void setHost(String host) {

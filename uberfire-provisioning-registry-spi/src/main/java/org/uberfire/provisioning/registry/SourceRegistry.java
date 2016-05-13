@@ -6,6 +6,7 @@
 package org.uberfire.provisioning.registry;
 
 import java.util.List;
+import org.uberfire.provisioning.build.spi.Project;
 import org.uberfire.provisioning.source.Repository;
 
 /**
@@ -23,6 +24,14 @@ public interface SourceRegistry {
     public List<Repository> getAllRepositories();
 
     public String getRepositoryLocationById(String repoId);
+
+    public void registerProject(Repository repo, Project project);
+
+    public List<Project> getAllProjects(Repository repo);
+
+    public List<Project> getProjectByName(String usersnew);
+
+    public Repository getRepositoryById(String repositoryId);
     
 
 }

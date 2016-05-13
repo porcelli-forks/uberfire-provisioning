@@ -38,15 +38,15 @@ import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeCo
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfiguration;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderType;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.Runtime;
 import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.Provider;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfBuilder;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provbase.ider.WildflyProviderConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
 
 /**
  *
@@ -60,7 +60,7 @@ public class SimpleRuntimeAPITest {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClass(ProviderType.class)
-                .addClass(WildflyProviderType.class)
+                .addClass(Wildfly10ProviderType.class)
                 .addClass(DockerProviderType.class)
                 .addClass(KubernetesProviderType.class)
                 .addClass(InMemoryRuntimeRegistry.class)
@@ -110,7 +110,7 @@ public class SimpleRuntimeAPITest {
                 .setUser("salaboy")
                 .setPassword("salaboy123$").get();
 
-        WildflyProvider wildflyProvider = new WildflyProvider(wildflyProviderConfig, wildflyProviderType);
+        Wildfly10Provider wildflyProvider = new Wildfly10Provider(wildflyProviderConfig, wildflyProviderType);
 
         Assert.assertNotNull(wildflyProvider.getWildfly());
         registry.registerProvider(wildflyProvider);

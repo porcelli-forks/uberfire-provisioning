@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uberfire.provisioning.wildfly.runtime.provider;
+package org.uberfire.provisioning.wildfly.runtime.provider.base;
 
 import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.RuntimeInfo;
 import org.uberfire.provisioning.runtime.spi.RuntimeState;
 import org.uberfire.provisioning.runtime.spi.base.BaseRuntime;
 import org.uberfire.provisioning.runtime.spi.providers.Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
 
 /**
  *
@@ -19,7 +20,7 @@ public class WildflyRuntime extends BaseRuntime {
 
     public WildflyRuntime(String id, RuntimeConfiguration config, Provider provider) {
         super(id, config, provider);
-        if (!(provider instanceof WildflyProvider)) {
+        if (!(provider instanceof Wildfly10Provider)) {
             throw new IllegalArgumentException("Wrong provider! set: " + provider.getClass() + " expected: WildflyProvider");
         }
     }

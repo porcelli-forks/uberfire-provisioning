@@ -5,10 +5,13 @@
  */
 package org.uberfire.provisioning.build.spi;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  *
  * @author salaboy
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Binary {
 
     public Project getSourceProject();

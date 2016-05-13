@@ -8,12 +8,14 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
+import org.uberfire.provisioning.build.maven.MavenBinary;
+import org.uberfire.provisioning.build.spi.Binary;
 import org.uberfire.provisioning.build.spi.Build;
-import org.uberfire.provisioning.registry.SourceRegistry;
+import org.uberfire.provisioning.build.spi.Project;
+import org.uberfire.provisioning.build.spi.exceptions.BuildException;
+import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.services.endpoint.api.BuildService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
-import org.uberfire.provisioning.source.Repository;
-import org.uberfire.provisioning.source.exceptions.SourcingException;
 
 /**
  *
@@ -29,7 +31,7 @@ public class BuildServiceImpl implements BuildService {
     private Build build;
 
     @Inject
-    private SourceRegistry registry;
+    private BuildRegistry registry;
 
     public BuildServiceImpl() {
 
@@ -41,16 +43,29 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public List<Build> getAllBuilds() throws BusinessException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Binary> getAllBinaries() throws BusinessException {
+        return registry.getAllBinaries();
     }
 
     @Override
-    public String newBuild(Build build) throws BusinessException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String newBuild(Project project) throws BusinessException {
+        try {
+            //
+            int result = build.build(project);
+            if(result != 0){
+                throw new BusinessException("Build Failed with code: "+ result);
+            }
+            
+            Binary binary = new MavenBinary(project);
+            
+            registry.registerBinary(binary);
+            
+            return build.binariesLocation(project);
+            
+        } catch (BuildException ex) {
+            Logger.getLogger(BuildServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Build Failed: "+ ex.getMessage(), ex);
+        }
     }
-
-    
-   
 
 }

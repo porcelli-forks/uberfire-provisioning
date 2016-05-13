@@ -95,34 +95,42 @@ public class SimpleSourceAndBuildAPITest {
         String location = source.getSource(repo);
         System.out.println("Location : " + location);
         sourceRegistry.registerRepositorySources(location, repo);
-        
+
         List<Repository> allRepositories = sourceRegistry.getAllRepositories();
         Assert.assertEquals(1, allRepositories.size());
-        
-        Project mavenProject = new MavenProject("users-new");
-        mavenProject.setRootPath(location);
-        mavenProject.setPath("users-new");
-        mavenProject.setExpectedBinary("users-new.war");
 
-        int result = build.build(mavenProject);
+        Project project = new MavenProject("users-new");
+        project.setRootPath(location);
+        project.setPath("users-new");
+        project.setExpectedBinary("users-new.war");
+
+        sourceRegistry.registerProject(repo, project);
+
+        List<Project> projectsAll = sourceRegistry.getAllProjects(repo);
+        Assert.assertEquals(1, projectsAll.size());
+        
+        List<Project> projectsByName = sourceRegistry.getProjectByName("users-new");
+        Assert.assertEquals(1, projectsByName.size());
+        
+        int result = build.build(project);
 
         Assert.assertTrue(result == 0);
         System.out.println("Result: " + result);
 
-        boolean binariesReady = build.binariesReady(mavenProject);
+        boolean binariesReady = build.binariesReady(project);
         Assert.assertTrue(binariesReady);
 
         System.out.println("binariesReady " + binariesReady);
 
-        String finalLocation = build.binariesLocation(mavenProject);
+        String finalLocation = build.binariesLocation(project);
         System.out.println("finalLocation " + finalLocation);
 
-        MavenBinary mavenBinary = new MavenBinary(mavenProject);
+        MavenBinary mavenBinary = new MavenBinary(project);
         buildRegistry.registerBinary(mavenBinary);
-        
+
         List<Binary> allBinaries = buildRegistry.getAllBinaries();
         Assert.assertEquals(1, allBinaries.size());
-        
+
     }
 
 }

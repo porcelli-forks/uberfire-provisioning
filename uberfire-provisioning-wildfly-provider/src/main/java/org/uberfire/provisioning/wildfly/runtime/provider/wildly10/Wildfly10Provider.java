@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uberfire.provisioning.wildfly.runtime.provider;
+package org.uberfire.provisioning.wildfly.runtime.provider.wildly10;
 
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 import javax.xml.bind.annotation.XmlTransient;
@@ -14,29 +15,29 @@ import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
-import org.uberfire.provisioning.wildfly.util.WildflyRemoteClient;
+import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
 
 /**
  *
  * @author salaboy
  */
-public class WildflyProvider extends BaseProvider {
+public class Wildfly10Provider extends BaseProvider {
 
     @XmlTransient
     @JsonIgnore
-    private WildflyRemoteClient wildfly;
+    private Wildfly10RemoteClient wildfly;
 
-    public WildflyProvider(ProviderConfiguration config) {
-        this(config, new WildflyProviderType());
+    public Wildfly10Provider(ProviderConfiguration config) {
+        this(config, new Wildfly10ProviderType());
 
     }
 
-    public WildflyProvider(ProviderConfiguration config, ProviderType type) {
+    public Wildfly10Provider(ProviderConfiguration config, ProviderType type) {
         super(config.getName(), type);
         /*
          I should check here for the required configuration parameters for the provider
          */
-        wildfly = new WildflyRemoteClient();
+        wildfly = new Wildfly10RemoteClient();
         this.config = config;
     }
 
@@ -67,7 +68,7 @@ public class WildflyProvider extends BaseProvider {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public WildflyRemoteClient getWildfly() {
+    public Wildfly10RemoteClient getWildfly() {
         return wildfly;
     }
 

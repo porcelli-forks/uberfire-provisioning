@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
+import org.uberfire.provisioning.build.spi.Project;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 import org.uberfire.provisioning.services.endpoint.api.SourceService;
@@ -61,6 +62,18 @@ public class SourceServiceImpl implements SourceService {
             throw new BusinessException(ex.getMessage(), ex);
         }
 
+    }
+
+    @Override
+    public void registerProject(String repositoryId, Project project) throws BusinessException {
+        Repository repo = registry.getRepositoryById(repositoryId);
+        registry.registerProject(repo, project);
+    }
+
+    @Override
+    public List<Project> getAllProjects(String repositoryId) throws BusinessException {
+        Repository repo = registry.getRepositoryById(repositoryId);
+        return registry.getAllProjects(repo);
     }
 
 }

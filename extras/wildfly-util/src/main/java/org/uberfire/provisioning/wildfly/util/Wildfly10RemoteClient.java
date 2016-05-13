@@ -32,7 +32,7 @@ import org.jboss.dmr.ModelNode;
  * @author salaboy Based on: https://github.com/heiko-braun/http-upload
  */
 @JsonIgnoreType
-public class WildflyRemoteClient {
+public class Wildfly10RemoteClient {
     /*
      * return the HTTP status from deploying the app or -1 if there is an exception which is logged.
     */
@@ -68,7 +68,7 @@ public class WildflyRemoteClient {
         try {
             operation.writeBase64(bout);
         } catch (IOException ex) {
-            Logger.getLogger(WildflyRemoteClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Wildfly10RemoteClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // the multipart
@@ -89,7 +89,7 @@ public class WildflyRemoteClient {
             return response.getStatusLine().getStatusCode();
         } catch (IOException ex) {
             ex.printStackTrace();
-            Logger.getLogger(WildflyRemoteClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Wildfly10RemoteClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }

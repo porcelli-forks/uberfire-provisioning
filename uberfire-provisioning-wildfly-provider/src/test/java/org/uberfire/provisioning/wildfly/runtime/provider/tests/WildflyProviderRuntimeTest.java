@@ -29,11 +29,11 @@ import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
 import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
 import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfiguration;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderType;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntime;
-import org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
 
 /**
  *
@@ -46,8 +46,8 @@ public class WildflyProviderRuntimeTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(WildflyProviderType.class)
-                .addClass(WildflyProvider.class)
+                .addClass(Wildfly10ProviderType.class)
+                .addClass(Wildfly10Provider.class)
                 .addClass(WildflyRuntime.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));
@@ -99,7 +99,7 @@ public class WildflyProviderRuntimeTest {
         config.setUser("someuser");
         config.setPassword("somepassword");
 
-        WildflyProvider wildflyProvider = new WildflyProvider(config, wildlyProviderType);
+        Wildfly10Provider wildflyProvider = new Wildfly10Provider(config, wildlyProviderType);
 
         Assert.assertNotNull(wildflyProvider.getWildfly());
         WildflyRuntimeConfiguration runtimeConfig = new WildflyRuntimeConfiguration();
@@ -127,7 +127,7 @@ public class WildflyProviderRuntimeTest {
         config.setUser("someuser");
         config.setPassword("somepassword");
 
-        WildflyProvider wildflyProvider = new WildflyProvider(config, wildflyProviderType);
+        Wildfly10Provider wildflyProvider = new Wildfly10Provider(config, wildflyProviderType);
 
         Assert.assertNotNull(wildflyProvider.getWildfly());
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();

@@ -13,7 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.uberfire.provisioning.build.spi.Build;
+import org.uberfire.provisioning.build.spi.Binary;
+import org.uberfire.provisioning.build.spi.Project;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
 /**
@@ -26,12 +27,11 @@ public interface BuildService {
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
     @Path("")
-    List<Build> getAllBuilds() throws BusinessException;
+    List<Binary> getAllBinaries() throws BusinessException;
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Path("")
-    String newBuild(@NotNull Build build) throws BusinessException;
-
+    String newBuild(@NotNull Project project) throws BusinessException;
 
 }

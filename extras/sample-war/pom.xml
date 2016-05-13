@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    	<groupId>org.uberfire.provisioning</groupId>
-	<artifactId>extras</artifactId>
-    	<version>1.0-SNAPSHOT</version>
+        <groupId>org.uberfire.provisioning</groupId>
+        <artifactId>extras</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>sample-war</artifactId>
     <packaging>war</packaging>
@@ -27,7 +27,7 @@
 
     <build>
         <plugins>
-            <plugin>
+            <!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -38,7 +38,7 @@
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -47,7 +47,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.6</version>
@@ -71,6 +71,84 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>-->
+            
+            <!--            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>1.1.0.Alpha8</version>
+            </plugin>-->
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>1.0.0.Beta8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.15.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>myapp</name>
+                            <build>
+                                <from>jboss/base-jdk:8</from>
+                                <maintainer>salaboy@gmail.com</maintainer>
+                                <ports>
+                                    <port>8082</port>
+                                </ports>
+                                <volumes>
+                                    <volume>/deploy/</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/opt/wildfly-swarm/sample-war.jar</arg>
+                                    </exec>
+                                </entryPoint>
+                                <assembly>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <useProjectAttachments>true</useProjectAttachments>
+                                                <includes>
+                                                    <include>org.uberfire.provisioning:sample-war:jar:swarm</include>
+                                                </includes>
+                                                <outputFileNameMapping>sample-war.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/docker</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>settings.xml</include>
+                                                </includes>
+                                                <fileMode>755</fileMode>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                    <user>jboss:jboss:jboss</user>
+                                    <basedir>/opt/wildfly-swarm</basedir>  
+                                </assembly>
+                            </build>
+                            <run>
+                                <ports>
+                                    <port>8082</port>
+                                </ports>
+                            </run>
+                        </image>
+                    </images>
+                    
+                </configuration>
             </plugin>
         </plugins>
     </build>
