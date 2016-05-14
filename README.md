@@ -27,6 +27,7 @@ In order to provision runtimes there are 3 main concepts to understand:
 The project is divided into an SPI module whcih contains these concepts plus a set of providers that automatically register to the service via classpath resolution.
 
 The current providers implementations are:
+- Local / Fat Jar (new JVM) (uberfire-provisioning-fatjar-provider)
 - Docker (uberfire-provisioning-docker-provider)
 - Kubernetes (uberfire-provisioning-kubernetes-provider)
 - Wildfly (uberfire-provisioning-wildfly-provider)
@@ -120,6 +121,7 @@ https://github.com/Salaboy/uberfire-provisioning/blob/master/uberfire-provisioni
 
 You need to download/clone this file and then import it to Postman (https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
 
+# Example From Sources to Provisioning
 
 
 
