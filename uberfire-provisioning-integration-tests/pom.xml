@@ -45,6 +45,11 @@
         <!-- Providers --> 
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>
+            <artifactId>uberfire-provisioning-local-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.uberfire.provisioning</groupId>
             <artifactId>uberfire-provisioning-docker-provider</artifactId>
             <scope>test</scope>
         </dependency>

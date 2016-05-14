@@ -22,6 +22,7 @@
         <module>extras</module>
         <module>uberfire-provisioning-source-spi</module>
         <module>uberfire-provisioning-source-github</module>
+        <module>ubefire-provisioning-local-provider</module>
     </modules>
     
     <properties>
@@ -75,6 +76,11 @@
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
                 <artifactId>uberfire-provisioning-wildfly-provider</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-local-provider</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

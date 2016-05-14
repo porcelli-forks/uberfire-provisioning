@@ -35,6 +35,12 @@ import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderC
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderType;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfBuilder;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration;
+import org.uberfire.provisioning.local.runtime.provider.LocalProvider;
+import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfBuilder;
+import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration;
+import org.uberfire.provisioning.local.runtime.provider.LocalProviderType;
+import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfBuilder;
+import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
 import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
@@ -60,6 +66,7 @@ public class SimpleRuntimeAPITest {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClass(ProviderType.class)
+                .addClass(LocalProviderType.class)
                 .addClass(Wildfly10ProviderType.class)
                 .addClass(DockerProviderType.class)
                 .addClass(KubernetesProviderType.class)
@@ -100,7 +107,13 @@ public class SimpleRuntimeAPITest {
 
         List<ProviderType> allProviderTypes = registry.getAllProviderTypes();
 
-        Assert.assertEquals(3, allProviderTypes.size());
+        Assert.assertEquals(4, allProviderTypes.size());
+        
+        ProviderType localProviderType = registry.getProviderTypeByName("local");
+        LocalProviderConfiguration localProviderConfig = LocalProviderConfBuilder.newConfig("local").get();
+        
+        LocalProvider localProvider = new LocalProvider(localProviderConfig, localProviderType);
+        registry.registerProvider(localProvider);
 
         ProviderType wildflyProviderType = registry.getProviderTypeByName("wildfly");
 
@@ -132,8 +145,27 @@ public class SimpleRuntimeAPITest {
 
         List<Provider> allProviders = registry.getAllProviders();
         
-        Assert.assertEquals(3, allProviders.size());
+        Assert.assertEquals(4, allProviders.size());
 
+        LocalRuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
+                .setJar("/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar")
+                .get();
+
+        Runtime newLocalRuntime;
+        try {
+            newLocalRuntime = localProvider.create(localRuntimeConfig);
+            Assert.assertNotNull(newLocalRuntime);
+            Assert.assertNotNull(newLocalRuntime.getId());
+            registry.registerRuntime(newLocalRuntime);
+            
+            newLocalRuntime.start();
+        } catch (Exception ex) {
+            Logger.getLogger(SimpleRuntimeAPITest.class.getName()).log(Level.SEVERE, null, ex);
+            Assert.assertTrue(ex instanceof ProvisioningException);
+            // If we get to this point something failed at creating a runtime, so it might be not configured.
+        }
+        
+        
         
         WildflyRuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
                 .setWarPath("/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war")
