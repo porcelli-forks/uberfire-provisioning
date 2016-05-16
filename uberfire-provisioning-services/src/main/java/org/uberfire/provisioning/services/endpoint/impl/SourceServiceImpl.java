@@ -56,7 +56,7 @@ public class SourceServiceImpl implements SourceService {
         try {
             String sourceDir = source.getSource(repo);
             registry.registerRepositorySources(sourceDir, repo);
-            return sourceDir;
+            return repo.getId();
         } catch (SourcingException ex) {
             Logger.getLogger(SourceServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException(ex.getMessage(), ex);

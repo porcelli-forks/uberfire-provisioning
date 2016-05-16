@@ -105,4 +105,24 @@ public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningServic
         registry.unregisterRuntime(id);
     }
 
+    @Override
+    public void startRuntime(String runtimeId) throws BusinessException {
+        Runtime runtimeById = registry.getRuntimeById(runtimeId);
+        runtimeById.start();
+    }
+
+    @Override
+    public void stopRuntime(String runtimeId) throws BusinessException {
+        Runtime runtimeById = registry.getRuntimeById(runtimeId);
+        runtimeById.stop();
+    }
+
+    @Override
+    public void restartRuntime(String runtimeId) throws BusinessException {
+        Runtime runtimeById = registry.getRuntimeById(runtimeId);
+        runtimeById.restart();
+    }
+    
+    
+
 }

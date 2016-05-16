@@ -37,6 +37,7 @@ public interface SourceService {
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Produces(value = MediaType.APPLICATION_JSON)
     @Path("")
     String registerRepository(@NotNull Repository repo) throws BusinessException;
     

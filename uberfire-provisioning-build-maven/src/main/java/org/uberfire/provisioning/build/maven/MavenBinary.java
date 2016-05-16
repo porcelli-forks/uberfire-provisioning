@@ -21,7 +21,7 @@ public class MavenBinary implements Binary {
 
     public MavenBinary(Project sourceProject) {
         this.sourceProject = sourceProject;
-        this.location = sourceProject.getRootPath() + "/" + sourceProject.getPath() + "/" + sourceProject.getExpectedBinary();
+        this.location = sourceProject.getRootPath() + "/" + sourceProject.getPath() + "/target/" + sourceProject.getExpectedBinary();
         this.name = sourceProject.getExpectedBinary();
         this.type = "Maven";
     }

@@ -34,8 +34,7 @@ public class LocalProvider extends BaseProvider {
 
     @Override
     public Runtime create(RuntimeConfiguration runtimeConfig) throws ProvisioningException {
-
-        String shortId = UUID.randomUUID().toString();
+        String shortId = UUID.randomUUID().toString().substring(0,12);
         return new LocalRuntime(shortId, runtimeConfig, this);
 
     }

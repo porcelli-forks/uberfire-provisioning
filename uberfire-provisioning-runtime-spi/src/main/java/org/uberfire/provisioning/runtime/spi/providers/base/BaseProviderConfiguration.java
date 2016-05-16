@@ -21,6 +21,15 @@ public class BaseProviderConfiguration implements ProviderConfiguration {
     private String name;
     private String provider;
 
+    /*
+     * This constructor is here to be able to use this class setting the properties 
+     * directly, mostly used by the remote endpoints for flexiblity.
+    */
+    public BaseProviderConfiguration() {
+    }
+    
+    
+
     public BaseProviderConfiguration(String name, String provider) {
         this.name = name;
         this.provider = provider;

@@ -63,16 +63,16 @@ public interface RuntimeProvisioningService {
     @Path("runtimes/{id}")
     public void unregisterRuntime(@PathParam(value = "id") String id) throws BusinessException;
 
-//    @POST
-//    @Path("instances/{id}/start")
-//    public void startContainerInstance(@PathParam(value = "id") String id) throws BusinessException;
-//
-//    @POST
-//    @Path("instances/{id}/stop")
-//    public void stopContainerInstance(@PathParam(value = "id") String id) throws BusinessException;
-//
-//    @POST
-//    @Path("instances/{id}/restart")
-//    public void restartContainerInstance(@PathParam(value = "id") String id) throws BusinessException;
+    @POST
+    @Path("runtimes/{id}/start")
+    public void startRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
+
+    @POST
+    @Path("runtimes/{id}/stop")
+    public void stopRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
+
+    @POST
+    @Path("runtimes/{id}/restart")
+    public void restartRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
 
 }

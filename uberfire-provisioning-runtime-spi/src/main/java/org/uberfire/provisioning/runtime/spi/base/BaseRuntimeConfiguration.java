@@ -17,7 +17,7 @@ import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
 public class BaseRuntimeConfiguration implements RuntimeConfiguration {
 
     @JsonIgnore
-    private Map<String, String> properties = new HashMap<String, String>();
+    private Map<String, String> properties = new HashMap<>();
 
     private String providerName;
 

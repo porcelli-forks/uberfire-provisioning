@@ -13,6 +13,14 @@ import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfigur
  */
 public class DockerProviderConfiguration extends BaseProviderConfiguration {
 
+    /*
+     * This constructor shouldn't be used, The use of DockerProviderConfiguration(String name)
+     * is strictly recommended. This constructor is here just for the serializers to work correctly
+    */
+    public DockerProviderConfiguration() {
+        super("", new DockerProviderType().getProvider().getName());
+    }
+
     public DockerProviderConfiguration(String name) {
         super(name, new DockerProviderType().getProvider().getName());
     }

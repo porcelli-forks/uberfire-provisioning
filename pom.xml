@@ -22,7 +22,7 @@
         <module>extras</module>
         <module>uberfire-provisioning-source-spi</module>
         <module>uberfire-provisioning-source-github</module>
-        <module>ubefire-provisioning-local-provider</module>
+        <module>uberfire-provisioning-local-provider</module>
     </modules>
     
     <properties>
