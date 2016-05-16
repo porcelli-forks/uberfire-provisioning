@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uberfire.provisioning.build.maven;
+package org.uberfire.provisioning.docker.runtime.provider;
 
 import org.uberfire.provisioning.build.spi.Binary;
 import org.uberfire.provisioning.build.spi.Project;
@@ -12,18 +12,18 @@ import org.uberfire.provisioning.build.spi.Project;
  *
  * @author salaboy
  */
-public class MavenBinary implements Binary {
+public class DockerBinary implements Binary {
 
     private String location;
     private String type;
     private String name;
     private Project sourceProject;
 
-    public MavenBinary(Project sourceProject) {
+    public DockerBinary(Project sourceProject) {
         this.sourceProject = sourceProject;
-        this.location = sourceProject.getRootPath() + "/" + sourceProject.getPath() + "/" + sourceProject.getExpectedBinary();
-        this.name = sourceProject.getExpectedBinary();
-        this.type = "Maven";
+        this.location = sourceProject.getName();
+        this.name = sourceProject.getName();
+        this.type = "Docker";
     }
 
     @Override

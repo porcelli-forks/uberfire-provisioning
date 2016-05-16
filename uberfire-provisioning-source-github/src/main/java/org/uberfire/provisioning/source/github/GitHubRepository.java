@@ -18,6 +18,7 @@ public class GitHubRepository implements Repository {
     private String URI;
     private String name;
     private String type;
+    private String branch;
     private boolean bare = false;
 
     public GitHubRepository() {
@@ -73,6 +74,14 @@ public class GitHubRepository implements Repository {
     @Override
     public void setBare(boolean bare) {
         this.bare = bare;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
 }

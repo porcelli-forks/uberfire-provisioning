@@ -29,6 +29,7 @@ public class GitSource implements Source {
             Git.cloneRepository()
                     .setURI(repository.getURI())
                     .setDirectory(createdTempDir)
+                    .setBranch((repository.getBranch() != null) ? repository.getBranch() : "master")
                     .call();
 
             return createdTempDir.getCanonicalPath();

@@ -18,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.build.maven.MavenBinary;
@@ -27,6 +28,7 @@ import org.uberfire.provisioning.build.spi.Binary;
 import org.uberfire.provisioning.build.spi.Build;
 import org.uberfire.provisioning.build.spi.Project;
 import org.uberfire.provisioning.build.spi.exceptions.BuildException;
+import org.uberfire.provisioning.docker.runtime.provider.DockerBinary;
 import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
@@ -88,10 +90,12 @@ public class SimpleSourceAndBuildAPITest {
     }
 
     @Test
+    @Ignore
     public void helloSourceAndBuildAPIs() throws SourcingException, BuildException {
 
         Repository repo = new GitHubRepository("livespark playground");
-        repo.setURI("https://github.com/pefernan/livespark-playground.git");
+        repo.setURI("https://github.com/salaboy/livespark-playground.git");
+        repo.setBranch("provisioning-enablement");
         String location = source.getSource(repo);
         System.out.println("Location : " + location);
         sourceRegistry.registerRepositorySources(location, repo);
@@ -126,6 +130,59 @@ public class SimpleSourceAndBuildAPITest {
         System.out.println("finalLocation " + finalLocation);
 
         MavenBinary mavenBinary = new MavenBinary(project);
+        buildRegistry.registerBinary(mavenBinary);
+
+        List<Binary> allBinaries = buildRegistry.getAllBinaries();
+        Assert.assertEquals(1, allBinaries.size());
+
+    }
+    
+    
+    @Test
+    @Ignore
+    /*
+     * This test requires to have a Docker client running in your environment to 
+     * create the docker image. 
+    */
+    public void helloSourceAndBuildDockerImage() throws SourcingException, BuildException {
+
+        Repository repo = new GitHubRepository("livespark playground");
+        repo.setURI("https://github.com/salaboy/livespark-playground.git");
+        repo.setBranch("provisioning-enablement");
+        String location = source.getSource(repo);
+        System.out.println("Location : " + location);
+        sourceRegistry.registerRepositorySources(location, repo);
+
+        List<Repository> allRepositories = sourceRegistry.getAllRepositories();
+        Assert.assertEquals(1, allRepositories.size());
+
+        Project project = new MavenProject("users-new");
+        project.setRootPath(location);
+        project.setPath("users-new");
+        project.setExpectedBinary("users-new.war");
+
+        sourceRegistry.registerProject(repo, project);
+
+        List<Project> projectsAll = sourceRegistry.getAllProjects(repo);
+        Assert.assertEquals(1, projectsAll.size());
+        
+        List<Project> projectsByName = sourceRegistry.getProjectByName("users-new");
+        Assert.assertEquals(1, projectsByName.size());
+        
+        int result = build.createDockerImage(project);
+
+        Assert.assertTrue(result == 0);
+        System.out.println("Result: " + result);
+
+        boolean binariesReady = build.binariesReady(project);
+        Assert.assertTrue(binariesReady);
+
+        System.out.println("binariesReady " + binariesReady);
+
+        String finalLocation = build.binariesLocation(project);
+        System.out.println("finalLocation " + finalLocation);
+
+        DockerBinary mavenBinary = new DockerBinary(project);
         buildRegistry.registerBinary(mavenBinary);
 
         List<Binary> allBinaries = buildRegistry.getAllBinaries();

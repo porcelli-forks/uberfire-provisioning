@@ -21,5 +21,7 @@ public interface Build {
 
     public boolean binariesReady(Project project) throws BuildException;
 
-    public String binariesLocation(Project project);
+    public String binariesLocation(Project project) throws BuildException;
+    
+    public int createDockerImage(Project project) throws BuildException;
 }

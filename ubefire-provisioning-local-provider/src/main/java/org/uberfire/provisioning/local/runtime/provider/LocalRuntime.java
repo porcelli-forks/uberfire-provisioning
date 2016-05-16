@@ -22,6 +22,8 @@ import org.uberfire.provisioning.runtime.spi.providers.Provider;
  */
 public class LocalRuntime extends BaseRuntime {
 
+    private Process p;
+    
     public LocalRuntime(String id, RuntimeConfiguration config, Provider provider) {
         super(id, config, provider);
         if (!(provider instanceof LocalProvider)) {
@@ -33,7 +35,7 @@ public class LocalRuntime extends BaseRuntime {
     @Override
     public void start() {
         try {
-            final Process p = Runtime.getRuntime().exec("java -jar " + config.getProperties().get("jar"));
+            p = Runtime.getRuntime().exec("java -jar " + config.getProperties().get("jar"));
             new Thread(new Runnable() {
                 public void run() {
                     BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -48,9 +50,8 @@ public class LocalRuntime extends BaseRuntime {
                     }
                 }
             }).start();
-
-            p.waitFor();
-        } catch (IOException | InterruptedException ex) {
+            
+        } catch (IOException ex) {
             Logger.getLogger(LocalRuntime.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -58,7 +59,7 @@ public class LocalRuntime extends BaseRuntime {
 
     @Override
     public void stop() {
-
+        Process destroyForcibly = p.destroyForcibly();
     }
 
     @Override

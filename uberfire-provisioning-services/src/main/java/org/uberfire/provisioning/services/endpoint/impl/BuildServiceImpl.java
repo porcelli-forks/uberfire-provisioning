@@ -13,6 +13,7 @@ import org.uberfire.provisioning.build.spi.Binary;
 import org.uberfire.provisioning.build.spi.Build;
 import org.uberfire.provisioning.build.spi.Project;
 import org.uberfire.provisioning.build.spi.exceptions.BuildException;
+import org.uberfire.provisioning.docker.runtime.provider.DockerBinary;
 import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.services.endpoint.api.BuildService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
@@ -67,5 +68,29 @@ public class BuildServiceImpl implements BuildService {
             throw new BusinessException("Build Failed: "+ ex.getMessage(), ex);
         }
     }
+
+    @Override
+    public String createDockerImage(Project project) throws BusinessException {
+        try {
+            //
+            int result = build.createDockerImage(project);
+            if(result != 0){
+                throw new BusinessException("Building Docker image failed with code: "+ result);
+            }
+            
+            Binary binary = new DockerBinary(project);
+            
+            registry.registerBinary(binary);
+            
+            return build.binariesLocation(project);
+            
+        } catch (BuildException ex) {
+            Logger.getLogger(BuildServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Build Failed: "+ ex.getMessage(), ex);
+        }
+    }
+    
+    
+    
 
 }

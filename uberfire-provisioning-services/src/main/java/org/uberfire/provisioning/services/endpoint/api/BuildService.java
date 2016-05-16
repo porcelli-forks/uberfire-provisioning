@@ -33,5 +33,10 @@ public interface BuildService {
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Path("")
     String newBuild(@NotNull Project project) throws BusinessException;
+    
+    @POST
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    @Path("/docker")
+    String createDockerImage(Project project) throws BusinessException;
 
 }

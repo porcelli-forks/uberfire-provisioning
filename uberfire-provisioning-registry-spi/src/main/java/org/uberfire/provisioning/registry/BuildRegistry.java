@@ -13,7 +13,9 @@ import org.uberfire.provisioning.build.spi.Binary;
  * @author salaboy
  */
 public interface BuildRegistry {
+
     public void registerBinary(Binary binary);
-    
+
     public List<Binary> getAllBinaries();
+
 }

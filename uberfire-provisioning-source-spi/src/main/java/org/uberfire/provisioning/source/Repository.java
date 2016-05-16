@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *
  * @author salaboy
  */
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Repository {
 
     public String getId();
-    
+
     public String getURI();
 
     public String getName();
 
     public String getType();
 
-    public boolean isBare();    
+    public String getBranch();
+
+    public boolean isBare();
 
     public void setURI(String URI);
 
@@ -31,5 +33,7 @@ public interface Repository {
     public void setType(String type);
 
     public void setBare(boolean bare);
+
+    public void setBranch(String branch);
 
 }

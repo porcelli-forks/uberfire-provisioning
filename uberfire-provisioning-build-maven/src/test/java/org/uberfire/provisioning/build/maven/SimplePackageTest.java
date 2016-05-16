@@ -44,6 +44,9 @@ public class SimplePackageTest {
 
     @Test
     @Ignore
+    /*
+     * this test is ignored because it requires you to get the M2_HOME set up in your environment
+    */
     public void hello() {
         MavenBuild maven = new MavenBuild();
         Project mavenProject = new MavenProject();
@@ -56,5 +59,25 @@ public class SimplePackageTest {
         }
         
         System.out.println("Build: "+ build);
+    }
+    
+    @Test
+    @Ignore
+    /*
+     * this test is ignored because it requires you to get the M2_HOME set up 
+     * and the docker client running in your env.
+    */
+    public void helloWithDocker() {
+        MavenBuild maven = new MavenBuild();
+        Project mavenProject = new MavenProject();
+        
+        int dockerImageBuild = 0;
+        try {
+            dockerImageBuild = maven.createDockerImage(mavenProject);
+        } catch (BuildException ex) {
+            Logger.getLogger(SimplePackageTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println("Docker: "+ dockerImageBuild);
     }
 }
