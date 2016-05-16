@@ -352,16 +352,54 @@ This should endup in having the application deployed in: http://localhost:8080/u
 {
     "org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration":{
         "providerName":"local fatjar runner",
-        "jar":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new-swarm.jar"
+        "jar":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364/users-new/target/users-new-swarm.jar"
         
     }
 }
 ```
-This will spawn a new JVM and start the jar file provided. Notice that the fatjar created by the wildfly swarm plugin is located in the same location as the webapp + -swarm.jar. Look at here for deatils of the maven plugin configuration for this project to work: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L385
+
+This will return the runtime ID: for example: 4cae3713-86d
+Now we need to start this runtime (as if we were starting a docker image or a webapp): 
+
+POST http://localhost:8082/api/runtimes/4cae3713-86d/start
+
+This will spawn a new JVM and start the jar file provided. The lifespark app will be available here: http://localhost:8080/ Notice that the fatjar created by the wildfly swarm plugin is located in the same location as the webapp + -swarm.jar. Look at here for deatils of the maven plugin configuration for this project to work: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L385
+
+Notice that we might have some port clashing if we have a Wildfly and Swarm trying to use the 8080 port. For this reason using Docker is recommended :)
 
 - **Docker**: 
+Before creating a new docker runtime we need to create the docker image based on the Maven Project that we built before. For doing that we do: 
+POST http://localhost:8082/api/builds/docker
+```
+ {
+    "org.uberfire.provisioning.build.maven.MavenProject": {
+      "id": "91aec094-c5e",
+      "name": "users-new",
+      "type": "Maven",
+      "rootPath": "/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364",
+      "path": "users-new",
+      "expectedBinary": "users-new"
+    }
+  }
+```
+This will create a new docker image called: salaboy/users-new . Look at the example to see the docker maven plugin configuration: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L397
+
+
 POST http://localhost:8082/api/runtimes/ (notice "docker local" is our provider name)
+```
+{
+    "org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration":{
+        "providerName":"docker local",
+        "image":"salaboy/users-new"
+        
+    }
+}
+```
+This will create a new docker image instance. With an ID: 4a3f42a1b6c8
+You can start the instance by doing
+POST http://localhost:8082/api/runtimes/4a3f42a1b6c8/start
+
+The app should be now available here: http://192.168.99.100:32768/
 
 
-This will create a new docker image instance. Look at the example to see the docker maven plugin configuration: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L397
 
