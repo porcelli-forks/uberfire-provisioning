@@ -123,6 +123,118 @@ You need to download/clone this file and then import it to Postman (https://chro
 
 # Example From Sources to Provisioning
 
+The following example show how to use the Uberfire Provision Services provision a new Runtime using as a starting point a Git repository. Different (Runtime) Providers can be configured, but for this example I will be showing Local, Wildfly and Docker. It is trivial to extend this example to provision to Openshift 3 Origin (Kubernetes).
+
+First of all, we need to configure our Providers, this is were we want to provision new Runtimes. As mentioned before we will have 3 providers Local, Wildfly 10, and Docker. In order to do that we can register these 3 providers by executing the following requests to the Provision Services:
+
+0) Check the registered Provider Types 
+```
+GET http://localhost:8082/api/providertypes
+```
+This should return:
+```
+[
+  {
+    "provider": "org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider",
+    "version": "1",
+    "providerTypeName": "kubernetes"
+  },
+  {
+    "provider": "org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider",
+    "version": "10.0.0",
+    "providerTypeName": "wildfly"
+  },
+  {
+    "provider": "org.uberfire.provisioning.local.runtime.provider.LocalProvider",
+    "version": "1.0",
+    "providerTypeName": "local"
+  },
+  {
+    "provider": "org.uberfire.provisioning.docker.runtime.provider.DockerProvider",
+    "version": "1.9.1",
+    "providerTypeName": "docker"
+  }
+]
+```
+
+1) Register Providers
+- Local (this might be automatically registered in the future)
+POST http://localhost:8082/api/providers/
+```
+{
+    "org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration": {
+        "name":"local fatjar runner"
+    }
+}
+```
+- Wildfly 10 (you need to have a Wildfly 10 running on localhost 9990 - mgmt port)
+POST http://localhost:8082/api/providers/
+```
+{
+    "org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfiguration": {
+        "name":"wildfly at 9990", 
+        "host": "localhost",
+        "managementPort": "9990",
+        "user": "salaboy",
+        "password": "salaboy123$"
+    }
+}
+```
+
+- Docker
+POST http://localhost:8082/api/providers/
+```
+{
+    "org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration": {
+        "name":"docker local"
+    }
+}
+```
+
+2) Check all the registered providers:
+GET http://localhost:8082/api/providers/
+
+```
+[
+  {
+    "org.uberfire.provisioning.local.runtime.provider.LocalProvider": {
+      "name": "local fatjar runner",
+      "config": {
+        "org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration": {
+          "name": "local fatjar runner",
+          "provider": "org.uberfire.provisioning.local.runtime.provider.LocalProvider"
+        }
+      },
+      "providerType": {
+        "version": "1.0",
+        "provider": "org.uberfire.provisioning.local.runtime.provider.LocalProvider",
+        "providerTypeName": "local"
+      }
+    }
+  },
+  {
+    "org.uberfire.provisioning.docker.runtime.provider.DockerProvider": {
+      "name": "docker local",
+      "config": {
+        "org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration": {
+          "name": "docker local",
+          "provider": "org.uberfire.provisioning.docker.runtime.provider.DockerProvider"
+        }
+      },
+      "providerType": {
+        "version": "1.9.1",
+        "provider": "org.uberfire.provisioning.docker.runtime.provider.DockerProvider",
+        "providerTypeName": "docker"
+      },
+      "docker": {
+        "host": "192.168.99.100"
+      }
+    }
+  }
+]
+```
+
+3)
 
 
 
