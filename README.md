@@ -127,7 +127,7 @@ The following example show how to use the Uberfire Provision Services provision 
 
 First of all, we need to configure our Providers, this is were we want to provision new Runtimes. As mentioned before we will have 3 providers Local, Wildfly 10, and Docker. In order to do that we can register these 3 providers by executing the following requests to the Provision Services:
 
-0) Check the registered Provider Types 
+0) **Check the registered Provider Types** 
 ```
 GET http://localhost:8082/api/providertypes
 ```
@@ -157,8 +157,8 @@ This should return:
 ]
 ```
 
-1) Register Providers
-- Local (this might be automatically registered in the future)
+1) **Register Providers**
+- **Local**: (this might be automatically registered in the future)
 POST http://localhost:8082/api/providers/
 ```
 {
@@ -167,7 +167,7 @@ POST http://localhost:8082/api/providers/
     }
 }
 ```
-- Wildfly 10 (you need to have a Wildfly 10 running on localhost 9990 - mgmt port)
+- **Wildfly 10**: (you need to have a Wildfly 10 running on localhost 9990 - mgmt port)
 POST http://localhost:8082/api/providers/
 ```
 {
@@ -181,7 +181,7 @@ POST http://localhost:8082/api/providers/
 }
 ```
 
-- Docker (this might be autoregistered based on the env variables in the future)
+- **Docker**: (this might be autoregistered based on the env variables in the future)
 POST http://localhost:8082/api/providers/
 ```
 {
@@ -191,7 +191,7 @@ POST http://localhost:8082/api/providers/
 }
 ```
 
-2) Check all the registered providers:
+2) **Check all the registered providers**:
 GET http://localhost:8082/api/providers/
 
 ```
@@ -254,7 +254,7 @@ GET http://localhost:8082/api/providers/
 ]
 ```
 
-3) Source & Build
+3) **Source & Build**: 
 Before being able to provision, we need to get the sources for our project and built it to generate their appropriate binaries. I will be using this repository: https://github.com/Salaboy/livespark-playground -> provisioning-enablement branch which contains a livespark app. 
 
 - First all of all we need to register the repository:
@@ -308,6 +308,60 @@ POST http://localhost:8082/api/builds/
 ```
 This will trigger the maven build of the specified project leaving the binaries in the /target/ directory.
 
-4) Provisioning
-Now that we have our binaries we can provision new runtimes with them. 
+By doing a GET http://localhost:8082/api/builds/ we can get all the registered binaries:
+```
+[
+  {
+    "org.uberfire.provisioning.build.maven.MavenBinary": {
+      "location": "/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new.war",
+      "type": "Maven",
+      "name": "users-new.war",
+      "sourceProject": {
+        "org.uberfire.provisioning.build.maven.MavenProject": {
+          "id": "bc24c200-fb6",
+          "name": "users-new",
+          "type": "Maven",
+          "rootPath": "/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161",
+          "path": "users-new",
+          "expectedBinary": "users-new.war"
+        }
+      }
+    }
+  }
+]
+```
+
+
+4) **Provisioning** : 
+Now that we have our binaries we can provision new runtimes with them.
+
+- **Wildfly** POST http://localhost:8082/api/runtimes/ (notice "wildfly at 9990" is our provider name)
+```
+{
+    "org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration":{
+        "providerName":"wildfly at 9990",
+        "warPath":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new.war"
+        
+    }
+}
+```
+This should endup in having the application deployed in: http://localhost:8080/users-new/
+
+- **Local**: POST http://localhost:8082/api/runtimes/ (notice "local fatjar runner" is our provider name)
+```
+{
+    "org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration":{
+        "providerName":"local fatjar runner",
+        "jar":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new-swarm.jar"
+        
+    }
+}
+```
+This will spawn a new JVM and start the jar file provided. Notice that the fatjar created by the wildfly swarm plugin is located in the same location as the webapp + -swarm.jar. Look at here for deatils of the maven plugin configuration for this project to work: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L385
+
+- **Docker**: 
+POST http://localhost:8082/api/runtimes/ (notice "docker local" is our provider name)
+
+
+This will create a new docker image instance. Look at the example to see the docker maven plugin configuration: https://github.com/Salaboy/livespark-playground/blob/provisioning-enablement/users-new/pom.xml#L397
 
