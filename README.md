@@ -171,7 +171,7 @@ POST http://localhost:8082/api/providers/
 POST http://localhost:8082/api/providers/
 ```
 {
-    "org.uberfire.provisioning.wildfly.runtime.provider.WildflyProviderConfiguration": {
+    "org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration": {
         "name":"wildfly at 9990", 
         "host": "localhost",
         "managementPort": "9990",
@@ -181,7 +181,7 @@ POST http://localhost:8082/api/providers/
 }
 ```
 
-- Docker
+- Docker (this might be autoregistered based on the env variables in the future)
 POST http://localhost:8082/api/providers/
 ```
 {
@@ -230,11 +230,84 @@ GET http://localhost:8082/api/providers/
         "host": "192.168.99.100"
       }
     }
+  },
+  {
+    "org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider": {
+      "name": "wildfly at 9990",
+      "config": {
+        "org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration": {
+          "name": "wildfly at 9990",
+          "provider": "org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider",
+          "host": "localhost",
+          "password": "salaboy123$",
+          "user": "salaboy",
+          "managementPort": "9990"
+        }
+      },
+      "providerType": {
+        "version": "10.0.0",
+        "provider": "org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider",
+        "providerTypeName": "wildfly"
+      }
+    }
   }
 ]
 ```
 
-3)
+3) Source & Build
+Before being able to provision, we need to get the sources for our project and built it to generate their appropriate binaries. I will be using this repository: https://github.com/Salaboy/livespark-playground -> provisioning-enablement branch which contains a livespark app. 
+
+- First all of all we need to register the repository:
+POST http://localhost:8082/api/sources/
+```
+{
+    "org.uberfire.provisioning.source.github.GitHubRepository":{
+        "name":"livespark playground",
+        "uri":"https://github.com/Salaboy/livespark-playground.git",
+        "branch":"provisioning-enablement"
+    }
+}
+```
+Which returns the repository ID: for example: "db0e9df7-93f"
+
+- Then you can check where the project was sourced (cloned)
+GET http://localhost:8082/api/sources/db0e9df7-93f/location
+
+Returns the temporary directory where the project sources are:
+```
+/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161
+```
+
+- Next you need to register the project itself (this might be done automatically later). Now we have the odd case of a repo that is not a project itself (there is no parent pom) so it needs to be manually registered:
+POST http://localhost:8082/api/sources/db0e9df7-93f/
+```
+{
+    "org.uberfire.provisioning.build.maven.MavenProject":{
+        "name":"users-new",
+        "rootPath":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161",
+        "path": "users-new",
+        "expectedBinary": "users-new.war"
+    }
+}
+```
 
 
+- Now that we have the project we can build it
+POST http://localhost:8082/api/builds/
+```
+  {
+    "org.uberfire.provisioning.build.maven.MavenProject": {
+      "id": "bc24c200-fb6",
+      "name": "users-new",
+      "type": "Maven",
+      "rootPath": "/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161",
+      "path": "users-new",
+      "expectedBinary": "users-new.war"
+    }
+  }
+```
+This will trigger the maven build of the specified project leaving the binaries in the /target/ directory.
+
+4) Provisioning
+Now that we have our binaries we can provision new runtimes with them. 
 
