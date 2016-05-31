@@ -15,8 +15,89 @@ On top of these building blocks you will find the Service Layer that allows you 
 #Source / Workspace 
 This module allows us to get code from external repositories so we can build it locally. The main idea behind these services are to provide us with a flexible way to manage our source repositories and enable us to get that code locally so it can be built. 
 
+```
+/**
+ * The Source interface provides all the methods to obtain and manage the source code that 
+ *  will be used by the other services. 
+ */
+public interface Source {
+    /*
+    * Retrieve the source code from a Repository 
+    * returns the location (path) of the obtained code
+    * Throws a SourcingException if:
+    *   - the repository cannot  be located, 
+    *   - the code cannot be retrieved
+    *  @param repository a source code Repository to use as Source for our projects
+    *  @return a String with the path to the retrieved source code
+    *  @see Repository
+    */
+    public String getSource(Repository repository) throws SourcingException;
+    
+      /*
+    * Clean the source code obtained from a repository 
+    * @throws SourcingException if there is an issue trying to clean the repository local path
+    * @param repository a repository to clean
+    * @return true if the source was cleaned, false if it didn't exist
+    * @see Repository
+    */
+    public boolean cleanSource(String sourcePath) throws SourcingException;
+}
+```
+
 #Build
-This block will be in charge of taking a project path and building the necesarry binaries. The binaries are placed in the target directory and can be picked up by the provisioning layer.
+This block will be in charge of taking a project path and building the appropriate binaries for runtime. The generated binaries are can be located using this services.
+```
+/**
+ *
+ * @author salaboy
+ * The Build interface define a set of operations to generate
+ * Binaries based on Projects
+ * 
+ */
+public interface Build {
+
+    /*
+    *   Build the specified Project
+    *   @param project a Project to build
+    *   @throws BuildException if the build failed unexpectedly 
+    *   @return the build output 0 if there wasn't an error
+    *   @see Project
+    */
+    public int build(Project project) throws BuildException;
+
+    /*
+    * Check for the generated binaries for a given project
+    * @param project a Project to check if the binaries are ready
+    * @return true if the binaries are already generated
+    * @see Project
+    */
+    public boolean binariesReady(Project project) throws BuildException;
+    
+    /* 
+    * Returns the location of the binaries if exist
+    * @param project the project for the binaries that we are looking for 
+    * @return String with the location of the binaries
+    * @see Project
+    */
+    public String binariesLocation(Project project) throws BuildException;
+    
+    /* 
+    * Clean the generated binaries if exist
+    * @param project the project for the binaries that we are looking to clean 
+    * @return the clean output 0 if there wasn't an error
+    * @see Project
+    */
+    public int cleanBinaries(Project project) throws BuildException;
+    
+    /*
+    * Create a Docker Image for the given project
+    * @return the output of the execution, if 0 the docker image was created
+    * @see Project
+    */
+    public int createDockerImage(Project project) throws BuildException;
+}
+```
+
 
 #Runtime
 In order to provision runtimes there are 3 main concepts to understand:
