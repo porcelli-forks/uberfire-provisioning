@@ -12,8 +12,8 @@ import org.uberfire.provisioning.runtime.spi.providers.Provider;
  *
  * @author salaboy
  *
- * This class represent a Docker Image running or a WAR deployed into a server
- *
+ * This class represent a Runtime (Docker Image running or a WAR deployed into a server)
+ * It also allows you to interact with the runtime state executing operations such as start, stop, restart 
  */
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Runtime {

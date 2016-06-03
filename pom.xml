@@ -12,7 +12,6 @@
         <module>uberfire-provisioning-docker-provider</module>
         <module>uberfire-provisioning-kubernetes-provider</module>
         <module>uberfire-provisioning-wildfly-provider</module>
-        <module>uberfire-provisioning-services</module>
         <module>uberfire-provisioning-build-spi</module>
         <module>uberfire-provisioning-build-maven</module>
         <module>uberfire-provisioning-runtime-spi</module>
@@ -23,6 +22,8 @@
         <module>uberfire-provisioning-source-spi</module>
         <module>uberfire-provisioning-source-github</module>
         <module>uberfire-provisioning-local-provider</module>
+        <module>uberfire-provisioning-services-api</module>
+        <module>uberfire-provisioning-services-impl</module>
     </modules>
     
     <properties>
@@ -126,6 +127,11 @@
             <dependency>
                 <groupId>org.uberfire.provisioning</groupId>
                 <artifactId>uberfire-provisioning-source-github</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.uberfire.provisioning</groupId>
+                <artifactId>uberfire-provisioning-services-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

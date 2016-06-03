@@ -6,6 +6,7 @@
 package org.uberfire.provisioning.source.github;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.jgit.api.Git;
@@ -17,6 +18,7 @@ import org.uberfire.provisioning.source.exceptions.SourcingException;
 /**
  *
  * @author salaboy
+ * Git implementation for the Source interface using jgit
  */
 public class GitSource implements Source {
 
@@ -38,4 +40,17 @@ public class GitSource implements Source {
             throw new SourcingException("Error Cloning Git Repository", ex);
         }
     }
+
+    @Override
+    public boolean cleanSource(String sourcePath) throws SourcingException {
+        try {
+            FileUtils.delete(new File(sourcePath), FileUtils.RECURSIVE);
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(GitSource.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    
 }

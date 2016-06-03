@@ -21,6 +21,7 @@ import org.uberfire.provisioning.build.spi.exceptions.BuildException;
 /**
  *
  * @author salaboy
+ * The Build services implementation using Maven Invoker
  */
 public class MavenBuild implements Build {
 
@@ -68,6 +69,26 @@ public class MavenBuild implements Build {
         InvocationRequest request = new DefaultInvocationRequest();
         request.setPomFile(new File(project.getRootPath() + "/" + project.getPath() + "/pom.xml"));
         request.setGoals(Arrays.asList("package", "docker:build"));
+
+        Invoker invoker = new DefaultInvoker();
+
+        try {
+            InvocationResult results = invoker.execute(request);
+            return results.getExitCode();
+        } catch (MavenInvocationException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int cleanBinaries(Project project) throws BuildException {
+        if (!project.getType().equals("Maven")) {
+            throw new BuildException("This builder only support maven projects");
+        }
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setPomFile(new File(project.getRootPath() + "/" + project.getPath() + "/pom.xml"));
+        request.setGoals(Collections.singletonList("clean"));
 
         Invoker invoker = new DefaultInvoker();
 
