@@ -1,34 +1,47 @@
+/*
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.uberfire.provisioning.registry.local.tests;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.util.List;
-import java.util.UUID;
 import javax.inject.Inject;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.providers.Provider;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+
+import static java.lang.System.*;
+import static java.util.UUID.*;
+import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
+import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
+import static org.junit.Assert.*;
 
 /**
- *
  * @author salaboy
  */
 @RunWith(Arquillian.class)
@@ -37,10 +50,10 @@ public class LocalRuntimeRegistryTest {
     @Deployment
     public static JavaArchive createDeployment() {
 
-        JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(InMemoryRuntimeRegistry.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(jar.toString(true));
+        JavaArchive jar = create( JavaArchive.class )
+                .addClass( InMemoryRuntimeRegistry.class )
+                .addAsManifestResource( INSTANCE, "beans.xml" );
+        out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -69,79 +82,79 @@ public class LocalRuntimeRegistryTest {
     @Test
     public void simpleLocalRegistryProviderTypesTest() {
 
-        Assert.assertNotNull(registry);
-        MyProviderType myProviderType = new MyProviderType("test provider type", "1.0");
-        registry.registerProviderType(myProviderType);
+        assertNotNull( registry );
+        MyProviderType myProviderType = new MyProviderType( "test provider type", "1.0" );
+        registry.registerProviderType( myProviderType );
 
-        ProviderType pt = registry.getProviderTypeByName(myProviderType.getProviderTypeName());
-        Assert.assertNotNull(pt);
+        ProviderType pt = registry.getProviderTypeByName( myProviderType.getProviderTypeName() );
+        assertNotNull( pt );
 
         List<ProviderType> types = registry.getAllProviderTypes();
-        Assert.assertEquals(1, types.size());
+        assertEquals( 1, types.size() );
 
-        registry.unregisterProviderType(myProviderType);
+        registry.unregisterProviderType( myProviderType );
 
         types = registry.getAllProviderTypes();
-        Assert.assertEquals(0, types.size());
+        assertEquals( 0, types.size() );
     }
 
     @Test
     public void simpleLocalRegistryProvidersTest() {
 
-        Assert.assertNotNull(registry);
-        MyProviderType myProviderType = new MyProviderType("test provider type", "1.0");
+        assertNotNull( registry );
+        MyProviderType myProviderType = new MyProviderType( "test provider type", "1.0" );
 
-        registry.registerProviderType(myProviderType);
+        registry.registerProviderType( myProviderType );
 
-        MyProvider provider = new MyProvider("my provider instance", myProviderType);
+        MyProvider provider = new MyProvider( "my provider instance", myProviderType );
 
-        registry.registerProvider(provider);
+        registry.registerProvider( provider );
 
         List<Provider> providers = registry.getAllProviders();
-        Assert.assertEquals(1, providers.size());
+        assertEquals( 1, providers.size() );
 
-        List<Provider> providersByType = registry.getProvidersByType(myProviderType);
-        Assert.assertEquals(1, providersByType.size());
+        List<Provider> providersByType = registry.getProvidersByType( myProviderType );
+        assertEquals( 1, providersByType.size() );
 
-        registry.unregisterProvider(provider);
+        registry.unregisterProvider( provider );
 
         providers = registry.getAllProviders();
-        Assert.assertEquals(0, providers.size());
+        assertEquals( 0, providers.size() );
 
-        providersByType = registry.getProvidersByType(myProviderType);
-        Assert.assertEquals(0, providersByType.size());
+        providersByType = registry.getProvidersByType( myProviderType );
+        assertEquals( 0, providersByType.size() );
 
     }
 
     @Test
     public void simpleLocalRegistryRuntimeTest() {
 
-        Assert.assertNotNull(registry);
-        MyProviderType myProviderType = new MyProviderType("test provider type", "1.0");
+        assertNotNull( registry );
+        MyProviderType myProviderType = new MyProviderType( "test provider type", "1.0" );
 
-        registry.registerProviderType(myProviderType);
+        registry.registerProviderType( myProviderType );
 
-        MyProvider provider = new MyProvider("my provider instance", myProviderType);
+        MyProvider provider = new MyProvider( "my provider instance", myProviderType );
 
-        registry.registerProvider(provider);
-        String id = UUID.randomUUID().toString();
+        registry.registerProvider( provider );
+        String id = randomUUID().toString();
         BaseRuntimeConfiguration baseConf = new BaseRuntimeConfiguration();
 
-        MyRuntime myRuntime = new MyRuntime(id, baseConf, provider);
-        registry.registerRuntime(myRuntime);
+        MyRuntime myRuntime = new MyRuntime( id, baseConf, provider );
+        registry.registerRuntime( myRuntime );
 
         List<Runtime> allRuntimes = registry.getAllRuntimes();
-        Assert.assertEquals(1, allRuntimes.size());
+        assertEquals( 1, allRuntimes.size() );
 
-        List<Runtime> runtimesByProvider = registry.getRuntimesByProvider(myProviderType);
-        Assert.assertEquals(1, runtimesByProvider.size());
+        List<Runtime> runtimesByProvider = registry.getRuntimesByProvider( myProviderType );
+        assertEquals( 1, runtimesByProvider.size() );
 
-        registry.unregisterRuntime(myRuntime);
+        registry.unregisterRuntime( myRuntime );
         allRuntimes = registry.getAllRuntimes();
-        Assert.assertEquals(0, allRuntimes.size());
+        assertEquals( 0, allRuntimes.size() );
 
-        runtimesByProvider = registry.getRuntimesByProvider(myProviderType);
-        Assert.assertEquals(0, runtimesByProvider.size());
+        runtimesByProvider = registry.getRuntimesByProvider( myProviderType );
+        assertEquals( 0, runtimesByProvider.size() );
 
     }
 

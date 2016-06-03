@@ -254,7 +254,7 @@
 			"description": "",
 			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
 			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration\": {\n            \"name\":\"wildfly at 9990\", \n            \"provider\":\"org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider\",\n            \"properties\":{\n                     \"host\": \"localhost\",\n                     \"port\": \"9990\",\n                     \"user\": \"salaboy\",\n                     \"password\": \"salaboy123$\"\n                     \n            }\n    \n    }\n}"
+			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n            \"name\":\"wildfly at 9990\", \n            \"provider\":\"org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider\",\n            \"properties\":{\n                     \"host\": \"localhost\",\n                     \"port\": \"9990\",\n                     \"user\": \"salaboy\",\n                     \"password\": \"salaboy123$\"\n                     \n            }\n    \n    }\n}"
 		},
 		{
 			"id": "6c7b5cb8-c7ae-e382-f7f7-e1430310da52",
@@ -414,7 +414,7 @@
 			"description": "Local Deamon",
 			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
 			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"docker local 2\", \n        \"provider\":\"org.uberfire.provisioning.docker.runtime.provider.DockerProvider\",\n        \"properties\":{}\n    \n    }\n}"
+			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"docker local 2\", \n        \"provider\":\"org.uberfire.provisioning.docker.runtime.provider.DockerProvider\",\n        \"properties\":{}\n    \n    }\n}"
 		},
 		{
 			"id": "a0c510cc-435a-ed96-3c4e-2e2d2b58255b",
@@ -434,7 +434,7 @@
 			"description": "",
 			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
 			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration\":{\n        \"properties\":{\n             \"providerName\":\"wildfly at 9990\",\n             \"warPath\":\"/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war\"\n        }\n    }\n}"
+			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration\":{\n        \"properties\":{\n             \"providerName\":\"wildfly at 9990\",\n             \"warPath\":\"/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war\"\n        }\n    }\n}"
 		},
 		{
 			"id": "b2526a7f-a8ee-faeb-0aa9-c9152f0e6712",
@@ -454,7 +454,7 @@
 			"description": "Local Vagrant VM Kubernetes",
 			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
 			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"kubernetes local\", \n        \"provider\":\"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider\",\n        \"properties\":{}\n    \n    }\n}"
+			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"kubernetes local\", \n        \"provider\":\"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider\",\n        \"properties\":{}\n    \n    }\n}"
 		},
 		{
 			"id": "b8de1bc8-d1fd-2895-e2e8-e1130a783db3",

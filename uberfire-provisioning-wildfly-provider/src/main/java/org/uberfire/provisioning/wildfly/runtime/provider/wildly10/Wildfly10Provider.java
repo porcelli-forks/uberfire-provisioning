@@ -1,24 +1,36 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.wildfly.runtime.provider.wildly10;
 
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.UUID;
 import javax.xml.bind.annotation.XmlTransient;
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
-import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
 import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
 
+import static java.util.UUID.*;
+
 /**
- *
  * @author salaboy
  */
 public class Wildfly10Provider extends BaseProvider {
@@ -27,13 +39,14 @@ public class Wildfly10Provider extends BaseProvider {
     @JsonIgnore
     private Wildfly10RemoteClient wildfly;
 
-    public Wildfly10Provider(ProviderConfiguration config) {
-        this(config, new Wildfly10ProviderType());
+    public Wildfly10Provider( ProviderConfiguration config ) {
+        this( config, new Wildfly10ProviderType() );
 
     }
 
-    public Wildfly10Provider(ProviderConfiguration config, ProviderType type) {
-        super(config.getName(), type);
+    public Wildfly10Provider( ProviderConfiguration config,
+                              ProviderType type ) {
+        super( config.getName(), type );
         /*
          I should check here for the required configuration parameters for the provider
          */
@@ -42,30 +55,30 @@ public class Wildfly10Provider extends BaseProvider {
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration runtimeConfig) throws ProvisioningException {
+    public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
         /*
          I should check here for the required configuration parameters for the runtime
          */
 
-        String warPath = runtimeConfig.getProperties().get("warPath");
-        String user = config.getProperties().get("user");
-        String password = config.getProperties().get("password");
-        String host = config.getProperties().get("host");
-        String port = config.getProperties().get("port");
+        String warPath = runtimeConfig.getProperties().get( "warPath" );
+        String user = config.getProperties().get( "user" );
+        String password = config.getProperties().get( "password" );
+        String host = config.getProperties().get( "host" );
+        String port = config.getProperties().get( "port" );
 
-        int result = wildfly.deploy(user, password, host, new Integer(port), warPath);
-        if (result != 200) {
-            throw new ProvisioningException("Deployment to Wildfly Failed with error code: " + result);
+        int result = wildfly.deploy( user, password, host, new Integer( port ), warPath );
+        if ( result != 200 ) {
+            throw new ProvisioningException( "Deployment to Wildfly Failed with error code: " + result );
         }
-        String id = UUID.randomUUID().toString();
-        String shortId = id.substring(0, 12);
+        String id = randomUUID().toString();
+        String shortId = id.substring( 0, 12 );
 
-        return new WildflyRuntime(shortId, runtimeConfig, this);
+        return new WildflyRuntime( shortId, runtimeConfig, this );
     }
 
     @Override
-    public void destroy(String runtimeId) throws ProvisioningException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void destroy( String runtimeId ) throws ProvisioningException {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Wildfly10RemoteClient getWildfly() {

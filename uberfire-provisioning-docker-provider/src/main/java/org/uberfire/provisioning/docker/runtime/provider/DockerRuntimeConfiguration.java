@@ -1,31 +1,43 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.docker.runtime.provider;
 
-import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
+
+import static java.lang.Boolean.*;
 
 /**
- *
  * @author salaboy
  */
 public class DockerRuntimeConfiguration extends BaseRuntimeConfiguration {
 
-    public void setImage(String image) {
-        getProperties().put("image", image);
+    public void setImage( String image ) {
+        getProperties().put( "image", image );
     }
 
     public String getImage() {
-        return getProperties().get("image");
+        return getProperties().get( "image" );
     }
 
-    public void setPull(boolean pull) {
-        getProperties().put("pull", Boolean.toString(pull));
+    public void setPull( boolean pull ) {
+        getProperties().put( "pull", Boolean.toString( pull ) );
     }
 
     public boolean getPull() {
-        return Boolean.getBoolean(getProperties().get("pull"));
+        return getBoolean( getProperties().get( "pull" ) );
     }
 }

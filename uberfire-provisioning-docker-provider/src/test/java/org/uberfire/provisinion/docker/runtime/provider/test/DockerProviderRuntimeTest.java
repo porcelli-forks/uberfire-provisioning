@@ -1,23 +1,30 @@
+/*
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.uberfire.provisinion.docker.runtime.provider.test;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -28,15 +35,20 @@ import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfigura
 import org.uberfire.provisioning.docker.runtime.provider.DockerProviderType;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntime;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.base.BaseRuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
-import org.uberfire.provisioning.runtime.spi.providers.base.BaseProviderConfiguration;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+
+import static java.lang.System.*;
+import static java.util.logging.Level.*;
+import static java.util.logging.Logger.*;
+import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
+import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
+import static org.junit.Assert.*;
 
 /**
- *
  * @author salaboy
  */
 @RunWith(Arquillian.class)
@@ -45,12 +57,12 @@ public class DockerProviderRuntimeTest {
     @Deployment
     public static JavaArchive createDeployment() {
 
-        JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(DockerProviderType.class)
-                .addClass(DockerProvider.class)
-                .addClass(DockerRuntime.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(jar.toString(true));
+        JavaArchive jar = create( JavaArchive.class )
+                .addClass( DockerProviderType.class )
+                .addClass( DockerProvider.class )
+                .addClass( DockerRuntime.class )
+                .addAsManifestResource( INSTANCE, "beans.xml" );
+        out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -80,32 +92,32 @@ public class DockerProviderRuntimeTest {
     @Test
     public void providerTypeRegisteredTest() {
         int i = 0;
-        for (ProviderType pt : providerTypes) {
-            Assert.assertEquals("docker", pt.getProviderTypeName());
-            Assert.assertEquals("1.9.1", pt.getVersion());
+        for ( ProviderType pt : providerTypes ) {
+            assertEquals( "docker", pt.getProviderTypeName() );
+            assertEquals( "1.9.1", pt.getVersion() );
             i++;
         }
-        Assert.assertEquals(1, i);
+        assertEquals( 1, i );
 
     }
 
     @Test
     public void newDockerProviderWithoutDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        DockerProviderConfiguration config = new DockerProviderConfiguration("docker local deamon");
-        DockerProvider dockerProvider = new DockerProvider(config, dockerProviderType);
+        DockerProviderConfiguration config = new DockerProviderConfiguration( "docker local deamon" );
+        DockerProvider dockerProvider = new DockerProvider( config, dockerProviderType );
 
-        Assert.assertNotNull(dockerProvider.getDocker());
+        assertNotNull( dockerProvider.getDocker() );
         DockerRuntimeConfiguration runtimeConfig = new DockerRuntimeConfiguration();
-        runtimeConfig.setImage("kitematic/hello-world-nginx");
+        runtimeConfig.setImage( "kitematic/hello-world-nginx" );
 
         Runtime newRuntime;
         try {
-            newRuntime = dockerProvider.create(runtimeConfig);
-        } catch (Exception ex) {
+            newRuntime = dockerProvider.create( runtimeConfig );
+        } catch ( Exception ex ) {
             // If the docker deamon is not running and the system variables for locating the
             //   docker deamon are not set, this is expected to fail.
-            Assert.assertTrue(ex instanceof ProvisioningException);   
+            assertTrue( ex instanceof ProvisioningException );
         }
 
     }
@@ -114,36 +126,35 @@ public class DockerProviderRuntimeTest {
     @Ignore
     public void newDockerProviderWithDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        DockerProviderConfiguration config = new DockerProviderConfiguration("docker local deamon");
-        DockerProvider dockerProvider = new DockerProvider(config, dockerProviderType);
+        DockerProviderConfiguration config = new DockerProviderConfiguration( "docker local deamon" );
+        DockerProvider dockerProvider = new DockerProvider( config, dockerProviderType );
 
-        Assert.assertNotNull(dockerProvider.getDocker());
+        assertNotNull( dockerProvider.getDocker() );
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
         //Notice that it will not pull images that you don't have locally 
         // The hello-world-nginx is a very small image to test with, 
         //   but you might need to pull it first
-        runtimeConfig.getProperties().put("name", "kitematic/hello-world-nginx");
+        runtimeConfig.getProperties().put( "name", "kitematic/hello-world-nginx" );
 
         Runtime newRuntime = null;
         try {
-            newRuntime = dockerProvider.create(runtimeConfig);
-        } catch (Exception ex) {
+            newRuntime = dockerProvider.create( runtimeConfig );
+        } catch ( Exception ex ) {
             ex.printStackTrace();
-            Assert.fail("Docker client is not configured");
-            
+            fail( "Docker client is not configured" );
+
         }
-        Assert.assertNotNull(newRuntime);
+        assertNotNull( newRuntime );
 
         newRuntime.start();
-        
-        
-        Assert.assertTrue(newRuntime.getState().isRunning());
-  
+
+        assertTrue( newRuntime.getState().isRunning() );
+
         try {
-            dockerProvider.destroy(newRuntime.getId());
-        } catch (Exception ex) {
-            Logger.getLogger(DockerProviderRuntimeTest.class.getName()).log(Level.SEVERE, null, ex);
-            
+            dockerProvider.destroy( newRuntime.getId() );
+        } catch ( Exception ex ) {
+            getLogger( DockerProviderRuntimeTest.class.getName() ).log( SEVERE, null, ex );
+
         }
 
     }

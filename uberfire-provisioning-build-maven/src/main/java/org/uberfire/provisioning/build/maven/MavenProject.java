@@ -1,15 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.build.maven;
 
-import java.util.UUID;
-import org.uberfire.provisioning.build.spi.Project;
+import org.uberfire.provisioning.build.Project;
+
+import static java.util.UUID.*;
 
 /**
- *
  * @author salaboy
  */
 public class MavenProject implements Project {
@@ -22,11 +33,11 @@ public class MavenProject implements Project {
     private String expectedBinary;
 
     public MavenProject() {
-        this.id = UUID.randomUUID().toString().substring(0, 12);
+        this.id = randomUUID().toString().substring( 0, 12 );
         this.type = "Maven";
     }
 
-    public MavenProject(String name) {
+    public MavenProject( String name ) {
         this();
         this.name = name;
     }
@@ -52,12 +63,12 @@ public class MavenProject implements Project {
     }
 
     @Override
-    public void setName(String name) {
+    public void setName( String name ) {
         this.name = name;
     }
 
     @Override
-    public void setPath(String path) {
+    public void setPath( String path ) {
         this.path = path;
     }
 
@@ -67,7 +78,7 @@ public class MavenProject implements Project {
     }
 
     @Override
-    public void setRootPath(String rootPath) {
+    public void setRootPath( String rootPath ) {
         this.rootPath = rootPath;
     }
 
@@ -77,7 +88,7 @@ public class MavenProject implements Project {
     }
 
     @Override
-    public void setExpectedBinary(String expectedBinary) {
+    public void setExpectedBinary( String expectedBinary ) {
         this.expectedBinary = expectedBinary;
     }
 

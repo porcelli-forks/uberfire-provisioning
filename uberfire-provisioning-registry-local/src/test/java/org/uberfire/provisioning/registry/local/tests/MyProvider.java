@@ -1,34 +1,45 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.registry.local.tests;
 
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
-import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
 /**
- *
  * @author salaboy
  */
 public class MyProvider extends BaseProvider {
 
-    public MyProvider(String name, ProviderType providerType) {
-        super(name, providerType);
+    public MyProvider( String name,
+                       ProviderType providerType ) {
+        super( name, providerType );
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration config) throws ProvisioningException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Runtime create( RuntimeConfiguration config ) throws ProvisioningException {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void destroy(String runtimeId) throws ProvisioningException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void destroy( String runtimeId ) throws ProvisioningException {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

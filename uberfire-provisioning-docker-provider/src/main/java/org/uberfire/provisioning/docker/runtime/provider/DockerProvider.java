@@ -5,15 +5,6 @@
  */
 package org.uberfire.provisioning.docker.runtime.provider;
 
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DockerCertificateException;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.DockerException;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.ContainerCreation;
-import com.spotify.docker.client.messages.ContainerInfo;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.PortBinding;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +12,23 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
-import org.uberfire.provisioning.runtime.spi.providers.base.BaseProvider;
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
+
+import com.spotify.docker.client.DefaultDockerClient;
+import com.spotify.docker.client.DockerCertificateException;
+import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.DockerException;
+import com.spotify.docker.client.messages.ContainerConfig;
+import com.spotify.docker.client.messages.ContainerCreation;
+import com.spotify.docker.client.messages.HostConfig;
+import com.spotify.docker.client.messages.PortBinding;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
 /**
- *
  * @author salaboy
  */
 public class DockerProvider extends BaseProvider {
@@ -37,61 +36,62 @@ public class DockerProvider extends BaseProvider {
     @XmlTransient
     private DockerClient docker;
 
-    public DockerProvider(ProviderConfiguration config) {
-        this(config, new DockerProviderType());
+    public DockerProvider( ProviderConfiguration config ) {
+        this( config, new DockerProviderType() );
     }
 
-    public DockerProvider(ProviderConfiguration config, ProviderType type) {
-        super(config.getName(), type);
+    public DockerProvider( ProviderConfiguration config,
+                           ProviderType type ) {
+        super( config.getName(), type );
         this.config = config;
         try {
             // If I wanted a custom connection to a custom configured docker deamon I should use here the information contained in CPI
             docker = DefaultDockerClient.fromEnv().build();
-        } catch (DockerCertificateException ex) {
-            Logger.getLogger(DockerProviderType.class.getName()).log(Level.SEVERE, null, ex);
+        } catch ( DockerCertificateException ex ) {
+            Logger.getLogger( DockerProviderType.class.getName() ).log( Level.SEVERE, null, ex );
         }
 
     }
 
     @Override
-    public Runtime create(RuntimeConfiguration runtimeConfig) throws ProvisioningException {
+    public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
 
-        if (runtimeConfig.getProperties().get("pull") != null && runtimeConfig.getProperties().get("pull").equals("true")) {
+        if ( runtimeConfig.getProperties().get( "pull" ) != null && runtimeConfig.getProperties().get( "pull" ).equals( "true" ) ) {
             try {
-                docker.pull(runtimeConfig.getProperties().get("image"));
-            } catch (DockerException | InterruptedException ex) {
-                Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ProvisioningException("Error Pulling Docker Image: " + runtimeConfig.getProperties().get("image") + "with error: " + ex.getMessage());
+                docker.pull( runtimeConfig.getProperties().get( "image" ) );
+            } catch ( DockerException | InterruptedException ex ) {
+                Logger.getLogger( DockerProvider.class.getName() ).log( Level.SEVERE, null, ex );
+                throw new ProvisioningException( "Error Pulling Docker Image: " + runtimeConfig.getProperties().get( "image" ) + "with error: " + ex.getMessage() );
             }
         }
 
-        final String[] ports = {"8080"};
+        final String[] ports = { "8080" };
         final Map<String, List<PortBinding>> portBindings = new HashMap<String, List<PortBinding>>();
 
         List<PortBinding> randomPort = new ArrayList<PortBinding>();
-        PortBinding randomPortBinding = PortBinding.randomPort("0.0.0.0");
-        randomPort.add(randomPortBinding);
-        portBindings.put("8080", randomPort);
+        PortBinding randomPortBinding = PortBinding.randomPort( "0.0.0.0" );
+        randomPort.add( randomPortBinding );
+        portBindings.put( "8080", randomPort );
 
-        final HostConfig hostConfig = HostConfig.builder().portBindings(portBindings).build();
+        final HostConfig hostConfig = HostConfig.builder().portBindings( portBindings ).build();
 
         final ContainerConfig containerConfig = ContainerConfig.builder()
-                .hostConfig(hostConfig)
-                .image(runtimeConfig.getProperties().get("image")).exposedPorts(ports)
+                .hostConfig( hostConfig )
+                .image( runtimeConfig.getProperties().get( "image" ) ).exposedPorts( ports )
                 .build();
 
         ContainerCreation creation = null;
         try {
-            creation = docker.createContainer(containerConfig);
-        } catch (DockerException | InterruptedException ex) {
-            Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ProvisioningException("Error Creating Docker Container with image: " + runtimeConfig.getProperties().get("image") + "with error: " + ex.getMessage());
+            creation = docker.createContainer( containerConfig );
+        } catch ( DockerException | InterruptedException ex ) {
+            Logger.getLogger( DockerProvider.class.getName() ).log( Level.SEVERE, null, ex );
+            throw new ProvisioningException( "Error Creating Docker Container with image: " + runtimeConfig.getProperties().get( "image" ) + "with error: " + ex.getMessage() );
         }
 
         final String id = creation.id();
-        String shortId = id.substring(0, 12);
+        String shortId = id.substring( 0, 12 );
 
-        return new DockerRuntime(shortId, runtimeConfig, this);
+        return new DockerRuntime( shortId, runtimeConfig, this );
 
     }
 
@@ -100,13 +100,13 @@ public class DockerProvider extends BaseProvider {
     }
 
     @Override
-    public void destroy(String runtimeId) throws ProvisioningException {
+    public void destroy( String runtimeId ) throws ProvisioningException {
         try {
-            docker.killContainer(runtimeId);
-            docker.removeContainer(runtimeId);
-        } catch (DockerException | InterruptedException ex) {
-            Logger.getLogger(DockerProvider.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ProvisioningException("Error destroying Docker Runtime: " + ex.getMessage());
+            docker.killContainer( runtimeId );
+            docker.removeContainer( runtimeId );
+        } catch ( DockerException | InterruptedException ex ) {
+            Logger.getLogger( DockerProvider.class.getName() ).log( Level.SEVERE, null, ex );
+            throw new ProvisioningException( "Error destroying Docker Runtime: " + ex.getMessage() );
         }
 
     }
