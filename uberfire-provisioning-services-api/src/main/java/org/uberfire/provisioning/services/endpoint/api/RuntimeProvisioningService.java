@@ -40,7 +40,7 @@ import static javax.ws.rs.core.MediaType.*;
  * @author salaboy
  */
 @Path("")
-interface RuntimeProvisioningService {
+public interface RuntimeProvisioningService {
 
     @GET
     @Produces(value = APPLICATION_JSON)
