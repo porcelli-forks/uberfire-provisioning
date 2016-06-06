@@ -40,29 +40,26 @@ import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfBuild
 import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration;
 import org.uberfire.provisioning.docker.runtime.provider.DockerProviderType;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfBuilder;
-import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfBuilder;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfiguration;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderType;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfBuilder;
-import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration;
 import org.uberfire.provisioning.local.runtime.provider.LocalProvider;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfBuilder;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderType;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfBuilder;
-import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
@@ -157,7 +154,7 @@ public class SimpleRuntimeAPITest {
 
         Assert.assertEquals( 4, allProviders.size() );
 
-        LocalRuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
+        RuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
                 .setJar( "/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
                 .get();
 
@@ -175,7 +172,7 @@ public class SimpleRuntimeAPITest {
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
 
-        WildflyRuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
+        RuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
                 .setWarPath( "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
                 .get();
 
@@ -191,7 +188,7 @@ public class SimpleRuntimeAPITest {
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
 
-        KubernetesRuntimeConfiguration kubernetesRuntimeConfig = KubernetesRuntimeConfBuilder.newConfig()
+        RuntimeConfiguration kubernetesRuntimeConfig = KubernetesRuntimeConfBuilder.newConfig()
                 .setNamespace( "default" )
                 .setReplicationController( "test" )
                 .setLabel( "uberfire" )
@@ -211,7 +208,7 @@ public class SimpleRuntimeAPITest {
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
 
-        DockerRuntimeConfiguration dockerRuntimeConfig = DockerRuntimeConfBuilder.newConfig()
+        RuntimeConfiguration dockerRuntimeConfig = DockerRuntimeConfBuilder.newConfig()
                 .setPull( true )
                 .setImage( "kitematic/hello-world-nginx" )
                 .get();

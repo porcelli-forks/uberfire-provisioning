@@ -16,6 +16,8 @@
 
 package org.uberfire.provisioning.wildfly.runtime.provider.base;
 
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+
 /**
  * @author salaboy
  */
@@ -39,7 +41,7 @@ public class WildflyRuntimeConfBuilder {
         return instance;
     }
 
-    public WildflyRuntimeConfiguration get() {
+    public RuntimeConfiguration get() {
         return config;
     }
 

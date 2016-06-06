@@ -16,6 +16,8 @@
 
 package org.uberfire.provisioning.docker.runtime.provider;
 
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+
 /**
  * @author salaboy
  */
@@ -43,7 +45,7 @@ public class DockerRuntimeConfBuilder {
         return instance;
     }
 
-    public DockerRuntimeConfiguration get() {
+    public RuntimeConfiguration get() {
         return config;
     }
 

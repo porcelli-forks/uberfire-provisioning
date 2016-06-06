@@ -16,6 +16,8 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+
 /**
  * @author salaboy
  */
@@ -58,7 +60,7 @@ public class KubernetesRuntimeConfBuilder {
         return instance;
     }
 
-    public KubernetesRuntimeConfiguration get() {
+    public RuntimeConfiguration get() {
         return config;
     }
 
