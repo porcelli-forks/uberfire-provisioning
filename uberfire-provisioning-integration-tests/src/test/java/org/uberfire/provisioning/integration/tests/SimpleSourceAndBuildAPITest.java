@@ -1,8 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.integration.tests;
 
 import java.util.List;
@@ -21,26 +32,25 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.uberfire.provisioning.build.Binary;
+import org.uberfire.provisioning.build.Build;
+import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.build.maven.MavenBinary;
 import org.uberfire.provisioning.build.maven.MavenBuild;
 import org.uberfire.provisioning.build.maven.MavenProject;
-import org.uberfire.provisioning.build.spi.Binary;
-import org.uberfire.provisioning.build.spi.Build;
-import org.uberfire.provisioning.build.spi.Project;
-import org.uberfire.provisioning.build.spi.exceptions.BuildException;
 import org.uberfire.provisioning.docker.runtime.provider.DockerBinary;
+import org.uberfire.provisioning.exceptions.BuildException;
+import org.uberfire.provisioning.exceptions.SourcingException;
 import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
 import org.uberfire.provisioning.registry.local.InMemorySourceRegistry;
 import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
-import org.uberfire.provisioning.source.exceptions.SourcingException;
 import org.uberfire.provisioning.source.github.GitHubRepository;
 import org.uberfire.provisioning.source.github.GitSource;
 
 /**
- *
  * @author salaboy
  */
 @RunWith(Arquillian.class)
@@ -49,14 +59,14 @@ public class SimpleSourceAndBuildAPITest {
     @Deployment
     public static JavaArchive createDeployment() {
 
-        JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(GitSource.class)
-                .addClass(MavenBuild.class)
-                .addClass(MavenProject.class)
-                .addClass(InMemorySourceRegistry.class)
-                .addClass(InMemoryBuildRegistry.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(jar.toString(true));
+        JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
+                .addClass( GitSource.class )
+                .addClass( MavenBuild.class )
+                .addClass( MavenProject.class )
+                .addClass( InMemorySourceRegistry.class )
+                .addClass( InMemoryBuildRegistry.class )
+                .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
+        System.out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -93,51 +103,50 @@ public class SimpleSourceAndBuildAPITest {
     @Ignore
     public void helloSourceAndBuildAPIs() throws SourcingException, BuildException {
 
-        Repository repo = new GitHubRepository("livespark playground");
-        repo.setURI("https://github.com/salaboy/livespark-playground.git");
-        repo.setBranch("provisioning-enablement");
-        String location = source.getSource(repo);
-        System.out.println("Location : " + location);
-        sourceRegistry.registerRepositorySources(location, repo);
+        Repository repo = new GitHubRepository( "livespark playground" );
+        repo.setURI( "https://github.com/salaboy/livespark-playground.git" );
+        repo.setBranch( "provisioning-enablement" );
+        String location = source.getSource( repo );
+        System.out.println( "Location : " + location );
+        sourceRegistry.registerRepositorySources( location, repo );
 
         List<Repository> allRepositories = sourceRegistry.getAllRepositories();
-        Assert.assertEquals(1, allRepositories.size());
+        Assert.assertEquals( 1, allRepositories.size() );
 
-        Project project = new MavenProject("users-new");
-        project.setRootPath(location);
-        project.setPath("users-new");
-        project.setExpectedBinary("users-new.war");
+        Project project = new MavenProject( "users-new" );
+        project.setRootPath( location );
+        project.setPath( "users-new" );
+        project.setExpectedBinary( "users-new.war" );
 
-        sourceRegistry.registerProject(repo, project);
+        sourceRegistry.registerProject( repo, project );
 
-        List<Project> projectsAll = sourceRegistry.getAllProjects(repo);
-        Assert.assertEquals(1, projectsAll.size());
-        
-        List<Project> projectsByName = sourceRegistry.getProjectByName("users-new");
-        Assert.assertEquals(1, projectsByName.size());
-        
-        int result = build.build(project);
+        List<Project> projectsAll = sourceRegistry.getAllProjects( repo );
+        Assert.assertEquals( 1, projectsAll.size() );
 
-        Assert.assertTrue(result == 0);
-        System.out.println("Result: " + result);
+        List<Project> projectsByName = sourceRegistry.getProjectByName( "users-new" );
+        Assert.assertEquals( 1, projectsByName.size() );
 
-        boolean binariesReady = build.binariesReady(project);
-        Assert.assertTrue(binariesReady);
+        int result = build.build( project );
 
-        System.out.println("binariesReady " + binariesReady);
+        Assert.assertTrue( result == 0 );
+        System.out.println( "Result: " + result );
 
-        String finalLocation = build.binariesLocation(project);
-        System.out.println("finalLocation " + finalLocation);
+        boolean binariesReady = build.binariesReady( project );
+        Assert.assertTrue( binariesReady );
 
-        MavenBinary mavenBinary = new MavenBinary(project);
-        buildRegistry.registerBinary(mavenBinary);
+        System.out.println( "binariesReady " + binariesReady );
+
+        String finalLocation = build.binariesLocation( project );
+        System.out.println( "finalLocation " + finalLocation );
+
+        MavenBinary mavenBinary = new MavenBinary( project );
+        buildRegistry.registerBinary( mavenBinary );
 
         List<Binary> allBinaries = buildRegistry.getAllBinaries();
-        Assert.assertEquals(1, allBinaries.size());
+        Assert.assertEquals( 1, allBinaries.size() );
 
     }
-    
-    
+
     @Test
     @Ignore
     /*
@@ -146,47 +155,47 @@ public class SimpleSourceAndBuildAPITest {
     */
     public void helloSourceAndBuildDockerImage() throws SourcingException, BuildException {
 
-        Repository repo = new GitHubRepository("livespark playground");
-        repo.setURI("https://github.com/salaboy/livespark-playground.git");
-        repo.setBranch("provisioning-enablement");
-        String location = source.getSource(repo);
-        System.out.println("Location : " + location);
-        sourceRegistry.registerRepositorySources(location, repo);
+        Repository repo = new GitHubRepository( "livespark playground" );
+        repo.setURI( "https://github.com/salaboy/livespark-playground.git" );
+        repo.setBranch( "provisioning-enablement" );
+        String location = source.getSource( repo );
+        System.out.println( "Location : " + location );
+        sourceRegistry.registerRepositorySources( location, repo );
 
         List<Repository> allRepositories = sourceRegistry.getAllRepositories();
-        Assert.assertEquals(1, allRepositories.size());
+        Assert.assertEquals( 1, allRepositories.size() );
 
-        Project project = new MavenProject("users-new");
-        project.setRootPath(location);
-        project.setPath("users-new");
-        project.setExpectedBinary("users-new.war");
+        Project project = new MavenProject( "users-new" );
+        project.setRootPath( location );
+        project.setPath( "users-new" );
+        project.setExpectedBinary( "users-new.war" );
 
-        sourceRegistry.registerProject(repo, project);
+        sourceRegistry.registerProject( repo, project );
 
-        List<Project> projectsAll = sourceRegistry.getAllProjects(repo);
-        Assert.assertEquals(1, projectsAll.size());
-        
-        List<Project> projectsByName = sourceRegistry.getProjectByName("users-new");
-        Assert.assertEquals(1, projectsByName.size());
-        
-        int result = build.createDockerImage(project);
+        List<Project> projectsAll = sourceRegistry.getAllProjects( repo );
+        Assert.assertEquals( 1, projectsAll.size() );
 
-        Assert.assertTrue(result == 0);
-        System.out.println("Result: " + result);
+        List<Project> projectsByName = sourceRegistry.getProjectByName( "users-new" );
+        Assert.assertEquals( 1, projectsByName.size() );
 
-        boolean binariesReady = build.binariesReady(project);
-        Assert.assertTrue(binariesReady);
+        int result = build.createDockerImage( project );
 
-        System.out.println("binariesReady " + binariesReady);
+        Assert.assertTrue( result == 0 );
+        System.out.println( "Result: " + result );
 
-        String finalLocation = build.binariesLocation(project);
-        System.out.println("finalLocation " + finalLocation);
+        boolean binariesReady = build.binariesReady( project );
+        Assert.assertTrue( binariesReady );
 
-        DockerBinary mavenBinary = new DockerBinary(project);
-        buildRegistry.registerBinary(mavenBinary);
+        System.out.println( "binariesReady " + binariesReady );
+
+        String finalLocation = build.binariesLocation( project );
+        System.out.println( "finalLocation " + finalLocation );
+
+        DockerBinary mavenBinary = new DockerBinary( project );
+        buildRegistry.registerBinary( mavenBinary );
 
         List<Binary> allBinaries = buildRegistry.getAllBinaries();
-        Assert.assertEquals(1, allBinaries.size());
+        Assert.assertEquals( 1, allBinaries.size() );
 
     }
 

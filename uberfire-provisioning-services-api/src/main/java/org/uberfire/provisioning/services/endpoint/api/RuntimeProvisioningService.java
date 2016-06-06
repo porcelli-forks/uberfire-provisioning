@@ -1,8 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.services.endpoint.api;
 
 import java.util.List;
@@ -15,64 +26,65 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.uberfire.provisioning.runtime.spi.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.providers.Provider;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderConfiguration;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
+
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
-import org.uberfire.provisioning.runtime.spi.Runtime;
+
+import static javax.ws.rs.core.MediaType.*;
 
 /**
- *
  * @author salaboy
  */
 @Path("")
-public interface RuntimeProvisioningService {
+interface RuntimeProvisioningService {
 
     @GET
-    @Produces(value = MediaType.APPLICATION_JSON)
+    @Produces(value = APPLICATION_JSON)
     @Path("providertypes")
     List<ProviderType> getAllProviderTypes() throws BusinessException;
 
     @GET
-    @Produces(value = MediaType.APPLICATION_JSON)
+    @Produces(value = APPLICATION_JSON)
     @Path("providers")
     List<Provider> getAllProviders() throws BusinessException;
 
     @POST
-    @Consumes(value = MediaType.APPLICATION_JSON)
+    @Consumes(value = APPLICATION_JSON)
     @Path("providers")
-    void registerProvider(@NotNull ProviderConfiguration conf) throws BusinessException;
+    void registerProvider( @NotNull ProviderConfiguration conf ) throws BusinessException;
 
     @DELETE
     @Path("providers")
-    void unregisterProvider(@FormParam(value = "name") String name) throws BusinessException;
+    void unregisterProvider( @FormParam(value = "name") String name ) throws BusinessException;
 
     @POST
     @Path("runtimes/")
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public String newRuntime(@NotNull RuntimeConfiguration conf) throws BusinessException;
+    @Consumes(value = APPLICATION_JSON)
+    String newRuntime( @NotNull RuntimeConfiguration conf ) throws BusinessException;
 
     @GET
     @Produces("application/json")
     @Path("runtimes/")
-    public List<Runtime> getAllRuntimes() throws BusinessException;
+    List<Runtime> getAllRuntimes() throws BusinessException;
 
     @DELETE
     @Path("runtimes/{id}")
-    public void unregisterRuntime(@PathParam(value = "id") String id) throws BusinessException;
+    void unregisterRuntime( @PathParam(value = "id") String id ) throws BusinessException;
 
     @POST
     @Path("runtimes/{id}/start")
-    public void startRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
+    void startRuntime( @PathParam(value = "id") String runtimeId ) throws BusinessException;
 
     @POST
     @Path("runtimes/{id}/stop")
-    public void stopRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
+    void stopRuntime( @PathParam(value = "id") String runtimeId ) throws BusinessException;
 
     @POST
     @Path("runtimes/{id}/restart")
-    public void restartRuntime(@PathParam(value = "id") String runtimeId) throws BusinessException;
+    void restartRuntime( @PathParam(value = "id") String runtimeId ) throws BusinessException;
 
 }

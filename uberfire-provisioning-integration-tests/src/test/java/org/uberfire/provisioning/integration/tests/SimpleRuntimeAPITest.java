@@ -1,8 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.uberfire.provisioning.integration.tests;
 
 import java.util.List;
@@ -11,6 +22,7 @@ import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -29,6 +41,7 @@ import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfigura
 import org.uberfire.provisioning.docker.runtime.provider.DockerProviderType;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfBuilder;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfBuilder;
 import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfiguration;
@@ -43,19 +56,17 @@ import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfBuilder;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
-import org.uberfire.provisioning.runtime.spi.providers.ProviderType;
-import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
-import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
-import org.uberfire.provisioning.runtime.spi.Runtime;
-import org.uberfire.provisioning.runtime.spi.exception.ProvisioningException;
-import org.uberfire.provisioning.runtime.spi.providers.Provider;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
 /**
- *
  * @author salaboy
  */
 @RunWith(Arquillian.class)
@@ -64,15 +75,15 @@ public class SimpleRuntimeAPITest {
     @Deployment
     public static JavaArchive createDeployment() {
 
-        JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(ProviderType.class)
-                .addClass(LocalProviderType.class)
-                .addClass(Wildfly10ProviderType.class)
-                .addClass(DockerProviderType.class)
-                .addClass(KubernetesProviderType.class)
-                .addClass(InMemoryRuntimeRegistry.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(jar.toString(true));
+        JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
+                .addClass( ProviderType.class )
+                .addClass( LocalProviderType.class )
+                .addClass( Wildfly10ProviderType.class )
+                .addClass( DockerProviderType.class )
+                .addClass( KubernetesProviderType.class )
+                .addClass( InMemoryRuntimeRegistry.class )
+                .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
+        System.out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -93,8 +104,8 @@ public class SimpleRuntimeAPITest {
 
     @Before
     public void setUp() {
-        for (ProviderType pt : providerTypes) {
-            registry.registerProviderType(pt);
+        for ( ProviderType pt : providerTypes ) {
+            registry.registerProviderType( pt );
         }
     }
 
@@ -107,120 +118,116 @@ public class SimpleRuntimeAPITest {
 
         List<ProviderType> allProviderTypes = registry.getAllProviderTypes();
 
-        Assert.assertEquals(4, allProviderTypes.size());
-        
-        ProviderType localProviderType = registry.getProviderTypeByName("local");
-        LocalProviderConfiguration localProviderConfig = LocalProviderConfBuilder.newConfig("local").get();
-        
-        LocalProvider localProvider = new LocalProvider(localProviderConfig, localProviderType);
-        registry.registerProvider(localProvider);
+        Assert.assertEquals( 4, allProviderTypes.size() );
 
-        ProviderType wildflyProviderType = registry.getProviderTypeByName("wildfly");
+        ProviderType localProviderType = registry.getProviderTypeByName( "local" );
+        LocalProviderConfiguration localProviderConfig = LocalProviderConfBuilder.newConfig( "local" ).get();
 
-        WildflyProviderConfiguration wildflyProviderConfig = WildflyProviderConfBuilder.newConfig("wildfly @ 9990")
-                .setHost("localhost")
-                .setPort("9990")
-                .setUser("salaboy")
-                .setPassword("salaboy123$").get();
+        LocalProvider localProvider = new LocalProvider( localProviderConfig, localProviderType );
+        registry.registerProvider( localProvider );
 
-        Wildfly10Provider wildflyProvider = new Wildfly10Provider(wildflyProviderConfig, wildflyProviderType);
+        ProviderType wildflyProviderType = registry.getProviderTypeByName( "wildfly" );
 
-        Assert.assertNotNull(wildflyProvider.getWildfly());
-        registry.registerProvider(wildflyProvider);
+        WildflyProviderConfiguration wildflyProviderConfig = WildflyProviderConfBuilder.newConfig( "wildfly @ 9990" )
+                .setHost( "localhost" )
+                .setPort( "9990" )
+                .setUser( "salaboy" )
+                .setPassword( "salaboy123$" ).get();
 
-        ProviderType kubernetesProviderType = registry.getProviderTypeByName("kubernetes");
-        KubernetesProviderConfiguration kubeProviderConfig = KubernetesProviderConfBuilder.newConfig("kubernetes @ openshift origin")
+        Wildfly10Provider wildflyProvider = new Wildfly10Provider( wildflyProviderConfig, wildflyProviderType );
+
+        Assert.assertNotNull( wildflyProvider.getWildfly() );
+        registry.registerProvider( wildflyProvider );
+
+        ProviderType kubernetesProviderType = registry.getProviderTypeByName( "kubernetes" );
+        KubernetesProviderConfiguration kubeProviderConfig = KubernetesProviderConfBuilder.newConfig( "kubernetes @ openshift origin" )
                 .get();
 
-        KubernetesProvider kubernetesProvider = new KubernetesProvider(kubeProviderConfig, kubernetesProviderType);
-        registry.registerProvider(kubernetesProvider);
-        
-        ProviderType dockerProviderType = registry.getProviderTypeByName("docker");
-        DockerProviderConfiguration dockerProviderConfig = DockerProviderConfBuilder.newConfig("docker local deamon")
+        KubernetesProvider kubernetesProvider = new KubernetesProvider( kubeProviderConfig, kubernetesProviderType );
+        registry.registerProvider( kubernetesProvider );
+
+        ProviderType dockerProviderType = registry.getProviderTypeByName( "docker" );
+        DockerProviderConfiguration dockerProviderConfig = DockerProviderConfBuilder.newConfig( "docker local deamon" )
                 .get();
 
-        DockerProvider dockerProvider = new DockerProvider(dockerProviderConfig, dockerProviderType);
-        registry.registerProvider(dockerProvider);
-        
+        DockerProvider dockerProvider = new DockerProvider( dockerProviderConfig, dockerProviderType );
+        registry.registerProvider( dockerProvider );
 
         List<Provider> allProviders = registry.getAllProviders();
-        
-        Assert.assertEquals(4, allProviders.size());
+
+        Assert.assertEquals( 4, allProviders.size() );
 
         LocalRuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
-                .setJar("/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar")
+                .setJar( "/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
                 .get();
 
         Runtime newLocalRuntime;
         try {
-            newLocalRuntime = localProvider.create(localRuntimeConfig);
-            Assert.assertNotNull(newLocalRuntime);
-            Assert.assertNotNull(newLocalRuntime.getId());
-            registry.registerRuntime(newLocalRuntime);
-            
+            newLocalRuntime = localProvider.create( localRuntimeConfig );
+            Assert.assertNotNull( newLocalRuntime );
+            Assert.assertNotNull( newLocalRuntime.getId() );
+            registry.registerRuntime( newLocalRuntime );
+
             newLocalRuntime.start();
-        } catch (Exception ex) {
-            Logger.getLogger(SimpleRuntimeAPITest.class.getName()).log(Level.SEVERE, null, ex);
-            Assert.assertTrue(ex instanceof ProvisioningException);
+        } catch ( Exception ex ) {
+            Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
+            Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-        
-        
-        
+
         WildflyRuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
-                .setWarPath("/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war")
+                .setWarPath( "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
                 .get();
 
         Runtime newWildflyRuntime;
         try {
-            newWildflyRuntime = wildflyProvider.create(wildflyRuntimeConfig);
-            Assert.assertNotNull(newWildflyRuntime);
-            Assert.assertNotNull(newWildflyRuntime.getId());
-            registry.registerRuntime(newWildflyRuntime);
-        } catch (Exception ex) {
-            Logger.getLogger(SimpleRuntimeAPITest.class.getName()).log(Level.SEVERE, null, ex);
-            Assert.assertTrue(ex instanceof ProvisioningException);
+            newWildflyRuntime = wildflyProvider.create( wildflyRuntimeConfig );
+            Assert.assertNotNull( newWildflyRuntime );
+            Assert.assertNotNull( newWildflyRuntime.getId() );
+            registry.registerRuntime( newWildflyRuntime );
+        } catch ( Exception ex ) {
+            Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
+            Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-        
+
         KubernetesRuntimeConfiguration kubernetesRuntimeConfig = KubernetesRuntimeConfBuilder.newConfig()
-                .setNamespace("default")
-                .setReplicationController("test")
-                .setLabel("uberfire")
-                .setServiceName("test")
-                .setImage("kitematic/hello-world-nginx")
+                .setNamespace( "default" )
+                .setReplicationController( "test" )
+                .setLabel( "uberfire" )
+                .setServiceName( "test" )
+                .setImage( "kitematic/hello-world-nginx" )
                 .get();
-        
+
         Runtime newKubernetesRuntime;
         try {
-            newKubernetesRuntime = kubernetesProvider.create(kubernetesRuntimeConfig);
-            Assert.assertNotNull(newKubernetesRuntime);
-            Assert.assertNotNull(newKubernetesRuntime.getId());
-            registry.registerRuntime(newKubernetesRuntime);
-        } catch (Exception ex) {
-            Logger.getLogger(SimpleRuntimeAPITest.class.getName()).log(Level.SEVERE, null, ex);
-            Assert.assertTrue(ex instanceof ProvisioningException);
+            newKubernetesRuntime = kubernetesProvider.create( kubernetesRuntimeConfig );
+            Assert.assertNotNull( newKubernetesRuntime );
+            Assert.assertNotNull( newKubernetesRuntime.getId() );
+            registry.registerRuntime( newKubernetesRuntime );
+        } catch ( Exception ex ) {
+            Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
+            Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-        
+
         DockerRuntimeConfiguration dockerRuntimeConfig = DockerRuntimeConfBuilder.newConfig()
-                .setPull(true)
-                .setImage("kitematic/hello-world-nginx")
+                .setPull( true )
+                .setImage( "kitematic/hello-world-nginx" )
                 .get();
-        
+
         Runtime newDockerRuntime;
         try {
-            newDockerRuntime = dockerProvider.create(dockerRuntimeConfig);
-            Assert.assertNotNull(newDockerRuntime);
-            Assert.assertNotNull(newDockerRuntime.getId());
-            registry.registerRuntime(newDockerRuntime);
-        } catch (Exception ex) {
-            Logger.getLogger(SimpleRuntimeAPITest.class.getName()).log(Level.SEVERE, null, ex);
-            Assert.assertTrue(ex instanceof ProvisioningException);
+            newDockerRuntime = dockerProvider.create( dockerRuntimeConfig );
+            Assert.assertNotNull( newDockerRuntime );
+            Assert.assertNotNull( newDockerRuntime.getId() );
+            registry.registerRuntime( newDockerRuntime );
+        } catch ( Exception ex ) {
+            Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
+            Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-        
-        
+
     }
 
 }
