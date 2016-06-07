@@ -16,22 +16,13 @@
 
 package org.uberfire.provisioning.source.github;
 
-import org.uberfire.java.nio.file.Path;
-import org.uberfire.provisioning.source.Source;
+import java.net.URI;
 
-public class GitSource implements Source {
+public enum Protocol {
+    SSH, HTTPS;
 
-    private final GitHubRepository repository;
-    private final Path path;
-
-    public GitSource( final GitHubRepository repository,
-                      final Path path ) {
-        this.repository = repository;
-        this.path = path;
-    }
-
-    @Override
-    public Path getPath() {
-        return path;
+    public URI toURI( final String host,
+                      final String id ) {
+        return URI.create( toString().toLowerCase() + "://" + host + "/" + id + ".git" );
     }
 }

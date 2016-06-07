@@ -14,24 +14,8 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.security;
 
-import org.uberfire.java.nio.file.Path;
-import org.uberfire.provisioning.source.Source;
+public interface Credentials {
 
-public class GitSource implements Source {
-
-    private final GitHubRepository repository;
-    private final Path path;
-
-    public GitSource( final GitHubRepository repository,
-                      final Path path ) {
-        this.repository = repository;
-        this.path = path;
-    }
-
-    @Override
-    public Path getPath() {
-        return path;
-    }
 }

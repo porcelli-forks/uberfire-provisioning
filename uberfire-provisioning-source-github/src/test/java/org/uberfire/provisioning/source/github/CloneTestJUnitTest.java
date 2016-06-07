@@ -16,18 +16,14 @@
 
 package org.uberfire.provisioning.source.github;
 
-import java.io.File;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uberfire.provisioning.source.Repository;
+import org.uberfire.java.nio.IOException;
+import org.uberfire.java.nio.file.FileVisitResult;
+import org.uberfire.java.nio.file.FileVisitor;
+import org.uberfire.java.nio.file.Files;
+import org.uberfire.java.nio.file.Path;
+import org.uberfire.java.nio.file.attribute.BasicFileAttributes;
 import org.uberfire.provisioning.source.Source;
-
-import static java.lang.System.*;
-import static org.junit.Assert.*;
 
 /**
  * @author salaboy
@@ -37,31 +33,39 @@ public class CloneTestJUnitTest {
     public CloneTestJUnitTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void hello() throws Exception {
-        Source source = new GitSource();
-        Repository gitHubRepository = new GitHubRepository( "Livespark Playground" );
-        gitHubRepository.setURI( "https://github.com/pefernan/livespark-playground.git" );
+        final GitHub gitHub = new GitHub();
+        final GitHubRepository repository = (GitHubRepository) gitHub.getRepository( "pefernan/livespark-playground" );
+        final Source source = repository.getSource( "master" );
 
-        String destinationPath = source.getSource( gitHubRepository );
-        out.println( "TMP Created Dir: " + destinationPath );
-        assertTrue( new File( destinationPath ).isDirectory() );
+        Files.walkFileTree( source.getPath(), new FileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory( final Path dir,
+                                                      final BasicFileAttributes attrs ) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
 
+            @Override
+            public FileVisitResult visitFile( final Path file,
+                                              final BasicFileAttributes attrs ) throws IOException {
+                System.out.println( file.toUri().toString() );
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed( final Path file,
+                                                    final IOException exc ) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory( final Path dir,
+                                                       final IOException exc ) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+        } );
+
+        System.out.println( source.getPath().toString() );
     }
 }

@@ -11,6 +11,11 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-nio2-model</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <scope>provided</scope>

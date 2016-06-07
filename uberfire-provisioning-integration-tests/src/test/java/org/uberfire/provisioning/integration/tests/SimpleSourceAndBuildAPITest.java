@@ -47,7 +47,7 @@ import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
 import org.uberfire.provisioning.registry.local.InMemorySourceRegistry;
 import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
-import org.uberfire.provisioning.source.github.GitHubRepository;
+import org.uberfire.provisioning.source.github.GitHub;
 import org.uberfire.provisioning.source.github.GitSource;
 
 /**
@@ -103,7 +103,7 @@ public class SimpleSourceAndBuildAPITest {
     @Ignore
     public void helloSourceAndBuildAPIs() throws SourcingException, BuildException {
 
-        Repository repo = new GitHubRepository( "livespark playground" );
+        Repository repo = new GitHub( "livespark playground" );
         repo.setURI( "https://github.com/salaboy/livespark-playground.git" );
         repo.setBranch( "provisioning-enablement" );
         String location = source.getSource( repo );
@@ -155,7 +155,7 @@ public class SimpleSourceAndBuildAPITest {
     */
     public void helloSourceAndBuildDockerImage() throws SourcingException, BuildException {
 
-        Repository repo = new GitHubRepository( "livespark playground" );
+        Repository repo = new GitHub( "livespark playground" );
         repo.setURI( "https://github.com/salaboy/livespark-playground.git" );
         repo.setBranch( "provisioning-enablement" );
         String location = source.getSource( repo );

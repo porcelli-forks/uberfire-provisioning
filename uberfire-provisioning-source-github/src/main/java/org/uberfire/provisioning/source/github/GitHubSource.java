@@ -19,19 +19,18 @@ package org.uberfire.provisioning.source.github;
 import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.source.Source;
 
-public class GitSource implements Source {
+import static org.uberfire.commons.validation.PortablePreconditions.*;
+
+public class GitHubSource implements Source {
 
     private final GitHubRepository repository;
-    private final Path path;
 
-    public GitSource( final GitHubRepository repository,
-                      final Path path ) {
-        this.repository = repository;
-        this.path = path;
+    public GitHubSource( final GitHubRepository repository ) {
+        this.repository = checkNotNull( "repository", repository );
     }
 
     @Override
     public Path getPath() {
-        return path;
+        return null;
     }
 }

@@ -16,22 +16,28 @@
 
 package org.uberfire.provisioning.source.github;
 
-import org.uberfire.java.nio.file.Path;
-import org.uberfire.provisioning.source.Source;
+import org.uberfire.provisioning.security.Credentials;
 
-public class GitSource implements Source {
+public class GitCredentials implements Credentials {
 
-    private final GitHubRepository repository;
-    private final Path path;
+    private final String user;
+    private final String passw;
 
-    public GitSource( final GitHubRepository repository,
-                      final Path path ) {
-        this.repository = repository;
-        this.path = path;
+    public GitCredentials() {
+        this( null, null );
     }
 
-    @Override
-    public Path getPath() {
-        return path;
+    public GitCredentials( final String user,
+                           final String passw ) {
+        this.user = user;
+        this.passw = passw;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassw() {
+        return passw;
     }
 }

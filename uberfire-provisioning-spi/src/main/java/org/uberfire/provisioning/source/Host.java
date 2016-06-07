@@ -16,30 +16,28 @@
 
 package org.uberfire.provisioning.source;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.uberfire.provisioning.security.Credentials;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
-/**
- * @author salaboy
- *         Type to represent a Source Code Repository
- */
 @JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
-public interface Repository {
+public interface Host<C extends Credentials> {
 
     String getId();
 
     String getName();
 
-    /*
-    * Retrieve the source code from a Repository
-    * returns the location (path) of the obtained code
-    * @throws SourcingException if the repository cannot  be located or the code cannot be retrieved
-    * @param repository a source code Repository to use as Source for our projects
-    * @return a String with the path to the retrieved source code
-    * @see Repository
-    */
-    Source getSource( final String root,
-                      final String... path );
+    Repository getRepository( final String id );
+
+    Repository getRepository( final String id,
+                              final Map<String, String> config );
+
+    Repository getRepository( final C credential,
+                              final String repositoryId,
+                              final Map<String, String> config );
+
 }

@@ -76,9 +76,7 @@ public class InMemorySourceRegistry implements SourceRegistry {
     @Override
     public void registerProject( Repository repo,
                                  Project project ) {
-        if ( projectsByRepo.get( repo ) == null ) {
-            projectsByRepo.put( repo, new ArrayList<>() );
-        }
+        projectsByRepo.putIfAbsent( repo, new ArrayList<>() );
         projectsByRepo.get( repo ).add( project );
     }
 
