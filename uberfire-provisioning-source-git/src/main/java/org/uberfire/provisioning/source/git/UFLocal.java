@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.source.git;
 
 import java.math.BigInteger;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
@@ -30,25 +31,25 @@ import static org.uberfire.commons.validation.PortablePreconditions.*;
 /**
  * @author salaboy
  */
-public class GitHub implements Host<GitCredentials> {
+public class UFLocal implements Host<GitCredentials> {
 
     private final String id;
     private final String name;
     private final GitCredentials credentials;
     private final ConfigProperties configProperties;
 
-    public GitHub() {
+    public UFLocal() {
         this( new GitCredentials() );
     }
 
-    public GitHub( final GitCredentials credentials ) {
+    public UFLocal( final GitCredentials credentials ) {
         this( credentials, new ConfigProperties( System.getProperties() ) );
     }
 
-    public GitHub( final GitCredentials credentials,
-                   final ConfigProperties configProperties ) {
-        this.id = toHex( "GitHub" );
-        this.name = "GitHub";
+    public UFLocal( final GitCredentials credentials,
+                    final ConfigProperties configProperties ) {
+        this.id = toHex( "UFLocal" );
+        this.name = "UFLocal";
         this.credentials = credentials;
         this.configProperties = configProperties;
     }
@@ -80,23 +81,8 @@ public class GitHub implements Host<GitCredentials> {
                                      final Map<String, String> env ) {
         checkNotNull( "credential", credential );
         checkNotEmpty( "id", repositoryId );
-        checkCondition( "id must have a slash", repositoryId.contains( "/" ) );
-        String ids[] = repositoryId.split( "/" );
-        final Protocol protocol;
-        if ( env != null && !env.isEmpty() ) {
-            final String _protocol = env.getOrDefault( "protocol", Protocol.HTTPS.toString() );
-            Protocol tempProtocol;
-            try {
-                tempProtocol = Protocol.valueOf( _protocol );
-            } catch ( Exception ex ) {
-                tempProtocol = Protocol.HTTPS;
-            }
-            protocol = tempProtocol;
-        } else {
-            protocol = Protocol.HTTPS;
-        }
 
-        return new GitHubRepository( this, repositoryId, ids[ 0 ], ids[ 1 ], protocol.toURI( "github.com", repositoryId ), credential, env, configProperties );
+        return new GitRepository( this, repositoryId, repositoryId, URI.create( "git://local" ), credential, env, configProperties );
     }
 
     @Override
@@ -104,11 +90,11 @@ public class GitHub implements Host<GitCredentials> {
         if ( this == o ) {
             return true;
         }
-        if ( !( o instanceof GitHub ) ) {
+        if ( !( o instanceof UFLocal ) ) {
             return false;
         }
 
-        final GitHub gitHub = (GitHub) o;
+        final UFLocal gitHub = (UFLocal) o;
 
         return id.equals( gitHub.id ) && name.equals( gitHub.name );
     }

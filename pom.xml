@@ -16,7 +16,7 @@
     <module>uberfire-provisioning-registry-local</module>
     <module>uberfire-provisioning-integration-tests</module>
     <module>extras</module>
-    <module>uberfire-provisioning-source-github</module>
+    <module>uberfire-provisioning-source-git</module>
     <module>uberfire-provisioning-local-provider</module>
     <module>uberfire-provisioning-services-api</module>
     <module>uberfire-provisioning-services-impl</module>
@@ -102,7 +102,7 @@
       </dependency>
       <dependency>
         <groupId>org.uberfire.provisioning</groupId>
-        <artifactId>uberfire-provisioning-source-github</artifactId>
+        <artifactId>uberfire-provisioning-source-git</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

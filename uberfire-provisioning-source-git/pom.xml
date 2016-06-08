@@ -6,8 +6,8 @@
     <artifactId>uberfire-provisioning</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>uberfire-provisioning-source-github</artifactId>
-  <name>Uberfire Provisioning :: Source GitHub</name>
+  <artifactId>uberfire-provisioning-source-git</artifactId>
+  <name>Uberfire Provisioning :: Source Git</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>

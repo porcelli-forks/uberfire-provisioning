@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.source.git;
 
-import java.net.URI;
+import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.source.Source;
 
-public enum Protocol {
-    SSH, HTTPS;
+public class GitSource implements Source {
 
-    public URI toURI( final String host,
-                      final String id ) {
-        return URI.create( toString().toLowerCase() + "://" + host + "/" + id + ".git" );
+    private final GitRepository repository;
+    private final Path path;
+
+    public GitSource( final GitRepository repository,
+                      final Path path ) {
+        this.repository = repository;
+        this.path = path;
+    }
+
+    @Override
+    public Path getPath() {
+        return path;
     }
 }

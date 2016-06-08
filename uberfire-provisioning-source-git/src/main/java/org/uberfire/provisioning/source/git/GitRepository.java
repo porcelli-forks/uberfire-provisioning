@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.source.git;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -31,11 +31,10 @@ import org.uberfire.provisioning.source.Source;
 
 import static org.uberfire.commons.validation.PortablePreconditions.*;
 
-public class GitHubRepository implements Repository {
+public class GitRepository implements Repository {
 
     private final Host host;
     private final String id;
-    private final String group;
     private final String name;
     private final URI uri;
     private final GitCredentials credentials;
@@ -43,17 +42,15 @@ public class GitHubRepository implements Repository {
     private final Map<String, String> env = new HashMap<>();
     private FileSystem fileSystem = null;
 
-    public GitHubRepository( final Host host,
-                             final String id,
-                             final String group,
-                             final String name,
-                             final URI uri,
-                             final GitCredentials credentials,
-                             final Map<String, String> env,
-                             final ConfigProperties config ) {
+    public GitRepository( final Host host,
+                          final String id,
+                          final String name,
+                          final URI uri,
+                          final GitCredentials credentials,
+                          final Map<String, String> env,
+                          final ConfigProperties config ) {
         this.host = checkNotNull( "host", host );
         this.id = checkNotEmpty( "id", id );
-        this.group = checkNotEmpty( "group", group );
         this.name = checkNotEmpty( "name", name );
         this.uri = checkNotNull( "uri", uri );
         this.credentials = checkNotNull( "credentials", credentials );

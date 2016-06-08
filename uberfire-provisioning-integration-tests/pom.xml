@@ -24,7 +24,7 @@
 
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>
-      <artifactId>uberfire-provisioning-source-github</artifactId>
+      <artifactId>uberfire-provisioning-source-git</artifactId>
       <scope>test</scope>
     </dependency>
 
