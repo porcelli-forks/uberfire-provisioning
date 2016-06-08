@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.uberfire.provisioning.runtime.providers;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+
 /**
- * @author salaboy
- *         This class provides the definition for a ProviderType.
- *         Different provider types can be implemented and discovered at runtime.
+ * @author salaboy This class provides the definition for a ProviderType.
+ * Different provider types can be implemented and discovered at runtime.
  */
+@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
 public interface ProviderType {
 
     String getProviderTypeName();
@@ -28,5 +31,11 @@ public interface ProviderType {
     String getVersion();
 
     Class getProvider();
+
+    void setProviderTypeName(String providerTypeName);
+
+    void setVersion(String version);
+
+    void setProvider(Class providerClass);
 
 }

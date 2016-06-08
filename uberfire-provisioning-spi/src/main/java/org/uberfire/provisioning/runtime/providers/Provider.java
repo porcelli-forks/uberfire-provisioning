@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.uberfire.provisioning.runtime.providers;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,10 +25,10 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
 /**
  * @author salaboy
- *         <p>
- *         A provider represent a running entity that allows us to provision new
- *         runtimes. Such as: Docker, Kubernetes, Application Servers (Wildfly, Tomcat,
- *         etc)
+ * <p>
+ * A provider represent a running entity that allows us to provision new
+ * runtimes. Such as: Docker, Kubernetes, Application Servers (Wildfly, Tomcat,
+ * etc)
  */
 @JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
 public interface Provider {
@@ -40,8 +39,12 @@ public interface Provider {
 
     ProviderType getProviderType();
 
+    void setConfig(ProviderConfiguration config);
+
+    void setProviderType(ProviderType providerType);
+
     Runtime create( RuntimeConfiguration config ) throws ProvisioningException;
 
-    void destroy( String runtimeId ) throws ProvisioningException;
+    void destroy(String runtimeId) throws ProvisioningException;
 
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.uberfire.provisioning.runtime.providers.base;
 
 import org.uberfire.provisioning.runtime.providers.Provider;
@@ -29,8 +28,11 @@ public abstract class BaseProvider implements Provider {
     protected ProviderConfiguration config;
     protected ProviderType providerType;
 
-    public BaseProvider( String name,
-                         ProviderType providerType ) {
+    public BaseProvider() {
+    }
+    
+    public BaseProvider(String name,
+            ProviderType providerType) {
         this.name = name;
         this.providerType = providerType;
     }
@@ -40,7 +42,7 @@ public abstract class BaseProvider implements Provider {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -52,6 +54,16 @@ public abstract class BaseProvider implements Provider {
     @Override
     public ProviderType getProviderType() {
         return providerType;
+    }
+
+    @Override
+    public void setConfig(ProviderConfiguration config) {
+        this.config = config;
+    }
+
+    @Override
+    public void setProviderType(ProviderType providerType) {
+        this.providerType = providerType;
     }
 
 }

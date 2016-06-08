@@ -14,6 +14,12 @@
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>
       <artifactId>uberfire-provisioning-services-api</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.spec.javax.ws.rs</groupId>
+          <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- Registry Local Mock Implementation -->
     <dependency>
@@ -47,6 +53,12 @@
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>
       <artifactId>uberfire-provisioning-docker-provider</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>javax.ws.rs-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>

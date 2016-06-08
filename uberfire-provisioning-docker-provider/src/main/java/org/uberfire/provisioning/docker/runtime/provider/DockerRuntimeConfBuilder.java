@@ -45,6 +45,11 @@ public class DockerRuntimeConfBuilder {
         return instance;
     }
 
+    public DockerRuntimeConfBuilder setProviderName( String providerName ) {
+        config.setProviderName(providerName);
+        return instance;
+    }
+    
     public RuntimeConfiguration get() {
         return config;
     }

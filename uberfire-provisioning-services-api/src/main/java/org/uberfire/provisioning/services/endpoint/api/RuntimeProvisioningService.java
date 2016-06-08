@@ -67,7 +67,7 @@ public interface RuntimeProvisioningService {
     String newRuntime( @NotNull RuntimeConfiguration conf ) throws BusinessException;
 
     @GET
-    @Produces("application/json")
+    @Produces(value = APPLICATION_JSON)
     @Path("runtimes/")
     List<Runtime> getAllRuntimes() throws BusinessException;
 

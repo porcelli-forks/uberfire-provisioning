@@ -22,9 +22,9 @@ import org.uberfire.provisioning.runtime.providers.ProviderType;
  */
 public abstract class BaseProviderType implements ProviderType {
 
-    private final String providerName;
-    private final String version;
-    private final Class provider;
+    private String providerName;
+    private String version;
+    private Class provider;
 
     public BaseProviderType(String providerName,
             String version,
@@ -47,6 +47,21 @@ public abstract class BaseProviderType implements ProviderType {
     @Override
     public Class getProvider() {
         return provider;
+    }
+
+    @Override
+    public void setProviderTypeName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    @Override
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    @Override
+    public void setProvider(Class provider) {
+        this.provider = provider;
     }
 
     @Override

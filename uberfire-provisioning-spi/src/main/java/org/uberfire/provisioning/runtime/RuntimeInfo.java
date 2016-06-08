@@ -16,11 +16,16 @@
 
 package org.uberfire.provisioning.runtime;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+
 /**
  * @author salaboy This class represent the Container instance information,
  *         which might describe how to talk with the application/image instance and
  *         which features are provided
  */
+@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
 public interface RuntimeInfo {
 
     String getId();

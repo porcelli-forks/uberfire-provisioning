@@ -36,6 +36,9 @@ public class DockerProvider extends BaseProvider {
     @XmlTransient
     private DockerClient docker;
 
+    public DockerProvider() {
+    }
+    
     public DockerProvider( ProviderConfiguration config ) {
         this( config, new DockerProviderType() );
     }

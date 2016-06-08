@@ -44,6 +44,10 @@ public class KubernetesProvider extends BaseProvider {
     @XmlTransient
     private DefaultKubernetesClient kubernetes;
 
+    public KubernetesProvider() {
+    }
+
+    
     public KubernetesProvider( ProviderConfiguration config,
                                ProviderType type ) {
         super( config.getName(), type );

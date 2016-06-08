@@ -39,6 +39,9 @@ public class Wildfly10Provider extends BaseProvider {
     @JsonIgnore
     private Wildfly10RemoteClient wildfly;
 
+    public Wildfly10Provider() {
+    }
+
     public Wildfly10Provider( ProviderConfiguration config ) {
         this( config, new Wildfly10ProviderType() );
 

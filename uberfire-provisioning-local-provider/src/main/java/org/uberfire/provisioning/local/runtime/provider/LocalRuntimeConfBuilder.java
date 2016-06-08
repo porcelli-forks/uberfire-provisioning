@@ -33,6 +33,11 @@ public class LocalRuntimeConfBuilder {
         return instance;
     }
 
+    public LocalRuntimeConfBuilder setProviderName( String providerName ) {
+        config.setProviderName(providerName);
+        return instance;
+    }
+    
     public LocalRuntimeConfBuilder setJar( String jar ) {
         config.setJar( jar );
         return instance;

@@ -20,6 +20,7 @@
     <module>uberfire-provisioning-local-provider</module>
     <module>uberfire-provisioning-services-api</module>
     <module>uberfire-provisioning-services-impl</module>
+    <module>uberfire-provisioning-remote-client</module>
   </modules>
 
   <properties>

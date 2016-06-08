@@ -30,6 +30,9 @@ import static java.util.UUID.*;
  */
 public class LocalProvider extends BaseProvider {
 
+    public LocalProvider() {
+    }
+
     public LocalProvider( ProviderConfiguration config ) {
         this( config, new LocalProviderType() );
     }

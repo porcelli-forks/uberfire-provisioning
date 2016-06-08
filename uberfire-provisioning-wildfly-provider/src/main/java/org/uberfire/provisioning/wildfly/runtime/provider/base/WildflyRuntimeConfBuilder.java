@@ -41,6 +41,11 @@ public class WildflyRuntimeConfBuilder {
         return instance;
     }
 
+    public WildflyRuntimeConfBuilder setProviderName( String providerName ) {
+        config.setProviderName(providerName);
+        return instance;
+    }
+    
     public RuntimeConfiguration get() {
         return config;
     }

@@ -59,6 +59,11 @@ public class KubernetesRuntimeConfBuilder {
         config.setImage( image );
         return instance;
     }
+    
+    public KubernetesRuntimeConfBuilder setProviderName( String providerName ) {
+        config.setProviderName(providerName);
+        return instance;
+    }
 
     public RuntimeConfiguration get() {
         return config;
