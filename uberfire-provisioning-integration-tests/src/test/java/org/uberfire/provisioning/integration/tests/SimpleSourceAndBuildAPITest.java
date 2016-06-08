@@ -47,9 +47,9 @@ import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
 import org.uberfire.provisioning.registry.local.InMemorySourceRegistry;
 import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
-import org.uberfire.provisioning.source.github.GitHub;
-import org.uberfire.provisioning.source.github.GitHubRepository;
-import org.uberfire.provisioning.source.github.GitSource;
+import org.uberfire.provisioning.source.git.GitHub;
+import org.uberfire.provisioning.source.git.GitRepository;
+import org.uberfire.provisioning.source.git.GitSource;
 
 /**
  * @author salaboy
@@ -104,7 +104,7 @@ public class SimpleSourceAndBuildAPITest {
     public void helloSourceAndBuildAPIs() throws SourcingException, BuildException {
 
         final GitHub gitHub = new GitHub();
-        final GitHubRepository repository = (GitHubRepository) gitHub.getRepository( "salaboy/livespark-playground" );
+        final GitRepository repository = (GitRepository) gitHub.getRepository( "salaboy/livespark-playground" );
         final Source source = repository.getSource( "provisioning-enablement" );
 
         sourceRegistry.registerRepositorySources( source.getPath(), repository );

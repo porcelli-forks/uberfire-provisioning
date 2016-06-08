@@ -42,7 +42,7 @@
     <!-- Source Github  Implementation -->
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>
-      <artifactId>uberfire-provisioning-source-github</artifactId>
+      <artifactId>uberfire-provisioning-source-git</artifactId>
     </dependency>
 
     <!-- Providers -->

@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.source.git;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.uberfire.provisioning.source.Source;
 
@@ -26,13 +34,28 @@ import static org.junit.Assert.*;
  */
 public class CloneTestJUnitTest {
 
-    public CloneTestJUnitTest() {
+    private File tempPath;
+
+    @Before
+    public void setUp() {
+        try {
+            tempPath = Files.createTempDirectory( "xxx" ).toFile();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void tearDown() {
+        FileUtils.deleteQuietly( tempPath );
     }
 
     @Test
     public void hello() throws Exception {
         final GitHub gitHub = new GitHub();
-        final GitHubRepository repository = (GitHubRepository) gitHub.getRepository( "pefernan/livespark-playground" );
+        final GitRepository repository = (GitRepository) gitHub.getRepository( "pefernan/livespark-playground", new HashMap<String, String>() {{
+            put( "out-dir", tempPath.getAbsolutePath() );
+        }} );
         final Source source = repository.getSource( "master" );
         assertNotNull( source );
     }

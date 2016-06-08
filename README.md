@@ -342,7 +342,7 @@ Before being able to provision, we need to get the sources for our project and b
 POST http://localhost:8082/api/sources/
 ```
 {
-    "org.uberfire.provisioning.source.github.GitHubRepository":{
+    "org.uberfire.provisioning.source.git.GitHubRepository":{
         "name":"livespark playground",
         "uri":"https://github.com/Salaboy/livespark-playground.git",
         "branch":"provisioning-enablement"

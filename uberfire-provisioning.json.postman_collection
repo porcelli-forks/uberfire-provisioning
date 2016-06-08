@@ -699,7 +699,7 @@
 			"description": "",
 			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
 			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.source.github.GitHubRepository\":{\n        \"name\":\"livespark playground\",\n        \"uri\":\"https://github.com/Salaboy/livespark-playground.git\",\n        \"branch\":\"provisioning-enablement\"\n    }\n}"
+			"rawModeData": "{\n    \"org.uberfire.provisioning.source.git.GitHubRepository\":{\n        \"name\":\"livespark playground\",\n        \"uri\":\"https://github.com/Salaboy/livespark-playground.git\",\n        \"branch\":\"provisioning-enablement\"\n    }\n}"
 		},
 		{
 			"id": "f904089d-1a4a-2f55-4da0-bc3df1f7fb85",

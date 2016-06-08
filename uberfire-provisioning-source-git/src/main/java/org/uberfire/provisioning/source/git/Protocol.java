@@ -14,30 +14,15 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.source.github;
+package org.uberfire.provisioning.source.git;
 
-import org.uberfire.provisioning.security.Credentials;
+import java.net.URI;
 
-public class GitCredentials implements Credentials {
+public enum Protocol {
+    SSH, HTTPS;
 
-    private final String user;
-    private final String passw;
-
-    public GitCredentials() {
-        this( null, null );
-    }
-
-    public GitCredentials( final String user,
-                           final String passw ) {
-        this.user = user;
-        this.passw = passw;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getPassw() {
-        return passw;
+    public URI toURI( final String host,
+                      final String id ) {
+        return URI.create( toString().toLowerCase() + "://" + host + "/" + id + ".git" );
     }
 }
