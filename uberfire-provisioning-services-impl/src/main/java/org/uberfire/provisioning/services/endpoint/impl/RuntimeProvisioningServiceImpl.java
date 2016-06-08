@@ -17,18 +17,12 @@
 package org.uberfire.provisioning.services.endpoint.impl;
 
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.util.AnnotationLiteral;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
 
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
@@ -46,36 +40,26 @@ import org.uberfire.provisioning.services.endpoint.impl.factories.ProviderFactor
 @ApplicationScoped
 public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningService {
 
-    @Context
-    private SecurityContext context;
-
     @Inject
-    private BeanManager beanManager;
-    
+    private Instance<ProviderType> providerTypeInstances;
+
     @Inject
     private RuntimeRegistry registry;
 
     private boolean initialized = false;
 
-    public RuntimeProvisioningServiceImpl() {
-
-    }
-
     @PostConstruct
     public void cacheBeans() {
         if ( !initialized ) {
-            Set<Bean<?>> beans = beanManager.getBeans(ProviderType.class, new AnnotationLiteral<Any>() {});
-            for(Bean b : beans ){
+            providerTypeInstances.iterator().forEachRemaining( pt -> {
                 try {
-                    // I don't want to register the CDI proxy, I need a fresh instance :(
-                    registry.registerProviderType((ProviderType) b.getBeanClass().newInstance());
-                } catch (InstantiationException | IllegalAccessException ex) {
-                    Logger.getLogger(RuntimeProvisioningServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    registry.registerProviderType( pt );
+                } catch ( Exception ex ) {
+                    Logger.getLogger( RuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
                 }
-            }
+            } );
             initialized = true;
         }
-
     }
 
     @Override
@@ -110,7 +94,7 @@ public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningServic
             return runtime.getId();
         } catch ( Exception ex ) {
             Logger.getLogger( RuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
-            throw new BusinessException("Runtime Creation for provider " + providerName + "Failed", ex);
+            throw new BusinessException( "Runtime Creation for provider " + providerName + "Failed", ex );
         }
 
     }

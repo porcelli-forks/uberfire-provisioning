@@ -22,8 +22,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
 
 import org.uberfire.provisioning.build.Binary;
 import org.uberfire.provisioning.build.Build;
@@ -35,24 +33,14 @@ import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.services.endpoint.api.BuildService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
-/**
- * @author salaboy
- */
 @ApplicationScoped
 public class BuildServiceImpl implements BuildService {
-
-    @Context
-    private SecurityContext context;
 
     @Inject
     private Build build;
 
     @Inject
     private BuildRegistry registry;
-
-    public BuildServiceImpl() {
-
-    }
 
     @PostConstruct
     public void init() {

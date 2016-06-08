@@ -24,8 +24,6 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.PipelineContext;
@@ -40,17 +38,10 @@ import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 @ApplicationScoped
 public class PipelineServiceImpl implements PipelineService {
 
-    @Context
-    private SecurityContext context;
-
     private Map<String, Pipeline> pipelines = new HashMap<String, Pipeline>();
 
     @Inject
     private RuntimeProvisioningService provisioningService;
-
-    public PipelineServiceImpl() {
-
-    }
 
     @PostConstruct
     public void init() {
