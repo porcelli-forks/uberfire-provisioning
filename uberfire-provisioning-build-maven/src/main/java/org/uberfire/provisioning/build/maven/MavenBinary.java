@@ -16,34 +16,33 @@
 
 package org.uberfire.provisioning.build.maven;
 
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Binary;
 import org.uberfire.provisioning.build.Project;
+
+import static org.uberfire.commons.validation.PortablePreconditions.*;
 
 /**
  * @author salaboy
  */
 public class MavenBinary implements Binary {
 
-    private String location;
     private String type;
-    private String name;
     private Project sourceProject;
 
-    public MavenBinary( Project sourceProject ) {
-        this.sourceProject = sourceProject;
-        this.location = sourceProject.getRootPath() + "/" + sourceProject.getPath() + "/target/" + sourceProject.getExpectedBinary();
-        this.name = sourceProject.getExpectedBinary();
+    public MavenBinary( final Project sourceProject ) {
         this.type = "Maven";
+        this.sourceProject = checkNotNull( "sourceProject", sourceProject );
     }
 
     @Override
-    public Project getSourceProject() {
+    public Project getProject() {
         return sourceProject;
     }
 
     @Override
-    public String getLocation() {
-        return location;
+    public Path getPath() {
+        return sourceProject.getPath();
     }
 
     @Override
@@ -53,27 +52,7 @@ public class MavenBinary implements Binary {
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setLocation( String location ) {
-        this.location = location;
-    }
-
-    @Override
-    public void setType( String type ) {
-        this.type = type;
-    }
-
-    @Override
-    public void setName( String name ) {
-        this.name = name;
-    }
-
-    @Override
-    public void setSourceProject( Project sourceProject ) {
-        this.sourceProject = sourceProject;
+        return sourceProject.getExpectedBinary();
     }
 
 }

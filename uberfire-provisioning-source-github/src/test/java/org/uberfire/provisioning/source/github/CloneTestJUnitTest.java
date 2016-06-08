@@ -17,13 +17,9 @@
 package org.uberfire.provisioning.source.github;
 
 import org.junit.Test;
-import org.uberfire.java.nio.IOException;
-import org.uberfire.java.nio.file.FileVisitResult;
-import org.uberfire.java.nio.file.FileVisitor;
-import org.uberfire.java.nio.file.Files;
-import org.uberfire.java.nio.file.Path;
-import org.uberfire.java.nio.file.attribute.BasicFileAttributes;
 import org.uberfire.provisioning.source.Source;
+
+import static org.junit.Assert.*;
 
 /**
  * @author salaboy
@@ -38,34 +34,6 @@ public class CloneTestJUnitTest {
         final GitHub gitHub = new GitHub();
         final GitHubRepository repository = (GitHubRepository) gitHub.getRepository( "pefernan/livespark-playground" );
         final Source source = repository.getSource( "master" );
-
-        Files.walkFileTree( source.getPath(), new FileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory( final Path dir,
-                                                      final BasicFileAttributes attrs ) throws IOException {
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFile( final Path file,
-                                              final BasicFileAttributes attrs ) throws IOException {
-                System.out.println( file.toUri().toString() );
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFileFailed( final Path file,
-                                                    final IOException exc ) throws IOException {
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory( final Path dir,
-                                                       final IOException exc ) throws IOException {
-                return FileVisitResult.CONTINUE;
-            }
-        } );
-
-        System.out.println( source.getPath().toString() );
+        assertNotNull( source );
     }
 }

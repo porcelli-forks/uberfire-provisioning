@@ -16,13 +16,8 @@
 
 package org.uberfire.provisioning.build.maven;
 
-import org.uberfire.provisioning.exceptions.BuildException;
 import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.Stage;
-
-import static java.lang.System.*;
-import static java.util.logging.Level.*;
-import static java.util.logging.Logger.*;
 
 /**
  * @author salaboy
@@ -42,30 +37,30 @@ public class MavenBuildStage implements Stage {
 
     @Override
     public void execute( PipelineContext context ) {
-        try {
-            int buildResult = 0;
-            MavenBuild build = new MavenBuild();
-            MavenProject mavenProject = new MavenProject( (String) context.getData().get( "projectName" ) );
-            mavenProject.setRootPath( (String) context.getData().get( "projectPath" ) );
-            mavenProject.setExpectedBinary( (String) context.getData().get( "expectedBinary" ) );
-            try {
-
-                buildResult = build.build( mavenProject );
-            } catch ( BuildException ex ) {
-                getLogger( MavenBuildStage.class.getName() ).log( SEVERE, null, ex );
-                return;
-            }
-
-            if ( buildResult != 0 ) {
-                out.println( " >>> Build Failed! " );
-                return;
-            }
-            String binaryLocation = build.binariesLocation( mavenProject );
-            context.getData().put( "warPath", binaryLocation );
-
-        } catch ( BuildException ex ) {
-            getLogger( MavenBuildStage.class.getName() ).log( SEVERE, null, ex );
-        }
+//        try {
+//            int buildResult = 0;
+//            MavenBuild build = new MavenBuild();
+//            MavenProject mavenProject = new MavenProject( (String) context.getData().get( "projectName" ) );
+//            mavenProject.setRootPath( (String) context.getData().get( "projectPath" ) );
+//            mavenProject.setExpectedBinary( (String) context.getData().get( "expectedBinary" ) );
+//            try {
+//
+//                buildResult = build.build( mavenProject );
+//            } catch ( BuildException ex ) {
+//                getLogger( MavenBuildStage.class.getName() ).log( SEVERE, null, ex );
+//                return;
+//            }
+//
+//            if ( buildResult != 0 ) {
+//                out.println( " >>> Build Failed! " );
+//                return;
+//            }
+//            String binaryLocation = build.binariesPath( mavenProject );
+//            context.getData().put( "warPath", binaryLocation );
+//
+//        } catch ( BuildException ex ) {
+//            getLogger( MavenBuildStage.class.getName() ).log( SEVERE, null, ex );
+//        }
 
     }
 

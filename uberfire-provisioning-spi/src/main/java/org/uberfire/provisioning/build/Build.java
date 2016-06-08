@@ -16,6 +16,7 @@
 
 package org.uberfire.provisioning.build;
 
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.exceptions.BuildException;
 
 /**
@@ -43,12 +44,12 @@ public interface Build {
     boolean binariesReady( Project project ) throws BuildException;
 
     /* 
-    * Returns the location of the binaries if exist
+    * Returns the Path of the binaries if exist
     * @param project the project for the binaries that we are looking for 
     * @return String with the location of the binaries
     * @see Project
     */
-    String binariesLocation( Project project ) throws BuildException;
+    Path binariesPath( Project project ) throws BuildException;
 
     /* 
     * Clean the generated binaries if exist

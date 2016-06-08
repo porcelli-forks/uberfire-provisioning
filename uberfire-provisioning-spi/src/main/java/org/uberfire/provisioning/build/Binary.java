@@ -17,6 +17,7 @@
 package org.uberfire.provisioning.build;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.uberfire.java.nio.file.Path;
 
 /**
  * @author salaboy
@@ -25,19 +26,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface Binary {
 
-    Project getSourceProject();
+    Project getProject();
 
-    String getLocation();
+    Path getPath();
 
     String getType();
 
     String getName();
 
-    void setLocation( String location );
-
-    void setType( String type );
-
-    void setName( String name );
-
-    void setSourceProject( Project sourceProject );
 }

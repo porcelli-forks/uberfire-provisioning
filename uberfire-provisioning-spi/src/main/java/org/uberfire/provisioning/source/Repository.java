@@ -32,6 +32,8 @@ public interface Repository {
 
     String getName();
 
+    Source getSource();
+
     /*
     * Retrieve the source code from a Repository
     * returns the location (path) of the obtained code

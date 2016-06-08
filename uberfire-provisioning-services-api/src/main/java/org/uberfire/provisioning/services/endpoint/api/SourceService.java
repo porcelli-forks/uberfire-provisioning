@@ -44,8 +44,8 @@ public interface SourceService {
 
     @GET
     @Produces(value = APPLICATION_JSON)
-    @Path("{id}/location")
-    String getLocationByRepositoryId( @PathParam("id") String repoId ) throws BusinessException;
+    @Path("{id}/path")
+    String getPathByRepositoryId( @PathParam("id") String repoId ) throws BusinessException;
 
     @POST
     @Consumes(value = APPLICATION_JSON)

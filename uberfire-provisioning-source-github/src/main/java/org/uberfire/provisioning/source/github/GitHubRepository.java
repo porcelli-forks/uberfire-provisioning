@@ -76,6 +76,11 @@ public class GitHubRepository implements Repository {
     }
 
     @Override
+    public Source getSource() {
+        return getSource( "master" );
+    }
+
+    @Override
     public Source getSource( final String _root,
                              final String... _path ) {
         if ( fileSystem == null ) {
