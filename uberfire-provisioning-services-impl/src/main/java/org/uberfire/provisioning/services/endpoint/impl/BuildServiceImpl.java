@@ -77,7 +77,7 @@ public class BuildServiceImpl implements BuildService {
 
             registry.registerBinary( binary );
 
-            return build.binariesLocation( project );
+            return build.binariesPath( project ).toUri().toString();
 
         } catch ( BuildException ex ) {
             Logger.getLogger( BuildServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
@@ -98,7 +98,7 @@ public class BuildServiceImpl implements BuildService {
 
             registry.registerBinary( binary );
 
-            return build.binariesLocation( project );
+            return build.binariesPath( project ).toUri().toString();
 
         } catch ( BuildException ex ) {
             Logger.getLogger( BuildServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );

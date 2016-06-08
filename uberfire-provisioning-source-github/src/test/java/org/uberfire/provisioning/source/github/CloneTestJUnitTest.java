@@ -16,17 +16,9 @@
 
 package org.uberfire.provisioning.source.github;
 
-import java.io.File;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
 
-import static java.lang.System.*;
 import static org.junit.Assert.*;
 
 /**
@@ -37,31 +29,11 @@ public class CloneTestJUnitTest {
     public CloneTestJUnitTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void hello() throws Exception {
-        Source source = new GitSource();
-        Repository gitHubRepository = new GitHubRepository( "Livespark Playground" );
-        gitHubRepository.setURI( "https://github.com/pefernan/livespark-playground.git" );
-
-        String destinationPath = source.getSource( gitHubRepository );
-        out.println( "TMP Created Dir: " + destinationPath );
-        assertTrue( new File( destinationPath ).isDirectory() );
-
+        final GitHub gitHub = new GitHub();
+        final GitHubRepository repository = (GitHubRepository) gitHub.getRepository( "pefernan/livespark-playground" );
+        final Source source = repository.getSource( "master" );
+        assertNotNull( source );
     }
 }

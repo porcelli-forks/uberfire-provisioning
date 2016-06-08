@@ -16,30 +16,53 @@
 
 package org.uberfire.provisioning.source.github;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.uberfire.commons.config.ConfigProperties;
+import org.uberfire.java.nio.file.FileSystem;
+import org.uberfire.java.nio.file.FileSystemAlreadyExistsException;
+import org.uberfire.java.nio.file.FileSystems;
+import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.source.Host;
 import org.uberfire.provisioning.source.Repository;
+import org.uberfire.provisioning.source.Source;
 
-import static java.util.UUID.*;
+import static org.uberfire.commons.validation.PortablePreconditions.*;
 
-/**
- * @author salaboy
- */
 public class GitHubRepository implements Repository {
 
-    private String id;
-    private String URI;
-    private String name;
-    private String type;
-    private String branch;
-    private boolean bare = false;
+    private final Host host;
+    private final String id;
+    private final String group;
+    private final String name;
+    private final URI uri;
+    private final GitCredentials credentials;
+    private final String bareRepoDir;
+    private final Map<String, String> env = new HashMap<>();
+    private FileSystem fileSystem = null;
 
-    public GitHubRepository() {
-        this.type = "GitHub";
-        this.id = randomUUID().toString().substring( 0, 12 );
-    }
-
-    public GitHubRepository( String name ) {
-        this();
-        this.name = name;
+    public GitHubRepository( final Host host,
+                             final String id,
+                             final String group,
+                             final String name,
+                             final URI uri,
+                             final GitCredentials credentials,
+                             final Map<String, String> env,
+                             final ConfigProperties config ) {
+        this.host = checkNotNull( "host", host );
+        this.id = checkNotEmpty( "id", id );
+        this.group = checkNotEmpty( "group", group );
+        this.name = checkNotEmpty( "name", name );
+        this.uri = checkNotNull( "uri", uri );
+        this.credentials = checkNotNull( "credentials", credentials );
+        if ( env != null && !env.isEmpty() ) {
+            this.env.putAll( env );
+        }
+        checkNotNull( "config", config );
+        final ConfigProperties.ConfigProperty currentDirectory = config.get( "user.dir", null );
+        this.bareRepoDir = config.get( "org.uberfire.provisioning.git.dir", currentDirectory.getValue() ).getValue();
     }
 
     @Override
@@ -48,51 +71,53 @@ public class GitHubRepository implements Repository {
     }
 
     @Override
-    public String getURI() {
-        return URI;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public String getType() {
-        return type;
+    public Source getSource() {
+        return getSource( "master" );
     }
 
     @Override
-    public boolean isBare() {
-        return bare;
-    }
+    public Source getSource( final String _root,
+                             final String... _path ) {
+        if ( fileSystem == null ) {
+            final URI fsURI = URI.create( "git://" + name );
+            try {
+                fileSystem = FileSystems.newFileSystem( fsURI, new HashMap<String, Object>( env ) {{
+                    putIfAbsent( "origin", uri.toString() );
+                    putIfAbsent( "out-dir", bareRepoDir );
+                    if ( credentials.getUser() != null ) {
+                        putIfAbsent( "username", credentials.getUser() );
+                        putIfAbsent( "password", credentials.getPassw() );
+                    }
+                }} );
+            } catch ( FileSystemAlreadyExistsException fsae ) {
+                try {
+                    fileSystem = FileSystems.getFileSystem( fsURI );
+                } catch ( final Exception ex ) {
+                    throw new RuntimeException( ex );
+                }
+            }
+        }
 
-    @Override
-    public void setURI( String URI ) {
-        this.URI = URI;
-    }
+        final String root;
+        if ( _root == null || _root.isEmpty() ) {
+            root = "master";
+        } else {
+            root = _root;
+        }
+        final String[] path;
+        if ( _path == null || _path.length == 0 ) {
+            path = new String[]{ "/" };
+        } else {
+            path = _path;
+        }
 
-    @Override
-    public void setName( String name ) {
-        this.name = name;
-    }
+        final Path result = fileSystem.getPath( root, path );
 
-    @Override
-    public void setType( String type ) {
-        this.type = type;
+        return new GitSource( this, result );
     }
-
-    @Override
-    public void setBare( boolean bare ) {
-        this.bare = bare;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch( String branch ) {
-        this.branch = branch;
-    }
-
 }

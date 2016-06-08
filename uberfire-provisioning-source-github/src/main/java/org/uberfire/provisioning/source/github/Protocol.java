@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.build;
+package org.uberfire.provisioning.source.github;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.uberfire.java.nio.file.Path;
+import java.net.URI;
 
-/**
- * @author salaboy
- *         Generic Binary type used to store information about the generated binaries.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public interface Binary {
+public enum Protocol {
+    SSH, HTTPS;
 
-    Project getProject();
-
-    Path getPath();
-
-    String getType();
-
-    String getName();
-
+    public URI toURI( final String host,
+                      final String id ) {
+        return URI.create( toString().toLowerCase() + "://" + host + "/" + id + ".git" );
+    }
 }

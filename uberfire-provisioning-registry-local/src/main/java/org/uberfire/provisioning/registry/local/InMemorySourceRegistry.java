@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.source.Repository;
@@ -34,51 +35,48 @@ import org.uberfire.provisioning.source.Repository;
  */
 public class InMemorySourceRegistry implements SourceRegistry {
 
-    private final Map<String, Repository> repositorySourcesLocation;
-    //Store the repository id and location for reverse lookup
-    private final Map<String, String> locationByRepositoryId;
-
+    private final Map<Path, Repository> repositorySourcesPath;
+    //Store the repository id and path for reverse lookup
+    private final Map<String, Path> pathByRepositoryId;
     private final Map<Repository, List<Project>> projectsByRepo;
 
     public InMemorySourceRegistry() {
-        repositorySourcesLocation = new HashMap<>();
-        locationByRepositoryId = new HashMap<>();
+        repositorySourcesPath = new HashMap<>();
+        pathByRepositoryId = new HashMap<>();
         projectsByRepo = new HashMap<>();
     }
 
     @Override
-    public void registerRepositorySources( String location,
-                                           Repository repo ) {
-        repositorySourcesLocation.put( location, repo );
-        locationByRepositoryId.put( repo.getId(), location );
+    public void registerRepositorySources( final Path path,
+                                           final Repository repo ) {
+        repositorySourcesPath.put( path, repo );
+        pathByRepositoryId.put( repo.getId(), path );
     }
 
     @Override
-    public String getRepositoryLocation( Repository repo ) {
-        return locationByRepositoryId.get( repo.getId() );
+    public Path getRepositoryPath( Repository repo ) {
+        return pathByRepositoryId.get( repo.getId() );
     }
 
     @Override
-    public String getRepositoryLocationById( String repoId ) {
-        return locationByRepositoryId.get( repoId );
+    public Path getRepositoryPathById( String repoId ) {
+        return pathByRepositoryId.get( repoId );
     }
 
     @Override
-    public Repository getRepositoryByLocation( String location ) {
-        return repositorySourcesLocation.get( location );
+    public Repository getRepositoryByPath( Path path ) {
+        return repositorySourcesPath.get( path );
     }
 
     @Override
     public List<Repository> getAllRepositories() {
-        return new ArrayList<>( repositorySourcesLocation.values() );
+        return new ArrayList<>( repositorySourcesPath.values() );
     }
 
     @Override
     public void registerProject( Repository repo,
                                  Project project ) {
-        if ( projectsByRepo.get( repo ) == null ) {
-            projectsByRepo.put( repo, new ArrayList<>() );
-        }
+        projectsByRepo.putIfAbsent( repo, new ArrayList<>() );
         projectsByRepo.get( repo ).add( project );
     }
 
@@ -107,9 +105,7 @@ public class InMemorySourceRegistry implements SourceRegistry {
 
     @Override
     public Repository getRepositoryById( String repositoryId ) {
-        String repoLocation = locationByRepositoryId.get( repositoryId );
-        return repositorySourcesLocation.get( repoLocation );
-
+        return repositorySourcesPath.get( pathByRepositoryId.get( repositoryId ) );
     }
 
 }

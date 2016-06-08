@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.build;
+package org.uberfire.provisioning.source.github;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.security.Credentials;
 
-/**
- * @author salaboy
- *         Generic Binary type used to store information about the generated binaries.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public interface Binary {
+public class GitCredentials implements Credentials {
 
-    Project getProject();
+    private final String user;
+    private final String passw;
 
-    Path getPath();
+    public GitCredentials() {
+        this( null, null );
+    }
 
-    String getType();
+    public GitCredentials( final String user,
+                           final String passw ) {
+        this.user = user;
+        this.passw = passw;
+    }
 
-    String getName();
+    public String getUser() {
+        return user;
+    }
 
+    public String getPassw() {
+        return passw;
+    }
 }

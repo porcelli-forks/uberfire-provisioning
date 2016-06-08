@@ -17,6 +17,7 @@
 package org.uberfire.provisioning.build;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.uberfire.java.nio.file.Path;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
@@ -36,16 +37,10 @@ public interface Project {
 
     String getExpectedBinary();
 
-    String getRootPath();
+    Path getRootPath();
 
-    String getPath();
+    Path getPath();
 
-    void setName( String name );
-
-    void setPath( String path );
-
-    void setRootPath( String rootPath );
-
-    void setExpectedBinary( String expectedBinary );
+    Path getBinaryPath();
 
 }

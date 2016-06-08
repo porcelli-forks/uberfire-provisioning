@@ -20,7 +20,6 @@
     <module>uberfire-provisioning-local-provider</module>
     <module>uberfire-provisioning-services-api</module>
     <module>uberfire-provisioning-services-impl</module>
-    <module>uberfire-provisioning-remote-client</module>
   </modules>
 
   <properties>
@@ -110,6 +109,31 @@
         <groupId>org.uberfire.provisioning</groupId>
         <artifactId>uberfire-provisioning-services-api</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire</groupId>
+        <artifactId>uberfire-nio2-model</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire</groupId>
+        <artifactId>uberfire-nio2-api</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire</groupId>
+        <artifactId>uberfire-commons</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire</groupId>
+        <artifactId>uberfire-nio2-jgit</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire</groupId>
+        <artifactId>uberfire-nio2-fs</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>

@@ -16,6 +16,7 @@
 
 package org.uberfire.provisioning.docker.runtime.provider;
 
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Binary;
 import org.uberfire.provisioning.build.Project;
 
@@ -24,25 +25,25 @@ import org.uberfire.provisioning.build.Project;
  */
 public class DockerBinary implements Binary {
 
-    private String location;
+    private Path location;
     private String type;
     private String name;
     private Project sourceProject;
 
-    public DockerBinary( Project sourceProject ) {
+    public DockerBinary( final Project sourceProject ) {
         this.sourceProject = sourceProject;
-        this.location = sourceProject.getName();
+//        this.location = sourceProject.getName();
         this.name = sourceProject.getName();
         this.type = "Docker";
     }
 
     @Override
-    public Project getSourceProject() {
+    public Project getProject() {
         return sourceProject;
     }
 
     @Override
-    public String getLocation() {
+    public Path getPath() {
         return location;
     }
 
@@ -54,26 +55,6 @@ public class DockerBinary implements Binary {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void setLocation( String location ) {
-        this.location = location;
-    }
-
-    @Override
-    public void setType( String type ) {
-        this.type = type;
-    }
-
-    @Override
-    public void setName( String name ) {
-        this.name = name;
-    }
-
-    @Override
-    public void setSourceProject( Project sourceProject ) {
-        this.sourceProject = sourceProject;
     }
 
 }

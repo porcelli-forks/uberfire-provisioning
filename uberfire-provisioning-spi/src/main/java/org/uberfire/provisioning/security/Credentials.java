@@ -14,24 +14,8 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.build;
+package org.uberfire.provisioning.security;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.uberfire.java.nio.file.Path;
-
-/**
- * @author salaboy
- *         Generic Binary type used to store information about the generated binaries.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public interface Binary {
-
-    Project getProject();
-
-    Path getPath();
-
-    String getType();
-
-    String getName();
+public interface Credentials {
 
 }

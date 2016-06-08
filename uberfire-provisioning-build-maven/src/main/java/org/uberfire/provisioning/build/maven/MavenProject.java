@@ -16,30 +16,34 @@
 
 package org.uberfire.provisioning.build.maven;
 
-import org.uberfire.provisioning.build.Project;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
 
-import static java.util.UUID.*;
+import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.build.Project;
 
 /**
  * @author salaboy
  */
 public class MavenProject implements Project {
 
-    private String id;
-    private String name;
-    private String type;
-    private String rootPath;
-    private String path;
-    private String expectedBinary;
+    private final String id;
+    private final String name;
+    private final String type;
+    private final String expectedBinary;
+    private final Path rootPath;
+    private final Path path;
 
-    public MavenProject() {
-        this.id = randomUUID().toString().substring( 0, 12 );
-        this.type = "Maven";
-    }
-
-    public MavenProject( String name ) {
-        this();
+    public MavenProject( final String name,
+                         final String expectedBinary,
+                         final Path rootPath,
+                         final Path path ) {
+        this.id = toHex( name );
         this.name = name;
+        this.type = "Maven";
+        this.expectedBinary = expectedBinary;
+        this.rootPath = rootPath;
+        this.path = path;
     }
 
     @Override
@@ -48,38 +52,13 @@ public class MavenProject implements Project {
     }
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public String getPath() {
-        return path;
-    }
-
-    @Override
-    public void setName( String name ) {
-        this.name = name;
-    }
-
-    @Override
-    public void setPath( String path ) {
-        this.path = path;
-    }
-
-    @Override
-    public String getRootPath() {
-        return rootPath;
-    }
-
-    @Override
-    public void setRootPath( String rootPath ) {
-        this.rootPath = rootPath;
+    public String getType() {
+        return type;
     }
 
     @Override
@@ -88,8 +67,51 @@ public class MavenProject implements Project {
     }
 
     @Override
-    public void setExpectedBinary( String expectedBinary ) {
-        this.expectedBinary = expectedBinary;
+    public Path getBinaryPath() {
+        return getRootPath().resolve( getPath() ).resolve( "target" ).resolve( getExpectedBinary() );
+    }
+
+    @Override
+    public Path getRootPath() {
+        return rootPath;
+    }
+
+    @Override
+    public Path getPath() {
+        return path;
+    }
+
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof MavenProject ) ) {
+            return false;
+        }
+
+        final MavenProject that = (MavenProject) o;
+
+        if ( !id.equals( that.id ) ) {
+            return false;
+        }
+        if ( !name.equals( that.name ) ) {
+            return false;
+        }
+        return type.equals( that.type );
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    private String toHex( String arg ) {
+        return String.format( "%040x", new BigInteger( 1, arg.getBytes( Charset.forName( "UTF-8" ) ) ) );
     }
 
 }

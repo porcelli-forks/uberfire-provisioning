@@ -17,18 +17,23 @@
 package org.uberfire.provisioning.build.maven;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.maven.cli.MavenCli;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.uberfire.java.nio.file.Files;
+import org.uberfire.java.nio.file.Path;
+import org.uberfire.java.nio.file.Paths;
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.exceptions.BuildException;
 
-import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
 /**
@@ -37,35 +42,29 @@ import static java.util.Collections.*;
  */
 public class MavenBuild implements Build {
 
+    private final Map<Project, ProjectVisitor> projectVisitorMap = new HashMap<>();
+
     @Override
-    public int build( Project project ) throws BuildException {
+    public int build( final Project project ) throws BuildException {
 
         if ( !project.getType().equals( "Maven" ) ) {
             throw new BuildException( "This builder only support maven projects" );
         }
-        InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile( new File( project.getRootPath() + "/" + project.getPath() + "/pom.xml" ) );
-        request.setGoals( singletonList( "package" ) );
 
-        Invoker invoker = new DefaultInvoker();
-
-        try {
-            InvocationResult results = invoker.execute( request );
-            return results.getExitCode();
-        } catch ( MavenInvocationException e ) {
-            e.printStackTrace();
-        }
-        return -1;
+        return executeMaven( project, "package" );
     }
 
     @Override
     public boolean binariesReady( Project project ) throws BuildException {
-        return new File( project.getRootPath() + "/" + project.getPath() + "/target/" + project.getExpectedBinary() ).exists();
+        return Files.exists( binariesPath( project ) );
     }
 
     @Override
-    public String binariesLocation( Project project ) throws BuildException {
-        return project.getRootPath() + "/" + project.getPath() + "/target/" + project.getExpectedBinary();
+    public Path binariesPath( final Project project ) throws BuildException {
+        if ( !projectVisitorMap.containsKey( project ) ) {
+            throw new BuildException( "Project hasn't build." );
+        }
+        return Paths.get( new File( projectVisitorMap.get( project ).getTargetFolder(), project.getExpectedBinary() ).toURI() );
     }
 
     /*
@@ -77,19 +76,25 @@ public class MavenBuild implements Build {
         if ( !project.getType().equals( "Maven" ) ) {
             throw new BuildException( "This builder only support maven projects" );
         }
-        InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile( new File( project.getRootPath() + "/" + project.getPath() + "/pom.xml" ) );
-        request.setGoals( asList( "package", "docker:build" ) );
+        return executeMaven( project, "package", "docker:build" );
+    }
 
-        Invoker invoker = new DefaultInvoker();
+    private int executeMaven( final Project project,
+                              final String... goals ) {
+        return new MavenCli().doMain( goals,
+                                      getProjectVisitor( project ).getRootFolder().getAbsolutePath(),
+                                      System.out, System.out );
+    }
 
-        try {
-            InvocationResult results = invoker.execute( request );
-            return results.getExitCode();
-        } catch ( MavenInvocationException e ) {
-            e.printStackTrace();
+    private ProjectVisitor getProjectVisitor( final Project project ) {
+        final ProjectVisitor projectVisitor;
+        if ( projectVisitorMap.containsKey( project ) ) {
+            projectVisitor = projectVisitorMap.get( project );
+        } else {
+            projectVisitor = new ProjectVisitor( project );
+            projectVisitorMap.put( project, projectVisitor );
         }
-        return -1;
+        return projectVisitor;
     }
 
     @Override

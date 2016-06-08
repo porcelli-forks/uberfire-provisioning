@@ -26,7 +26,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
 import org.uberfire.provisioning.build.Project;
-import org.uberfire.provisioning.exceptions.SourcingException;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.services.endpoint.api.SourceService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
@@ -63,17 +62,16 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
-    public String getLocationByRepositoryId( String repositoryId ) throws BusinessException {
-        return registry.getRepositoryLocationById( repositoryId );
+    public String getPathByRepositoryId( final String repositoryId ) throws BusinessException {
+        return registry.getRepositoryPathById( repositoryId ).toUri().toString();
     }
 
     @Override
-    public String registerRepository( Repository repo ) throws BusinessException {
+    public String registerRepository( final Repository repo ) throws BusinessException {
         try {
-            String sourceDir = source.getSource( repo );
-            registry.registerRepositorySources( sourceDir, repo );
+            registry.registerRepositorySources( repo.getSource().getPath(), repo );
             return repo.getId();
-        } catch ( SourcingException ex ) {
+        } catch ( Exception ex ) {
             Logger.getLogger( SourceServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
             throw new BusinessException( ex.getMessage(), ex );
         }

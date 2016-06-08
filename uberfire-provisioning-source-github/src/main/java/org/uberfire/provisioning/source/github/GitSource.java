@@ -16,53 +16,22 @@
 
 package org.uberfire.provisioning.source.github;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.uberfire.provisioning.exceptions.SourcingException;
-import org.uberfire.provisioning.source.Repository;
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.source.Source;
 
-import static java.lang.System.*;
-import static java.util.logging.Level.*;
-import static java.util.logging.Logger.*;
-import static org.eclipse.jgit.api.Git.*;
-import static org.eclipse.jgit.util.FileUtils.*;
-
-/**
- * @author salaboy
- *         Git implementation for the Source interface using jgit
- */
 public class GitSource implements Source {
 
-    @Override
-    public String getSource( Repository repository ) throws SourcingException {
-        String tmpDir = getProperty( "java.io.tmpdir" );
+    private final GitHubRepository repository;
+    private final Path path;
 
-        try {
-            File createdTempDir = createTempDir( "uf-source", "", new File( tmpDir ) );
-            cloneRepository()
-                    .setURI( repository.getURI() )
-                    .setDirectory( createdTempDir )
-                    .setBranch( ( repository.getBranch() != null ) ? repository.getBranch() : "master" )
-                    .call();
-
-            return createdTempDir.getCanonicalPath();
-        } catch ( Exception ex ) {
-            getLogger( GitSource.class.getName() ).log( SEVERE, null, ex );
-            throw new SourcingException( "Error Cloning Git Repository", ex );
-        }
+    public GitSource( final GitHubRepository repository,
+                      final Path path ) {
+        this.repository = repository;
+        this.path = path;
     }
 
     @Override
-    public boolean cleanSource( String sourcePath ) throws SourcingException {
-        try {
-            delete( new File( sourcePath ), RECURSIVE );
-            return true;
-        } catch ( IOException ex ) {
-            getLogger( GitSource.class.getName() ).log( SEVERE, null, ex );
-            return false;
-        }
+    public Path getPath() {
+        return path;
     }
-
 }

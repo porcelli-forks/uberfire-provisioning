@@ -18,6 +18,7 @@ package org.uberfire.provisioning.registry;
 
 import java.util.List;
 
+import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.source.Repository;
 
@@ -26,24 +27,24 @@ import org.uberfire.provisioning.source.Repository;
  */
 public interface SourceRegistry {
 
-    void registerRepositorySources( String location,
-                                    Repository repo );
+    void registerRepositorySources( final Path path,
+                                    final Repository repo );
 
-    String getRepositoryLocation( Repository repo );
+    Path getRepositoryPath( final Repository repo );
 
-    Repository getRepositoryByLocation( String location );
+    Repository getRepositoryByPath( final Path location );
 
     List<Repository> getAllRepositories();
 
-    String getRepositoryLocationById( String repoId );
+    Path getRepositoryPathById( final String repoId );
 
-    void registerProject( Repository repo,
-                          Project project );
+    void registerProject( final Repository repo,
+                          final Project project );
 
-    List<Project> getAllProjects( Repository repo );
+    List<Project> getAllProjects( final Repository repo );
 
-    List<Project> getProjectByName( String usersnew );
+    List<Project> getProjectByName( final String usersnew );
 
-    Repository getRepositoryById( String repositoryId );
+    Repository getRepositoryById( final String repositoryId );
 
 }
