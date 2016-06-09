@@ -18,7 +18,7 @@ package org.uberfire.provisioning.remote.client.test;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.uberfire.provisioning.remote.client.RestRuntimeProvisioningService;
+import org.uberfire.provisioning.remote.client.RestClientRuntimeProvisioningService;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -40,7 +40,7 @@ import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
-import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
+import org.uberfire.provisioning.services.exceptions.BusinessException;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
 
@@ -51,14 +51,14 @@ public class RestProvisioningCDITest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(RestRuntimeProvisioningService.class)
+                .addClass(RestClientRuntimeProvisioningService.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));
         return jar;
     }
 
     @Inject
-    private RestRuntimeProvisioningService provisioningService;
+    private RestClientRuntimeProvisioningService provisioningService;
 
     @Test
     @Ignore // Need to deploy the services using arquillian to test the remote endpoints. 
