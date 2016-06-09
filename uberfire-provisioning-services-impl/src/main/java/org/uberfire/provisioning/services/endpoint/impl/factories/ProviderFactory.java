@@ -26,9 +26,6 @@ import static java.lang.Class.*;
 import static java.util.logging.Level.*;
 import static java.util.logging.Logger.*;
 
-/**
- * @author salaboy
- */
 public class ProviderFactory {
 
     public static Provider newProvider( ProviderConfiguration config ) {

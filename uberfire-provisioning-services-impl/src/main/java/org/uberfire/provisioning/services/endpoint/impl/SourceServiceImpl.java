@@ -20,36 +20,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
 
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.services.endpoint.api.SourceService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 import org.uberfire.provisioning.source.Repository;
-import org.uberfire.provisioning.source.Source;
 
-/**
- * @author salaboy
- */
-@ApplicationScoped
 public class SourceServiceImpl implements SourceService {
-
-    @Context
-    private SecurityContext context;
-
-    @Inject
-    private Source source;
 
     @Inject
     private SourceRegistry registry;
-
-    public SourceServiceImpl() {
-
-    }
 
     @PostConstruct
     public void init() {
