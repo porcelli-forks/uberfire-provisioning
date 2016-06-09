@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.uberfire.provisioning.build.Project;
@@ -29,10 +28,6 @@ import org.uberfire.provisioning.services.endpoint.api.SourceService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 import org.uberfire.provisioning.source.Repository;
 
-/**
- * @author salaboy
- */
-@ApplicationScoped
 public class SourceServiceImpl implements SourceService {
 
     @Inject

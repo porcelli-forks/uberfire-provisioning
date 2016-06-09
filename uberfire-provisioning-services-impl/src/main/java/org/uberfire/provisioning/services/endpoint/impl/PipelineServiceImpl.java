@@ -22,26 +22,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
 import org.uberfire.provisioning.services.endpoint.api.PipelineService;
-import org.uberfire.provisioning.services.endpoint.api.RuntimeProvisioningService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
-/**
- * @author salaboy
- */
-@ApplicationScoped
 public class PipelineServiceImpl implements PipelineService {
 
     private Map<String, Pipeline> pipelines = new HashMap<String, Pipeline>();
 
-    @Inject
-    private RuntimeProvisioningService provisioningService;
+//    @Inject
+//    private RuntimeProvisioningService provisioningService;
 
     @PostConstruct
     public void init() {
@@ -62,9 +55,9 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public void runPipeline( String id,
-                             PipelineContext context ) throws BusinessException {
-        context.getServices().put( "provisioningService", provisioningService );
+    public void runPipeline( final String id,
+                             final PipelineContext context ) throws BusinessException {
+//        context.getServices().put( "provisioningService", provisioningService );
         new SimplePipelineInstance( pipelines.get( id ) ).run( context );
     }
 

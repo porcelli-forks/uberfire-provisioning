@@ -17,11 +17,14 @@
 package org.uberfire.provisioning.services.endpoint.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.uberfire.provisioning.registry.RuntimeRegistry;
@@ -34,14 +37,10 @@ import org.uberfire.provisioning.services.endpoint.api.RuntimeProvisioningServic
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 import org.uberfire.provisioning.services.endpoint.impl.factories.ProviderFactory;
 
-/**
- * @author salaboy
- */
-@ApplicationScoped
 public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningService {
 
     @Inject
-    private Instance<ProviderType> providerTypeInstances;
+    private BeanManager beanManager;
 
     @Inject
     private RuntimeRegistry registry;
@@ -51,13 +50,16 @@ public class RuntimeProvisioningServiceImpl implements RuntimeProvisioningServic
     @PostConstruct
     public void cacheBeans() {
         if ( !initialized ) {
-            providerTypeInstances.iterator().forEachRemaining( pt -> {
+            final Set<Bean<?>> beans = beanManager.getBeans( ProviderType.class, new AnnotationLiteral<Any>() {
+            } );
+            for ( final Bean b : beans ) {
                 try {
-                    registry.registerProviderType( pt );
-                } catch ( Exception ex ) {
+                    // I don't want to register the CDI proxy, I need a fresh instance :(
+                    registry.registerProviderType( (ProviderType) b.getBeanClass().newInstance() );
+                } catch ( InstantiationException | IllegalAccessException ex ) {
                     Logger.getLogger( RuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
                 }
-            } );
+            }
             initialized = true;
         }
     }

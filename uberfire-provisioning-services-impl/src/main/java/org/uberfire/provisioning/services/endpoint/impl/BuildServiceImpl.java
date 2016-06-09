@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.uberfire.provisioning.build.Binary;
@@ -33,7 +32,6 @@ import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.services.endpoint.api.BuildService;
 import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
-@ApplicationScoped
 public class BuildServiceImpl implements BuildService {
 
     @Inject

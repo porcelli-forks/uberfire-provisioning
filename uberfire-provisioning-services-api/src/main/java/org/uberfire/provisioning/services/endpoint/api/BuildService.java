@@ -30,9 +30,6 @@ import org.uberfire.provisioning.services.endpoint.exceptions.BusinessException;
 
 import static javax.ws.rs.core.MediaType.*;
 
-/**
- * @author salaboy
- */
 @Path("builds")
 public interface BuildService {
 
