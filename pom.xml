@@ -18,8 +18,11 @@
     <module>extras</module>
     <module>uberfire-provisioning-source-git</module>
     <module>uberfire-provisioning-local-provider</module>
+
     <module>uberfire-provisioning-services-api</module>
-    <module>uberfire-provisioning-services-impl</module>
+    <module>uberfire-provisioning-services-rest</module>
+    <module>uberfire-provisioning-services-backend</module>
+    <module>uberfire-provisioning-remote-client</module>
   </modules>
 
   <properties>
@@ -108,6 +111,16 @@
       <dependency>
         <groupId>org.uberfire.provisioning</groupId>
         <artifactId>uberfire-provisioning-services-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire.provisioning</groupId>
+        <artifactId>uberfire-provisioning-services-rest</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uberfire.provisioning</groupId>
+        <artifactId>uberfire-provisioning-services-backend</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
