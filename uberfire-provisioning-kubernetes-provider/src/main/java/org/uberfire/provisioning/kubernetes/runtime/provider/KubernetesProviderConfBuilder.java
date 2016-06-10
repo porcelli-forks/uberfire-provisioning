@@ -30,6 +30,21 @@ public class KubernetesProviderConfBuilder {
         return instance;
     }
 
+    public KubernetesProviderConfBuilder setUsername( String username ) {
+        config.setUsername( username );
+        return instance;
+    }
+
+    public KubernetesProviderConfBuilder setPassword( String password ) {
+        config.setPassword( password );
+        return instance;
+    }
+
+    public KubernetesProviderConfBuilder setMasterUrl( String masterUrl ) {
+        config.setMasterUrl( masterUrl );
+        return instance;
+    }
+
     public KubernetesProviderConfiguration get() {
         return config;
     }

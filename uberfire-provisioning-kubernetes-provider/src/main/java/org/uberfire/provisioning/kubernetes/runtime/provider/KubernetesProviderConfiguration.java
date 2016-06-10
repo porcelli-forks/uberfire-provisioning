@@ -32,4 +32,28 @@ public class KubernetesProviderConfiguration extends BaseProviderConfiguration {
         super( name, new KubernetesProviderType().getProvider().getName() );
     }
 
+    public void setMasterUrl( String masterUrl ) {
+        getProperties().put( "masterUrl", masterUrl );
+    }
+
+    public String getMasterUrl() {
+        return getProperties().get( "masterUrl" );
+    }
+
+    public void setUsername( String username ) {
+        getProperties().put( "username", username );
+    }
+
+    public String getUsername() {
+        return getProperties().get( "username" );
+    }
+
+    public void setPassword( String password ) {
+        getProperties().put( "password", password );
+    }
+
+    public String getPassword() {
+        return getProperties().get( "password" );
+    }
+
 }

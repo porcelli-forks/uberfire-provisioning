@@ -45,12 +45,12 @@ import static java.lang.System.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
+import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfBuilder;
 
 /**
  * @author salaboy
  */
-
-@RunWith(Arquillian.class)
+@RunWith( Arquillian.class )
 public class KubernetesProviderRuntimeTest {
 
     @Deployment
@@ -129,10 +129,11 @@ public class KubernetesProviderRuntimeTest {
     }
 
     @Test
-    @Ignore
+    @Ignore // You need kubernetes or openshift (-vm) running for this test. 
     public void newKubeProviderWithKubeRunningTest() throws ProvisioningException {
         ProviderType dockerProviderType = providerTypes.iterator().next();
-        KubernetesProviderConfiguration config = new KubernetesProviderConfiguration( "kubernetes @ openshift" );
+        KubernetesProviderConfiguration config = KubernetesProviderConfBuilder.newConfig( "kubernetes @ openshift" )
+                .setMasterUrl( "https://10.2.2.2:8443/" ).setUsername( "admin" ).setPassword( "admin" ).get();
 
         KubernetesProvider kubernetesProvider = new KubernetesProvider( config, dockerProviderType );
 
@@ -148,9 +149,8 @@ public class KubernetesProviderRuntimeTest {
 
         assertNotNull( newRuntime );
         assertNotNull( newRuntime.getId() );
-        
+
         kubernetesProvider.destroy( newRuntime.getId() );
-        
-        
+
     }
 }
