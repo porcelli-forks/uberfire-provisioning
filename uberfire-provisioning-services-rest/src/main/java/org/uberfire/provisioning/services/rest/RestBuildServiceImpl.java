@@ -44,7 +44,7 @@ public class RestBuildServiceImpl implements BuildService {
 
     @PostConstruct
     public void init() {
-        System.out.println( "Post Construct Build ServiceImpl here!" );
+
     }
 
     @Override
@@ -76,7 +76,6 @@ public class RestBuildServiceImpl implements BuildService {
     @Override
     public String createDockerImage( final Project project ) throws BusinessException {
         try {
-            //
             int result = build.createDockerImage( project );
             if ( result != 0 ) {
                 throw new BusinessException( "Building Docker image failed with code: " + result );

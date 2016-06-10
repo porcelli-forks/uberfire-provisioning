@@ -28,6 +28,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
+import org.uberfire.provisioning.exceptions.ProvisioningException;
 
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
@@ -58,7 +59,7 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
             for ( final Bean b : beans ) {
                 try {
                     // I don't want to register the CDI proxy, I need a fresh instance :(
-                    registry.registerProviderType( (ProviderType) b.getBeanClass().newInstance() );
+                    registry.registerProviderType( ( ProviderType ) b.getBeanClass().newInstance() );
                 } catch ( InstantiationException | IllegalAccessException ex ) {
                     Logger.getLogger( RestRuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
                 }
@@ -105,13 +106,21 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
     }
 
     @Override
-    public List<Runtime> getAllRuntimes() throws BusinessException {
-        return registry.getAllRuntimes();
+    public void destroyRuntime( String runtimeId ) throws BusinessException {
+        Runtime runtimeById = registry.getRuntimeById( runtimeId );
+        Provider provider = runtimeById.getProvider();
+        try {
+            provider.destroy( runtimeId );
+            registry.unregisterRuntime( runtimeById );
+        } catch ( ProvisioningException ex ) {
+            Logger.getLogger( RestRuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
+            throw new BusinessException( "Runtime Destruction failed for runtimeId: " + runtimeId, ex );
+        }
     }
 
     @Override
-    public void unregisterRuntime( String id ) throws BusinessException {
-        registry.unregisterRuntime( id );
+    public List<Runtime> getAllRuntimes() throws BusinessException {
+        return registry.getAllRuntimes();
     }
 
     @Override

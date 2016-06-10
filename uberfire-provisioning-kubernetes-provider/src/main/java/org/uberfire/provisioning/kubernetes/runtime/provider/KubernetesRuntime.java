@@ -35,27 +35,27 @@ public class KubernetesRuntime extends BaseRuntime {
 
     @Override
     public void start() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        System.out.println( "Doing nothing for now ..." );
     }
 
     @Override
     public void stop() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        System.out.println( "Doing nothing for now ... " );
     }
 
     @Override
     public void restart() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        System.out.println( "Doing nothing for now ..." );
     }
 
     @Override
     public RuntimeInfo getInfo() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        return new KubernetesRuntimeInfo();
     }
 
     @Override
     public RuntimeState getState() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        return new KubernetesRuntimeState();
     }
 
 }

@@ -41,7 +41,7 @@ public interface RuntimeProvisioningServiceBackend {
 
     List<Runtime> getAllRuntimes() throws BusinessException;
 
-    void unregisterRuntime( final String id ) throws BusinessException;
+    void destroyRuntime( final String runtimeId ) throws BusinessException;
 
     void startRuntime( final String runtimeId ) throws BusinessException;
 

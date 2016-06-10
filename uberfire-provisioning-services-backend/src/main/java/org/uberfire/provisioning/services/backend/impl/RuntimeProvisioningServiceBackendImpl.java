@@ -34,65 +34,65 @@ import org.uberfire.provisioning.services.exceptions.BusinessException;
 @Service
 @ApplicationScoped
 public class RuntimeProvisioningServiceBackendImpl implements RuntimeProvisioningServiceBackend {
-
+    
     private RuntimeProvisioningService runtimeProvisioningService;
-
+    
     public RuntimeProvisioningServiceBackendImpl() {
     }
-
+    
     @Inject
     public RuntimeProvisioningServiceBackendImpl( final RuntimeProvisioningService runtimeProvisioningService ) {
         this.runtimeProvisioningService = runtimeProvisioningService;
     }
-
+    
     @Override
     public List<ProviderType> getAllProviderTypes() throws BusinessException {
         return runtimeProvisioningService.getAllProviderTypes();
     }
-
+    
     @Override
     public List<Provider> getAllProviders() throws BusinessException {
         return runtimeProvisioningService.getAllProviders();
     }
-
+    
     @Override
     public void registerProvider( @NotNull ProviderConfiguration conf ) throws BusinessException {
         runtimeProvisioningService.registerProvider( conf );
     }
-
+    
     @Override
     public void unregisterProvider( final String name ) throws BusinessException {
         runtimeProvisioningService.unregisterProvider( name );
     }
-
+    
     @Override
     public String newRuntime( final RuntimeConfiguration conf ) throws BusinessException {
         return runtimeProvisioningService.newRuntime( conf );
     }
-
+    
     @Override
     public List<Runtime> getAllRuntimes() throws BusinessException {
         return runtimeProvisioningService.getAllRuntimes();
     }
-
+    
     @Override
-    public void unregisterRuntime( final String id ) throws BusinessException {
-        runtimeProvisioningService.unregisterRuntime( id );
+    public void destroyRuntime( final String runtimeId ) throws BusinessException {
+        runtimeProvisioningService.destroyRuntime( runtimeId );
     }
-
+    
     @Override
     public void startRuntime( final String runtimeId ) throws BusinessException {
         runtimeProvisioningService.startRuntime( runtimeId );
     }
-
+    
     @Override
     public void stopRuntime( final String runtimeId ) throws BusinessException {
         runtimeProvisioningService.stopRuntime( runtimeId );
     }
-
+    
     @Override
     public void restartRuntime( final String runtimeId ) throws BusinessException {
         runtimeProvisioningService.restartRuntime( runtimeId );
     }
-
+    
 }

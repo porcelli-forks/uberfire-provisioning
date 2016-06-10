@@ -24,13 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
 /**
- * @author salaboy
  * <p>
  * A provider represent a running entity that allows us to provision new
  * runtimes. Such as: Docker, Kubernetes, Application Servers (Wildfly, Tomcat,
  * etc)
  */
-@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
 public interface Provider {
 
     String getName();
@@ -39,12 +38,12 @@ public interface Provider {
 
     ProviderType getProviderType();
 
-    void setConfig(ProviderConfiguration config);
+    void setConfig( ProviderConfiguration config );
 
-    void setProviderType(ProviderType providerType);
+    void setProviderType( ProviderType providerType );
 
     Runtime create( RuntimeConfiguration config ) throws ProvisioningException;
 
-    void destroy(String runtimeId) throws ProvisioningException;
+    void destroy( String runtimeId ) throws ProvisioningException;
 
 }

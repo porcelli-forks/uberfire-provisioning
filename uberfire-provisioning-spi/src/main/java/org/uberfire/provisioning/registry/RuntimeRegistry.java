@@ -57,6 +57,5 @@ public interface RuntimeRegistry {
 
     void unregisterRuntime( Runtime runtime );
 
-    void unregisterRuntime( String runtimeId );
 
 }

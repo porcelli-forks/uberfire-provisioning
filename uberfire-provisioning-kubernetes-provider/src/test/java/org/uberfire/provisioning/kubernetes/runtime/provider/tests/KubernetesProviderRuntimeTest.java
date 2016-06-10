@@ -49,6 +49,7 @@ import static org.junit.Assert.*;
 /**
  * @author salaboy
  */
+
 @RunWith(Arquillian.class)
 public class KubernetesProviderRuntimeTest {
 
@@ -147,6 +148,9 @@ public class KubernetesProviderRuntimeTest {
 
         assertNotNull( newRuntime );
         assertNotNull( newRuntime.getId() );
-
+        
+        kubernetesProvider.destroy( newRuntime.getId() );
+        
+        
     }
 }

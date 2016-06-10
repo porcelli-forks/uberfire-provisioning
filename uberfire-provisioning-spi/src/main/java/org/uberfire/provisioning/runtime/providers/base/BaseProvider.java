@@ -19,9 +19,6 @@ import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
-/**
- * @author salaboy
- */
 public abstract class BaseProvider implements Provider {
 
     protected String name;
@@ -30,9 +27,9 @@ public abstract class BaseProvider implements Provider {
 
     public BaseProvider() {
     }
-    
-    public BaseProvider(String name,
-            ProviderType providerType) {
+
+    public BaseProvider( String name,
+            ProviderType providerType ) {
         this.name = name;
         this.providerType = providerType;
     }
@@ -42,7 +39,7 @@ public abstract class BaseProvider implements Provider {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName( String name ) {
         this.name = name;
     }
 
@@ -57,12 +54,12 @@ public abstract class BaseProvider implements Provider {
     }
 
     @Override
-    public void setConfig(ProviderConfiguration config) {
+    public void setConfig( ProviderConfiguration config ) {
         this.config = config;
     }
 
     @Override
-    public void setProviderType(ProviderType providerType) {
+    public void setProviderType( ProviderType providerType ) {
         this.providerType = providerType;
     }
 

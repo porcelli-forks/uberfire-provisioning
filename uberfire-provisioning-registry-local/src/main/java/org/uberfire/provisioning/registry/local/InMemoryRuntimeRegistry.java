@@ -144,15 +144,5 @@ public class InMemoryRuntimeRegistry implements RuntimeRegistry {
         runtimesByProviderType.get( runtime.getProvider().getProviderType() ).remove( runtime );
     }
 
-    @Override
-    public void unregisterRuntime( String runtimeId ) {
-        for ( ProviderType pt : runtimesByProviderType.keySet() ) {
-            for ( Runtime r : runtimesByProviderType.get( pt ) ) {
-                if ( r.getId().equals( runtimeId ) ) {
-                    unregisterRuntime( r );
-                }
-            }
-        }
-    }
 
 }

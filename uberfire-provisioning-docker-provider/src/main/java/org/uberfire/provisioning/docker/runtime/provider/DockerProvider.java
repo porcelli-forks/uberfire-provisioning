@@ -5,6 +5,7 @@
  */
 package org.uberfire.provisioning.docker.runtime.provider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 public class DockerProvider extends BaseProvider {
 
     @XmlTransient
+    @JsonIgnore
     private DockerClient docker;
 
     public DockerProvider() {

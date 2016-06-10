@@ -62,15 +62,16 @@ public interface RuntimeProvisioningService {
     @Path("runtimes/")
     @Consumes(value = APPLICATION_JSON)
     String newRuntime( @NotNull RuntimeConfiguration conf ) throws BusinessException;
+    
+    @DELETE
+    @Path("runtimes/{id}")
+    void destroyRuntime(@PathParam(value = "id") String runtimeId ) throws BusinessException;
 
     @GET
     @Produces(value = APPLICATION_JSON)
     @Path("runtimes/")
     List<Runtime> getAllRuntimes() throws BusinessException;
 
-    @DELETE
-    @Path("runtimes/{id}")
-    void unregisterRuntime( @PathParam(value = "id") String id ) throws BusinessException;
 
     @POST
     @Path("runtimes/{id}/start")

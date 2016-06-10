@@ -30,9 +30,6 @@ import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
 
 import static java.util.UUID.*;
 
-/**
- * @author salaboy
- */
 public class Wildfly10Provider extends BaseProvider {
 
     @XmlTransient
@@ -48,7 +45,7 @@ public class Wildfly10Provider extends BaseProvider {
     }
 
     public Wildfly10Provider( ProviderConfiguration config,
-                              ProviderType type ) {
+            ProviderType type ) {
         super( config.getName(), type );
         /*
          I should check here for the required configuration parameters for the provider

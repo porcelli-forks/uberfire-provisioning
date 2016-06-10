@@ -49,7 +49,6 @@ This block will be in charge of taking a project path and building the appropria
 ```
 /**
  *
- * @author salaboy
  * The Build interface define a set of operations to generate
  * Binaries based on Projects
  * 
@@ -136,7 +135,6 @@ The registry module provides a place to store (in a distributed way) the informa
 - Build Registry
 - Runtime Registry
 - Pipelines Registry
- 
 
 The Registry project should provide a distributed implementation that allows multiple Service layers to access the same data.
 
@@ -180,8 +178,8 @@ You can clone the repository and build all the projects using: mvn clean install
 
 In order to start the services you can do:
 ```
-cd uberfire-provisioning-services/target/
-java -jar uberfire-provisioning-services-swarm.jar
+cd uberfire-provisioning-services-rest/target/
+java -jar uberfire-provisioning-services-rest-swarm.jar
 ```
 
 or alternatively with Docker (this will need to download the docker image first)
@@ -192,7 +190,7 @@ where 8082 is the port where the services are running and 8080 is the port that 
 
 You can also build and start your own docker image with:
 ```
-cd uberfire-provisioning-services/
+cd uberfire-provisioning-services-rest/
 mvn clean install docker:build docker:start
 ```
 

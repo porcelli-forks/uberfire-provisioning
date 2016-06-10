@@ -16,15 +16,22 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceStatus;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import javax.xml.bind.annotation.XmlTransient;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.Runtime;
@@ -36,6 +43,7 @@ import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 public class KubernetesProvider extends BaseProvider {
 
     @XmlTransient
+    @JsonIgnore
     private DefaultKubernetesClient kubernetes;
 
     public KubernetesProvider() {
@@ -70,6 +78,7 @@ public class KubernetesProvider extends BaseProvider {
                 if ( rc != null ) {
                     ReplicationControllerStatus status = rc.getStatus();
                     Integer replicas = status.getReplicas();
+                    System.out.println( "Replicas at this point: " + replicas );
                 } else {
                     kubernetes.replicationControllers().inNamespace( namespace ).createNew()
                             .withNewMetadata().withName( replicationControllerName ).addToLabels( "app", label ).endMetadata()
@@ -90,12 +99,11 @@ public class KubernetesProvider extends BaseProvider {
             }
 
         }
-
         ClientResource<Service, DoneableService> serviceResource = kubernetes.services().inNamespace( namespace ).withName( serviceName );
-        try {
-            Service service = serviceResource.get();
-            if ( serviceResource != null ) {
 
+        try {
+            if ( serviceResource != null ) {
+                Service service = serviceResource.get();
                 if ( service != null ) {
                     ServiceStatus status = service.getStatus();
                 } else {
@@ -109,10 +117,8 @@ public class KubernetesProvider extends BaseProvider {
                 }
 
             }
-            final String id = service.getMetadata().getUid();
-            System.out.println( ">>> ID: " + id );
 
-            return new KubernetesRuntime( id, runtimeConfig, this );
+            return new KubernetesRuntime( serviceName, runtimeConfig, this );
         } catch ( Exception ex ) {
             ex.printStackTrace();
             throw new ProvisioningException( "Error provisioning to Kubernetes: " + ex.getMessage() );
@@ -122,7 +128,30 @@ public class KubernetesProvider extends BaseProvider {
 
     @Override
     public void destroy( String runtimeId ) throws ProvisioningException {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        System.out.println( ">>> Runtime ID Recieved: " + runtimeId );
+        ClientResource<Service, DoneableService> serviceResource = kubernetes.services().withName( runtimeId );
+        Service service = serviceResource.get();
+        String selector = service.getSpec().getSelector().get( "app" );
+        System.out.println( ">>> App Selector: " + selector );
+        Boolean deletedService = serviceResource.delete();
+
+        if ( deletedService ) {
+            System.out.println( " >>>> Service Deleted Successfully!" );
+        }
+
+        FilterWatchListDeletable<ReplicationController, ReplicationControllerList, Boolean, Watch, Watcher<ReplicationController>> rcResource = kubernetes
+                .replicationControllers().withLabel( "app", selector );
+
+        Boolean deletedRC = rcResource.delete();
+        if ( deletedRC ) {
+            System.out.println( " >>>> RC Deleted Successfully!" );
+        }
+
+        FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource = kubernetes.pods().withLabel( "app", selector );
+        Boolean deletedPod = podResource.delete();
+        if ( deletedPod ) {
+            System.out.println( " >>>> POD Deleted Successfully!" );
+        }
     }
 
     public DefaultKubernetesClient getKubernetes() {

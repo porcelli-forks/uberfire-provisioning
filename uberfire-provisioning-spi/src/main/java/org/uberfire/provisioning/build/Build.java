@@ -19,8 +19,7 @@ package org.uberfire.provisioning.build;
 import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.exceptions.BuildException;
 
-/**
- * @author salaboy
+/*
  *         The Build interface define a set of operations to generate
  *         Binaries based on Projects
  */
