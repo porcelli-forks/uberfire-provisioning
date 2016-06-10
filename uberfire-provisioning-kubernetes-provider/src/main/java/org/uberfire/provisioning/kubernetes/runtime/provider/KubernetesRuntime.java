@@ -22,14 +22,11 @@ import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.base.BaseRuntime;
 import org.uberfire.provisioning.runtime.providers.Provider;
 
-/**
- * @author salaboy
- */
 public class KubernetesRuntime extends BaseRuntime {
 
     public KubernetesRuntime( String id,
-                              RuntimeConfiguration config,
-                              Provider provider ) {
+            RuntimeConfiguration config,
+            Provider provider ) {
         super( id, config, provider );
         if ( !( provider instanceof KubernetesProvider ) ) {
             throw new IllegalArgumentException( "Wrong provider! set: " + provider.getClass() + " expected: DockerProvider" );

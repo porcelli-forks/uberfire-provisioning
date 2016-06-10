@@ -16,8 +16,6 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -27,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ServiceStatus;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import javax.xml.bind.annotation.XmlTransient;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
@@ -34,11 +33,6 @@ import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
-import static java.lang.System.*;
-
-/**
- * @author salaboy
- */
 public class KubernetesProvider extends BaseProvider {
 
     @XmlTransient
@@ -47,9 +41,8 @@ public class KubernetesProvider extends BaseProvider {
     public KubernetesProvider() {
     }
 
-    
     public KubernetesProvider( ProviderConfiguration config,
-                               ProviderType type ) {
+            ProviderType type ) {
         super( config.getName(), type );
         this.config = config;
 
@@ -117,7 +110,7 @@ public class KubernetesProvider extends BaseProvider {
 
             }
             final String id = service.getMetadata().getUid();
-            out.println( ">>> ID: " + id );
+            System.out.println( ">>> ID: " + id );
 
             return new KubernetesRuntime( id, runtimeConfig, this );
         } catch ( Exception ex ) {

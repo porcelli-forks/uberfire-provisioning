@@ -18,15 +18,12 @@ package org.uberfire.provisioning.kubernetes.runtime.provider;
 
 import org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration;
 
-/**
- * @author salaboy
- */
 public class KubernetesProviderConfiguration extends BaseProviderConfiguration {
 
     /*
     * This constructor shouldn't be used, The use of KubernetesProviderConfiguration(String name)
     * is strictly recommended. This constructor is here just for the serializers to work correctly
-    */
+     */
     public KubernetesProviderConfiguration() {
         super( "", new KubernetesProviderType().getProvider().getName() );
     }

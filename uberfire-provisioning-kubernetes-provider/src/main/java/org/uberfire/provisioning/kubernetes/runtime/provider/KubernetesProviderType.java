@@ -20,9 +20,6 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.uberfire.provisioning.runtime.providers.base.BaseProviderType;
 
-/**
- * @author salaboy
- */
 @ApplicationScoped
 @Kubernetes
 public class KubernetesProviderType extends BaseProviderType {

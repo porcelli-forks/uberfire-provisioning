@@ -16,19 +16,15 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
+import static java.lang.annotation.ElementType.*;
 import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-
-/**
- * @author salaboy
- */
 @Qualifier
 @Retention(RUNTIME)
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Target({METHOD, FIELD, PARAMETER, TYPE})
 public @interface Kubernetes {
 
 }

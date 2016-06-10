@@ -16,9 +16,6 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
-/**
- * @author salaboy
- */
 public class KubernetesProviderConfBuilder {
 
     private static KubernetesProviderConfBuilder instance;

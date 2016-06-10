@@ -41,7 +41,6 @@ import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeCon
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
-import static java.lang.System.*;
 import static java.util.logging.Level.*;
 import static java.util.logging.Logger.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
@@ -51,7 +50,7 @@ import static org.junit.Assert.*;
 /**
  * @author salaboy
  */
-@RunWith(Arquillian.class)
+@RunWith( Arquillian.class )
 public class WildflyProviderRuntimeTest {
 
     @Deployment
@@ -62,7 +61,7 @@ public class WildflyProviderRuntimeTest {
                 .addClass( Wildfly10Provider.class )
                 .addClass( WildflyRuntime.class )
                 .addAsManifestResource( INSTANCE, "beans.xml" );
-        out.println( jar.toString( true ) );
+        //System.out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -136,14 +135,14 @@ public class WildflyProviderRuntimeTest {
 
         config.setHost( "localhost" );
         config.setManagementPort( "9990" );
-        config.setUser( "someuser" );
-        config.setPassword( "somepassword" );
+        config.setUser( "admin" );
+        config.setPassword( "admin" );
 
         Wildfly10Provider wildflyProvider = new Wildfly10Provider( config, wildflyProviderType );
 
         assertNotNull( wildflyProvider.getWildfly() );
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
-        runtimeConfig.getProperties().put( "warPath", "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war" );
+        runtimeConfig.getProperties().put( "warPath", "../extras/sample-war/target/sample-war-1.0-SNAPSHOT.war" );
 
         Runtime newRuntime = null;
 

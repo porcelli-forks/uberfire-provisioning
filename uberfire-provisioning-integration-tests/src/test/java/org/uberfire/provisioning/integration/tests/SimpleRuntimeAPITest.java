@@ -63,10 +63,7 @@ import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeCon
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
-/**
- * @author salaboy
- */
-@RunWith(Arquillian.class)
+@RunWith( Arquillian.class )
 public class SimpleRuntimeAPITest {
 
     @Deployment
@@ -80,7 +77,7 @@ public class SimpleRuntimeAPITest {
                 .addClass( KubernetesProviderType.class )
                 .addClass( InMemoryRuntimeRegistry.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
-        System.out.println( jar.toString( true ) );
+//        System.out.println( jar.toString( true ) );
         return jar;
     }
 
@@ -155,7 +152,7 @@ public class SimpleRuntimeAPITest {
         Assert.assertEquals( 4, allProviders.size() );
 
         RuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
-                .setJar( "/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
+                .setJar( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
                 .get();
 
         Runtime newLocalRuntime;
@@ -173,7 +170,7 @@ public class SimpleRuntimeAPITest {
         }
 
         RuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
-                .setWarPath( "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
+                .setWarPath( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
                 .get();
 
         Runtime newWildflyRuntime;

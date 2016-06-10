@@ -18,9 +18,6 @@ package org.uberfire.provisioning.kubernetes.runtime.provider;
 
 import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
 
-/**
- * @author salaboy
- */
 public class KubernetesRuntimeConfiguration extends BaseRuntimeConfiguration {
 
     public void setNamespace( String namespace ) {

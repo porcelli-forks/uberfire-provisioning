@@ -97,7 +97,7 @@ public class RestProvisioningCDITest {
         assertEquals(4, allProviders.size());
         
         LocalRuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig().setProviderName("local runtime")
-                .setJar( "/Users/salaboy/Projects/uberfire-provisioning/extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
+                .setJar( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
                 .get();
 
       
@@ -112,7 +112,7 @@ public class RestProvisioningCDITest {
         }
 
         RuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig().setProviderName("wildfly on localhost")
-                .setWarPath( "/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
+                .setWarPath( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
                 .get();
 
         

@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 
-/**
- * @author salaboy
- */
 public class KubernetesRuntimeConfBuilder {
 
     private static KubernetesRuntimeConfBuilder instance;
@@ -59,9 +55,9 @@ public class KubernetesRuntimeConfBuilder {
         config.setImage( image );
         return instance;
     }
-    
+
     public KubernetesRuntimeConfBuilder setProviderName( String providerName ) {
-        config.setProviderName(providerName);
+        config.setProviderName( providerName );
         return instance;
     }
 
