@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.AutoAdaptableKubernetesClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -54,27 +55,25 @@ public class KubernetesProvider extends BaseProvider {
     }
 
     public KubernetesProvider( ProviderConfiguration config,
-            ProviderType type ) {
+            ProviderType type ) throws KubernetesClientException {
         super( config.getName(), type );
         this.config = config;
         if ( config instanceof KubernetesProviderConfiguration ) {
             String masterUrl = ( ( KubernetesProviderConfiguration ) config ).getMasterUrl();
             String username = ( ( KubernetesProviderConfiguration ) config ).getUsername();
             String password = ( ( KubernetesProviderConfiguration ) config ).getPassword();
-
-            ConfigBuilder configBuilder = new ConfigBuilder();
-            if ( masterUrl != null ) {
+            if ( masterUrl != null && username != null && password != null ) {
+                ConfigBuilder configBuilder = new ConfigBuilder();
                 configBuilder.withMasterUrl( masterUrl );
-            }
-            if ( username != null && password != null ) {
                 configBuilder.withUsername( username );
                 configBuilder.withPassword( password );
-            }
-            Config kubeConfig = configBuilder.withNamespace( "default" ).build();
-            kubernetes = new AutoAdaptableKubernetesClient( kubeConfig );
+                Config kubeConfig = configBuilder.withNamespace( "default" ).build();
+                kubernetes = new AutoAdaptableKubernetesClient( kubeConfig );
+            } else {
+                kubernetes = new DefaultKubernetesClient();
 
-        } else {
-            kubernetes = new AutoAdaptableKubernetesClient();
+            }
+
         }
 
     }
