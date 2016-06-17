@@ -23,6 +23,7 @@
     <module>uberfire-provisioning-services-rest</module>
     <module>uberfire-provisioning-services-backend</module>
     <module>uberfire-provisioning-remote-client</module>
+    <module>uberfire-provisioning-services-swarm</module>
   </modules>
 
   <properties>

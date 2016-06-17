@@ -45,37 +45,45 @@ import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
 public class KubernetesProvider extends BaseProvider {
-    
+
     @XmlTransient
     @JsonIgnore
     private DefaultKubernetesClient kubernetes;
-    
+
     public KubernetesProvider() {
     }
-    
+
     public KubernetesProvider( ProviderConfiguration config,
             ProviderType type ) {
         super( config.getName(), type );
         this.config = config;
-        String masterUrl = ( ( KubernetesProviderConfiguration ) config ).getMasterUrl();
-        String username = ( ( KubernetesProviderConfiguration ) config ).getUsername();
-        String password = ( ( KubernetesProviderConfiguration ) config ).getPassword();
-        // If I wanted a custom connection to a custom configured kube client I should use here the information contained in CPI
-        Config kubeConfig = new ConfigBuilder().withMasterUrl( masterUrl )
-                    .withNamespace( "default" )
-                    .withUsername( username )
-                    .withPassword( password ).build();
-        
-        kubernetes = new AutoAdaptableKubernetesClient( kubeConfig );
-        
-        
+        if ( config instanceof KubernetesProviderConfiguration ) {
+            String masterUrl = ( ( KubernetesProviderConfiguration ) config ).getMasterUrl();
+            String username = ( ( KubernetesProviderConfiguration ) config ).getUsername();
+            String password = ( ( KubernetesProviderConfiguration ) config ).getPassword();
+
+            ConfigBuilder configBuilder = new ConfigBuilder();
+            if ( masterUrl != null ) {
+                configBuilder.withMasterUrl( masterUrl );
+            }
+            if ( username != null && password != null ) {
+                configBuilder.withUsername( username );
+                configBuilder.withPassword( password );
+            }
+            Config kubeConfig = configBuilder.withNamespace( "default" ).build();
+            kubernetes = new AutoAdaptableKubernetesClient( kubeConfig );
+
+        } else {
+            kubernetes = new AutoAdaptableKubernetesClient();
+        }
+
     }
-    
+
     public KubernetesProvider( ProviderConfiguration config ) {
         this( config, new KubernetesProviderType() );
-        
+
     }
-    
+
     @Override
     public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
         String namespace = runtimeConfig.getProperties().get( "namespace" );
@@ -109,10 +117,10 @@ public class KubernetesProvider extends BaseProvider {
                 ex.printStackTrace();
                 throw new ProvisioningException( "Error provisioning to Kubernetes: " + ex.getMessage() );
             }
-            
+
         }
         ClientResource<Service, DoneableService> serviceResource = kubernetes.services().inNamespace( namespace ).withName( serviceName );
-        
+
         try {
             if ( serviceResource != null ) {
                 Service service = serviceResource.get();
@@ -127,17 +135,17 @@ public class KubernetesProvider extends BaseProvider {
                             .endSpec()
                             .done();
                 }
-                
+
             }
-            
+
             return new KubernetesRuntime( serviceName, runtimeConfig, this );
         } catch ( Exception ex ) {
             ex.printStackTrace();
             throw new ProvisioningException( "Error provisioning to Kubernetes: " + ex.getMessage() );
         }
-        
+
     }
-    
+
     @Override
     public void destroy( String runtimeId ) throws ProvisioningException {
         System.out.println( ">>> Runtime ID Recieved: " + runtimeId );
@@ -146,28 +154,28 @@ public class KubernetesProvider extends BaseProvider {
         String selector = service.getSpec().getSelector().get( "app" );
         System.out.println( ">>> App Selector: " + selector );
         Boolean deletedService = serviceResource.delete();
-        
+
         if ( deletedService ) {
             System.out.println( " >>>> Service Deleted Successfully!" );
         }
-        
+
         FilterWatchListDeletable<ReplicationController, ReplicationControllerList, Boolean, Watch, Watcher<ReplicationController>> rcResource = kubernetes
                 .replicationControllers().withLabel( "app", selector );
-        
+
         Boolean deletedRC = rcResource.delete();
         if ( deletedRC ) {
             System.out.println( " >>>> RC Deleted Successfully!" );
         }
-        
+
         FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource = kubernetes.pods().withLabel( "app", selector );
         Boolean deletedPod = podResource.delete();
         if ( deletedPod ) {
             System.out.println( " >>>> POD Deleted Successfully!" );
         }
     }
-    
+
     public DefaultKubernetesClient getKubernetes() {
         return kubernetes;
     }
-    
+
 }

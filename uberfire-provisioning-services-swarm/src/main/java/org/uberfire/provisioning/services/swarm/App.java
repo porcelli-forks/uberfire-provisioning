@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.services;
+package org.uberfire.provisioning.services.swarm;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 //import org.wildfly.swarm.keycloak.Secured;
 
-/**
- * @author salaboy
- */
 public class App {
 
     public static void main( String[] args ) throws Exception {
