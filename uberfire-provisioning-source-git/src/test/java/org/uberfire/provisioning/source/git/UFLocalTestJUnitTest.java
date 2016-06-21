@@ -33,9 +33,6 @@ import org.uberfire.provisioning.source.Source;
 
 import static org.junit.Assert.*;
 
-/**
- * @author salaboy
- */
 public class UFLocalTestJUnitTest {
 
     private File tempPath;

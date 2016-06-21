@@ -26,22 +26,24 @@ import org.uberfire.java.nio.file.Files;
 import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 
-public class ProjectVisitor {
+public class RepositoryVisitor {
 
     private Project project;
     private File rootFolder;
+    private File projectFolder;
     private String buildRoot;
 
-    public ProjectVisitor( final Project project ) {
+    public RepositoryVisitor( final Project project ) {
         this.project = project;
         this.buildRoot = System.getProperty( "java.io.tmpdir" ) + File.separatorChar + "guvnor" + File.separatorChar + project.getName();
         Path path = this.project.getRootPath();
         makeTempRootDirectory();
         makeTempDirectory( path );
         rootFolder = makeTempDirectory( path );
+        projectFolder = new File( rootFolder.getAbsolutePath() + project.getPath().toAbsolutePath().toString() );
         try {
-            visitPaths( Files.newDirectoryStream( path ) );
-        } catch ( IOException ex ){
+            visitPaths( Files.newDirectoryStream( this.project.getPath() ) );
+        } catch ( IOException ex ) {
             throw new RuntimeException( ex );
         }
     }
@@ -50,12 +52,17 @@ public class ProjectVisitor {
         return rootFolder;
     }
 
+    public File getProjectFolder() {
+        return projectFolder;
+    }
+
     public File getGuvnorTempFolder() {
         return new File( System.getProperty( "java.io.tmpdir" ) + File.separatorChar + "guvnor" );
     }
 
     public File getTargetFolder() {
-        return new File( buildRoot + File.separatorChar + "target" );
+        return new File( buildRoot + File.separatorChar + project.getRootPath().toAbsolutePath() 
+                + File.separatorChar + project.getPath().toAbsolutePath().toString() + File.separatorChar + "target" );
     }
 
     private void visitPaths( final DirectoryStream<Path> directoryStream ) throws IOException {
@@ -89,7 +96,7 @@ public class ProjectVisitor {
     private void makeTempFile( Path path ) throws IOException {
 
         final int BUFFER = 2048;
-        byte data[] = new byte[ BUFFER ];
+        byte data[] = new byte[BUFFER];
 
         BufferedInputStream origin = new BufferedInputStream( Files.newInputStream( path ), BUFFER );
 

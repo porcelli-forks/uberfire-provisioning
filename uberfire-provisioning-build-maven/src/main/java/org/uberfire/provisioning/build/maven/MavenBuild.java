@@ -42,7 +42,7 @@ import static java.util.Collections.*;
  */
 public class MavenBuild implements Build {
 
-    private final Map<Project, ProjectVisitor> projectVisitorMap = new HashMap<>();
+    private final Map<Project, RepositoryVisitor> projectVisitorMap = new HashMap<>();
 
     @Override
     public int build( final Project project ) throws BuildException {
@@ -51,7 +51,7 @@ public class MavenBuild implements Build {
             throw new BuildException( "This builder only support maven projects" );
         }
 
-        return executeMaven( project, "package" );
+        return executeMaven( project, "package", "-DfailIfNoTests=false" );
     }
 
     @Override
@@ -76,22 +76,22 @@ public class MavenBuild implements Build {
         if ( !project.getType().equals( "Maven" ) ) {
             throw new BuildException( "This builder only support maven projects" );
         }
-        return executeMaven( project, "package", "docker:build" );
+        return executeMaven( project, "package", "docker:build", "-DfailIfNoTests=false" );
     }
 
     private int executeMaven( final Project project,
                               final String... goals ) {
         return new MavenCli().doMain( goals,
-                                      getProjectVisitor( project ).getRootFolder().getAbsolutePath(),
+                                      getRepositoryVisitor( project ).getProjectFolder().getAbsolutePath(),
                                       System.out, System.out );
     }
 
-    private ProjectVisitor getProjectVisitor( final Project project ) {
-        final ProjectVisitor projectVisitor;
+    private RepositoryVisitor getRepositoryVisitor( final Project project ) {
+        final RepositoryVisitor projectVisitor;
         if ( projectVisitorMap.containsKey( project ) ) {
             projectVisitor = projectVisitorMap.get( project );
         } else {
-            projectVisitor = new ProjectVisitor( project );
+            projectVisitor = new RepositoryVisitor( project );
             projectVisitorMap.put( project, projectVisitor );
         }
         return projectVisitor;

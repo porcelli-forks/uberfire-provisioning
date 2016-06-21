@@ -22,9 +22,6 @@ import java.nio.charset.Charset;
 import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 
-/**
- * @author salaboy
- */
 public class MavenProject implements Project {
 
     private final String id;

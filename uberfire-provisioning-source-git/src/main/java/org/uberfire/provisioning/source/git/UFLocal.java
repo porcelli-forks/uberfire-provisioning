@@ -28,9 +28,6 @@ import org.uberfire.provisioning.source.Repository;
 
 import static org.uberfire.commons.validation.PortablePreconditions.*;
 
-/**
- * @author salaboy
- */
 public class UFLocal implements Host<GitCredentials> {
 
     private final String id;

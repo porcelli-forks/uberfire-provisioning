@@ -73,7 +73,7 @@ public class KubernetesProvider extends BaseProvider {
                 kubernetes = new DefaultKubernetesClient();
 
             }
-
+            
         }
 
     }
