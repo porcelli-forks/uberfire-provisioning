@@ -1,744 +1,570 @@
 {
-	"id": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-	"name": "uberfire-provisioning",
-	"description": "uberfire-provisioning",
-	"order": [
-		"f9263ae0-ea33-e5e0-dcf7-f5a10373be87",
-		"ba95ea95-635c-524e-becf-da45748f2f7b",
-		"0c2c929b-5f3a-a5b1-2fb6-ce323ccc62ef",
-		"987e8c9d-c955-aeec-61b7-469234abe7a1",
-		"b2526a7f-a8ee-faeb-0aa9-c9152f0e6712",
-		"6b8feacf-9f13-808a-a36a-fa048953b9c4",
-		"795c0f6d-9e1d-7fa1-7520-a99cf1912d04",
-		"8589b2b3-782a-62e6-ff16-55776eb08619",
-		"1ef7ae35-4d44-d17b-2b3e-de6854210b78",
-		"decb4f4e-aae5-db3e-4ae1-f1696067f3a1",
-		"d9a9ec2d-6a23-5b75-cc40-ab06d602ae2c",
-		"a0c510cc-435a-ed96-3c4e-2e2d2b58255b",
-		"bc66b406-6b85-7583-53d3-444af560b4c1",
-		"3877510b-8390-df6e-619c-e17a9d3396d1",
-		"ebb489d6-db1a-b054-ca15-07058739d772",
-		"30164568-9f03-a921-e7d2-187fee69fe8d",
-		"00b49160-f8c7-4fad-6216-197bbf305605",
-		"4d0e8bc7-eeb1-f0df-1522-d7648e0354d3",
-		"b8de1bc8-d1fd-2895-e2e8-e1130a783db3",
-		"6d5bd3bd-8016-43a4-b364-fa264668a07d",
-		"6c7b5cb8-c7ae-e382-f7f7-e1430310da52",
-		"7ec70d14-46ff-8cc3-7dd7-2d3486665c77",
-		"300bd765-6729-c212-ca21-431f3c4dbfd0",
-		"1472e859-1785-e088-36f9-edb7951f6976",
-		"bdf11a3a-cf14-1c44-0e42-c43892d69157",
-		"f393ab5e-36e4-455d-9dc5-62128debaf5f",
-		"beaf2c00-70b1-d72f-2a4c-e85f0946f0ce",
-		"f727f494-79ed-80f7-3b56-5d21ea069272",
-		"ba7db3d8-5e12-9c0a-16d5-219bb0c91051",
-		"022bab86-e2da-d137-7efd-0ad162e9a516",
-		"dbf644f2-007f-bac6-15be-1278faa65035",
-		"70082b62-563f-baaf-3c1e-ef2900fb7c95",
-		"f904089d-1a4a-2f55-4da0-bc3df1f7fb85",
-		"823c6e52-6541-a550-3015-1920fd4dead7"
-	],
-	"folders": [],
-	"timestamp": 1455275116238,
-	"owner": 0,
-	"remoteLink": "",
-	"public": false,
-	"requests": [
+	"variables": [],
+	"info": {
+		"name": "uberfire-provisioning",
+		"_postman_id": "0c8d0239-5a9a-7111-da81-82c3d138e8cf",
+		"description": "uberfire-provisioning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "00b49160-f8c7-4fad-6216-197bbf305605",
-			"headers": "",
-			"url": "http://localhost:8082/api/runtimes/4a3f42a1b6c8/start",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [
-				{
-					"key": "name",
-					"value": "salaboy/runtime-agent-services",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "urlencoded",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463397453627,
-			"name": "Start Runtime",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
-		},
-		{
-			"id": "022bab86-e2da-d137-7efd-0ad162e9a516",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/sources/db0e9df7-93f/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463395565212,
-			"name": "Register New Project into Repository ",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\":{\n        \"name\":\"users-new\",\n        \"rootPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n        \"path\": \"users-new\",\n        \"expectedBinary\": \"users-new.war\"\n    }\n}"
-		},
-		{
-			"id": "0c2c929b-5f3a-a5b1-2fb6-ce323ccc62ef",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8083/api/containers/providers/instances",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1455729261642,
-			"name": "Register New Instance Provider (WAS)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"properties\":{\n             \"name\":\"my was server\", \n             \"provider\":\"was\",\n             \"port\":\"8880\",\n             \"host\":\"10.211.55.3\"\n    }\n    \n}"
-		},
-		{
-			"id": "1472e859-1785-e088-36f9-edb7951f6976",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines/aff5c926-8a84-4b7f-aeae-3bcaa6b56977/run",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461833766362,
-			"name": "Run Pipeline With Build",
-			"description": "Run Pipeline",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t        \"message\": \"original\",\n\t        \"projectPath\": \"/Users/salaboy/Projects/uberfire-provisioning/sample-war/pom.xml\"\n\t\t}\n\n\t}\n}"
-		},
-		{
-			"id": "1ef7ae35-4d44-d17b-2b3e-de6854210b78",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463392608775,
-			"name": "Register New Provider (Local) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration\": {\n        \"name\":\"local fatjar runner\"\n        \n    }\n}"
-		},
-		{
-			"id": "300bd765-6729-c212-ca21-431f3c4dbfd0",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461833702845,
-			"name": "Create New Pipeline With Build",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe with build\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\t\t\t\t\"name\": \"print\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.build.maven.MavenBuildStage\": {\n\n\t\t\t\t\"name\":\"build war\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage2\": {\n\t\t\t\t\"name\": \"print2\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
-		},
-		{
-			"id": "30164568-9f03-a921-e7d2-187fee69fe8d",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8083/api/containers/instances",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1455729958971,
-			"name": "New Runtime (WAS)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"properties\":{\n             \"name\":\"myear\", \n             \"provider\":\"was\",\n             \"earPath\":\"/Users/salaboy/Projects/jee-container-examples/drools-was-container-java/myear.ear\",\n             \"target\":\"WebSphere:cell=ubuntuNode01Cell,node=ubuntuNode01,server=server1\"\n    }\n    \n}"
-		},
-		{
-			"id": "3877510b-8390-df6e-619c-e17a9d3396d1",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/runtimes/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463395916324,
-			"name": "New Runtime (Local) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration\":{\n        \"providerName\":\"local fatjar runner\",\n        \"jar\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364/users-new/target/users-new-swarm.jar\"\n        \n    }\n}"
-		},
-		{
-			"id": "4d0e8bc7-eeb1-f0df-1522-d7648e0354d3",
-			"headers": "",
-			"url": "http://localhost:8083/api/containers/instances/dda002af843b/stop",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [
-				{
-					"key": "name",
-					"value": "salaboy/runtime-agent-services",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "urlencoded",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1455730387050,
-			"name": "Stop Runtime",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
-		},
-		{
-			"id": "6b8feacf-9f13-808a-a36a-fa048953b9c4",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462354361328,
-			"name": "Register New Provider (Wildfly)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n            \"name\":\"wildfly at 9990\", \n            \"provider\":\"org.uberfire.provisioning.wildfly.runtime.provider.WildflyProvider\",\n            \"properties\":{\n                     \"host\": \"localhost\",\n                     \"port\": \"9990\",\n                     \"user\": \"salaboy\",\n                     \"password\": \"salaboy123$\"\n                     \n            }\n    \n    }\n}"
-		},
-		{
-			"id": "6c7b5cb8-c7ae-e382-f7f7-e1430310da52",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461833490654,
-			"name": "Create New Pipeline",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage2\": {\n\t\t\t\t\"name\": \"print2\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\n\t\t\t\t\"name\": \"print original\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
-		},
-		{
-			"id": "6d5bd3bd-8016-43a4-b364-fa264668a07d",
-			"headers": "",
-			"url": "http://localhost:8082/api/pipelines",
-			"pathVariables": {},
-			"preRequestScript": null,
-			"method": "GET",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"data": null,
-			"dataMode": "params",
-			"name": "Get All Pipelines",
-			"description": "Get All Pipelines",
-			"descriptionFormat": "html",
-			"time": 1461749137055,
-			"version": 2,
-			"responses": [],
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {}
-		},
-		{
-			"id": "70082b62-563f-baaf-3c1e-ef2900fb7c95",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/builds/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462961365153,
-			"name": "New Build (Maven Project)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"cf02e842-bed\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source3675147079410032296\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new.war\"\n    }\n  }"
-		},
-		{
-			"id": "795c0f6d-9e1d-7fa1-7520-a99cf1912d04",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463391557977,
-			"name": "Register New Provider (Docker) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration\": {\n        \"name\":\"docker local\"\n    }\n}"
-		},
-		{
-			"id": "7ec70d14-46ff-8cc3-7dd7-2d3486665c77",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines/03bee060-9b0a-47a1-901a-dfb017a4555c/run",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461833556053,
-			"name": "Run Pipeline",
-			"description": "Run Pipeline",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t        \"message\": \"original\"\t    \n\t\t}\n\n\t}\n}"
-		},
-		{
-			"id": "823c6e52-6541-a550-3015-1920fd4dead7",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/builds/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462962433183,
-			"name": "Get All Binaries",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
-		},
-		{
-			"id": "8589b2b3-782a-62e6-ff16-55776eb08619",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463392594636,
-			"name": "Register New Provider (Wildfly) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration\": {\n        \"name\":\"wildfly at 9990\", \n        \"host\": \"localhost\",\n        \"managementPort\": \"9990\",\n        \"user\": \"salaboy\",\n        \"password\": \"salaboy123$\"\n    }\n}"
-		},
-		{
-			"id": "987e8c9d-c955-aeec-61b7-469234abe7a1",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463391506530,
-			"name": "Register New Provider (Docker)",
-			"description": "Local Deamon",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"docker local 2\", \n        \"provider\":\"org.uberfire.provisioning.docker.runtime.provider.DockerProvider\",\n        \"properties\":{}\n    \n    }\n}"
-		},
-		{
-			"id": "a0c510cc-435a-ed96-3c4e-2e2d2b58255b",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/runtimes/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462354668289,
-			"name": "New Runtime (Wildfly)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration\":{\n        \"properties\":{\n             \"providerName\":\"wildfly at 9990\",\n             \"warPath\":\"/Users/salaboy/Projects/uberfire-provisioning/sample-war/target/sample-war-1.0-SNAPSHOT.war\"\n        }\n    }\n}"
-		},
-		{
-			"id": "b2526a7f-a8ee-faeb-0aa9-c9152f0e6712",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/providers/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462354425522,
-			"name": "Register New Provider (Kubernetes)",
-			"description": "Local Vagrant VM Kubernetes",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.runtime.providers.base.BaseProviderConfiguration\": {\n        \"name\":\"kubernetes local\", \n        \"provider\":\"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProvider\",\n        \"properties\":{}\n    \n    }\n}"
-		},
-		{
-			"id": "b8de1bc8-d1fd-2895-e2e8-e1130a783db3",
-			"headers": "",
-			"url": "http://localhost:8083/api/containers/instances/dda002af843b",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "DELETE",
-			"data": [
-				{
-					"key": "name",
-					"value": "salaboy/runtime-agent-services",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "urlencoded",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1455730393760,
-			"name": "Remove Runtime",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
-		},
-		{
-			"id": "ba7db3d8-5e12-9c0a-16d5-219bb0c91051",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/sources/db0e9df7-93f/location",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463392747245,
-			"name": "Get Sources Location By Repo Id",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
-		},
-		{
-			"id": "ba95ea95-635c-524e-becf-da45748f2f7b",
-			"headers": "",
-			"url": "http://localhost:8082/api/providers",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462282154758,
-			"name": "Get All Providers",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
-		},
-		{
-			"id": "bc66b406-6b85-7583-53d3-444af560b4c1",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/runtimes/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463393677573,
-			"name": "New Runtime (Wildfly) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly at 9990\",\n        \"warPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new.war\"\n        \n    }\n}"
-		},
-		{
-			"id": "bdf11a3a-cf14-1c44-0e42-c43892d69157",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461845974656,
-			"name": "Create New Pipeline With Build & Provision",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe with build\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\t\t\t\t\"name\": \"print\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.build.maven.MavenBuildStage\": {\n\n\t\t\t\t\"name\":\"build war\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.services.pipeline.ProvisionContainerStage\": {\n\t\t\t\t\"name\": \"provision to wildfly\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
-		},
-		{
-			"id": "beaf2c00-70b1-d72f-2a4c-e85f0946f0ce",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/sources/",
-			"pathVariables": {},
-			"preRequestScript": "",
-			"method": "GET",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"data": [],
-			"dataMode": "raw",
-			"name": "Get All Sources Repositories",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1462873559660,
-			"version": 2,
-			"responses": [],
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
-		},
-		{
-			"id": "d9a9ec2d-6a23-5b75-cc40-ab06d602ae2c",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/containers/instances",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461250106609,
-			"name": "New Container Docker",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"properties\":{\n             \"name\":\"salaboy/drools-jax-rs\", \n             \"providerName\":\"docker local\"\n    }\n    \n}"
-		},
-		{
-			"id": "dbf644f2-007f-bac6-15be-1278faa65035",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/sources/86d9e913-fa5/projects",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462958082394,
-			"name": "Get All Projects in Repository",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
-		},
-		{
-			"id": "decb4f4e-aae5-db3e-4ae1-f1696067f3a1",
-			"headers": "",
-			"url": "http://localhost:8082/api/runtimes/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462288268502,
-			"name": "Get All Runtimes",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
-		},
-		{
-			"id": "ebb489d6-db1a-b054-ca15-07058739d772",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/runtimes/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463397391508,
-			"name": "New Runtime (Docker) - Simpler Conf",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration\":{\n        \"providerName\":\"docker local\",\n        \"image\":\"salaboy/users-new\"\n        \n    }\n}"
-		},
-		{
-			"id": "f393ab5e-36e4-455d-9dc5-62128debaf5f",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/pipelines/c317aeaa-e92e-48f7-a92f-ba6b3c7b7d6a/run",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1461848373106,
-			"name": "Run Pipeline With Build & Provision",
-			"description": "Run Pipeline",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t\t    \"providerName\":\"my wildfly server\",\n\t        \"message\": \"original\",\n\t        \"projectPath\": \"/Users/salaboy/Projects/uberfire-provisioning/sample-war/\",\n\t        \"projectName\": \"sample-war\",\n\t        \"projectVersion\": \"1.0-SNAPSHOT\",\n\t        \"target\":\"http://localhost:9990/management/\",\n\t        \"host\": \"localhost\",\n\t        \"port\": \"9990\",\n\t        \"user\":\"salaboy\",\n\t        \"password\":\"salaboy123$\"\n\t        \n\t\t}\n\n\t}\n}"
-		},
-		{
-			"id": "f727f494-79ed-80f7-3b56-5d21ea069272",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/sources/",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463391903247,
-			"name": "Register New Sources Repository",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "{\n    \"org.uberfire.provisioning.source.git.GitHubRepository\":{\n        \"name\":\"livespark playground\",\n        \"uri\":\"https://github.com/Salaboy/livespark-playground.git\",\n        \"branch\":\"provisioning-enablement\"\n    }\n}"
-		},
-		{
-			"id": "f904089d-1a4a-2f55-4da0-bc3df1f7fb85",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8082/api/builds/docker",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1463397134286,
-			"name": "New Docker Image Build (Maven Project)",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": [],
-			"rawModeData": "  {\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"91aec094-c5e\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new\"\n    }\n  }"
-		},
-		{
-			"id": "f9263ae0-ea33-e5e0-dcf7-f5a10373be87",
-			"headers": "",
-			"url": "http://localhost:8082/api/providertypes",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1462282107722,
 			"name": "Get All Provider Types",
-			"description": "",
-			"collectionId": "d69cc009-fc4f-3b91-92e0-ed61942ae3eb",
-			"responses": []
+			"request": {
+				"url": "http://localhost:8082/api/providertypes",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Providers",
+			"request": {
+				"url": "http://localhost:8082/api/providers",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Provider (Docker) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/providers/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfiguration\": {\n        \"name\":\"docker local\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Provider (Kubernetes) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/providers/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfiguration\": {\n        \"name\":\"kubernetes local\",\n        \"masterUrl\":\"https://10.2.2.2:8443\",\n        \"username\":\"admin\",\n        \"password\":\"admin\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Provider (Wildfly) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/providers/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration\": {\n        \"name\":\"wildfly at 9990\", \n        \"host\": \"localhost\",\n        \"managementPort\": \"9990\",\n        \"user\": \"salaboy\",\n        \"password\": \"salaboy123$\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Provider (Local) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/providers/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration\": {\n        \"name\":\"local fatjar runner\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Runtimes",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Runtime (Wildfly) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly at 9990\",\n        \"warPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new.war\",\n        \"context\":\"users-new\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Runtime (Local) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration\":{\n        \"providerName\":\"local fatjar runner\",\n        \"jar\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364/users-new/target/users-new-swarm.jar\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Runtime (Docker) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration\":{\n        \"providerName\":\"docker local\",\n        \"image\":\"salaboy/users-new\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Runtime (Kubernetes) - Simpler Conf",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration\": {\n        \"providerName\":\"kubernetes local\",\n        \"namespace\": \"default\",\n        \"label\":\"uberfire\",\n        \"serviceName\":\"gameserver\",\n        \"image\":\"salaboy/game-server\",\n        \"context\": \"api\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Start Runtime",
+			"request": {
+				"url": "http://localhost:8082/api/runtimes/4a3f42a1b6c8/start",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "salaboy/runtime-agent-services",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stop Runtime",
+			"request": {
+				"url": "http://localhost:8083/api/containers/instances/dda002af843b/stop",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "salaboy/runtime-agent-services",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Runtime",
+			"request": {
+				"url": "http://localhost:8083/api/containers/instances/dda002af843b",
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "salaboy/runtime-agent-services",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Pipelines",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "Get All Pipelines"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Pipeline",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage2\": {\n\t\t\t\t\"name\": \"print2\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\n\t\t\t\t\"name\": \"print original\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Run Pipeline",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines/03bee060-9b0a-47a1-901a-dfb017a4555c/run",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t        \"message\": \"original\"\t    \n\t\t}\n\n\t}\n}"
+				},
+				"description": "Run Pipeline"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Pipeline With Build",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe with build\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\t\t\t\t\"name\": \"print\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.build.maven.MavenBuildStage\": {\n\n\t\t\t\t\"name\":\"build war\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage2\": {\n\t\t\t\t\"name\": \"print2\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Run Pipeline With Build",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines/aff5c926-8a84-4b7f-aeae-3bcaa6b56977/run",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t        \"message\": \"original\",\n\t        \"projectPath\": \"/Users/salaboy/Projects/uberfire-provisioning/sample-war/pom.xml\"\n\t\t}\n\n\t}\n}"
+				},
+				"description": "Run Pipeline"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Pipeline With Build & Provision",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline\": {\n\t\t\"name\": \"my custom pipe with build\",\n\t\t\"stages\": [{\n\t\t\t\"org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage\": {\n\t\t\t\t\"name\": \"print\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.build.maven.MavenBuildStage\": {\n\n\t\t\t\t\"name\":\"build war\"\n\t\t\t}\n\t\t}, {\n\t\t\t\"org.uberfire.provisioning.services.pipeline.ProvisionContainerStage\": {\n\t\t\t\t\"name\": \"provision to wildfly\"\n\t\t\t}\n\t\t}]\n\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Run Pipeline With Build & Provision",
+			"request": {
+				"url": "http://localhost:8082/api/pipelines/c317aeaa-e92e-48f7-a92f-ba6b3c7b7d6a/run",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext\": {\n\t\t\"data\": {\n\t\t    \"providerName\":\"my wildfly server\",\n\t        \"message\": \"original\",\n\t        \"projectPath\": \"/Users/salaboy/Projects/uberfire-provisioning/sample-war/\",\n\t        \"projectName\": \"sample-war\",\n\t        \"projectVersion\": \"1.0-SNAPSHOT\",\n\t        \"target\":\"http://localhost:9990/management/\",\n\t        \"host\": \"localhost\",\n\t        \"port\": \"9990\",\n\t        \"user\":\"salaboy\",\n\t        \"password\":\"salaboy123$\"\n\t        \n\t\t}\n\n\t}\n}"
+				},
+				"description": "Run Pipeline"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Sources Repositories",
+			"request": {
+				"url": "http://localhost:8082/api/sources/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Sources Repository",
+			"request": {
+				"url": "http://localhost:8082/api/sources/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.source.git.GitHubRepository\":{\n        \"name\":\"livespark playground\",\n        \"uri\":\"https://github.com/Salaboy/livespark-playground.git\",\n        \"branch\":\"provisioning-enablement\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sources Location By Repo Id",
+			"request": {
+				"url": "http://localhost:8082/api/sources/db0e9df7-93f/location",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register New Project into Repository ",
+			"request": {
+				"url": "http://localhost:8082/api/sources/db0e9df7-93f/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\":{\n        \"name\":\"users-new\",\n        \"rootPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n        \"path\": \"users-new\",\n        \"expectedBinary\": \"users-new.war\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Projects in Repository",
+			"request": {
+				"url": "http://localhost:8082/api/sources/86d9e913-fa5/projects",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Build (Maven Project)",
+			"request": {
+				"url": "http://localhost:8082/api/builds/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"cf02e842-bed\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source3675147079410032296\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new.war\"\n    }\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New Docker Image Build (Maven Project)",
+			"request": {
+				"url": "http://localhost:8082/api/builds/docker",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"91aec094-c5e\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new\"\n    }\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Binaries",
+			"request": {
+				"url": "http://localhost:8082/api/builds/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.WildflyRuntimeConfiguration\":{\n        \"providerName\":\"wildfly docker at 32774\",\n        \"warPath\":\"/deploy/sample-war-1.0-SNAPSHOT.war\"\n        \n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

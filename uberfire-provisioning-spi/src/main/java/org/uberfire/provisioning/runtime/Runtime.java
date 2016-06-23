@@ -48,6 +48,8 @@ public interface Runtime {
     Provider getProvider();
 
     RuntimeConfiguration getConfig();
+    
+    RuntimeEndpoint getEndpoint();
 
     void setConfig( RuntimeConfiguration config );
 

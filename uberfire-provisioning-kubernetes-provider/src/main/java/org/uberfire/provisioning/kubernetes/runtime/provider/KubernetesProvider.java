@@ -16,6 +16,7 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
+import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
@@ -23,7 +24,6 @@ import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceStatus;
@@ -37,7 +37,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import javax.xml.bind.annotation.XmlTransient;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
@@ -73,7 +72,7 @@ public class KubernetesProvider extends BaseProvider {
                 kubernetes = new DefaultKubernetesClient();
 
             }
-            
+
         }
 
     }
@@ -86,11 +85,13 @@ public class KubernetesProvider extends BaseProvider {
     @Override
     public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
         String namespace = runtimeConfig.getProperties().get( "namespace" );
-        String replicationControllerName = runtimeConfig.getProperties().get( "replicationController" );
         String label = runtimeConfig.getProperties().get( "label" );
         String image = runtimeConfig.getProperties().get( "image" );
         String serviceName = runtimeConfig.getProperties().get( "serviceName" );
-        ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource = kubernetes.replicationControllers().inNamespace( "default" ).withName( replicationControllerName );
+        ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource = kubernetes
+                .replicationControllers()
+                .inNamespace( "default" )
+                .withName( serviceName + "-rc" );
         if ( resource != null ) {
             try {
                 ReplicationController rc = resource.get();
@@ -98,12 +99,13 @@ public class KubernetesProvider extends BaseProvider {
                     ReplicationControllerStatus status = rc.getStatus();
                     Integer replicas = status.getReplicas();
                     System.out.println( "Replicas at this point: " + replicas );
+                    resource.scale( replicas + 1 );
                 } else {
                     kubernetes.replicationControllers().inNamespace( namespace ).createNew()
-                            .withNewMetadata().withName( replicationControllerName ).addToLabels( "app", label ).endMetadata()
+                            .withNewMetadata().withName( serviceName  + "-rc" ).addToLabels( "app", label ).endMetadata()
                             .withNewSpec().withReplicas( 1 )
                             .withNewTemplate()
-                            .withNewMetadata().withName( replicationControllerName ).addToLabels( "app", label ).endMetadata()
+                            .withNewMetadata().withName( serviceName  + "-rc" ).addToLabels( "app", label ).endMetadata()
                             .withNewSpec()
                             .addNewContainer().withName( label ).withImage( image )
                             // .addNewPort().withContainerPort(8080).withHostPort(8080).endPort()
@@ -125,6 +127,7 @@ public class KubernetesProvider extends BaseProvider {
                 Service service = serviceResource.get();
                 if ( service != null ) {
                     ServiceStatus status = service.getStatus();
+                    // The service already exist, so no need to create a new one
                 } else {
                     service = kubernetes.services().inNamespace( namespace ).createNew()
                             .withNewMetadata().withName( serviceName ).endMetadata()
@@ -148,32 +151,44 @@ public class KubernetesProvider extends BaseProvider {
     @Override
     public void destroy( String runtimeId ) throws ProvisioningException {
         System.out.println( ">>> Runtime ID Recieved: " + runtimeId );
-        ClientResource<Service, DoneableService> serviceResource = kubernetes.services().withName( runtimeId );
-        Service service = serviceResource.get();
-        String selector = service.getSpec().getSelector().get( "app" );
-        System.out.println( ">>> App Selector: " + selector );
-        Boolean deletedService = serviceResource.delete();
+        ClientRollableScallableResource<ReplicationController, DoneableReplicationController> rcResource = kubernetes
+                .replicationControllers()
+                .inNamespace( "default" )
+                .withName( runtimeId + "-rc");
 
-        if ( deletedService ) {
-            System.out.println( " >>>> Service Deleted Successfully!" );
+        if ( rcResource != null ) {
+            ReplicationController rc = rcResource.get();
+            Integer replicas = rc.getStatus().getReplicas();
+            if ( replicas <= 1 ) {
+                Boolean deletedRC = rcResource.delete();
+                if ( deletedRC ) {
+                    System.out.println( " >>>> RC Deleted Successfully!" );
+                }
+                ClientResource<Service, DoneableService> serviceResource = kubernetes.services().withName( runtimeId );
+                Service service = serviceResource.get();
+                String selector = service.getSpec().getSelector().get( "app" );
+                System.out.println( ">>> App Selector: " + selector );
+
+                Boolean deletedService = serviceResource.delete();
+
+                if ( deletedService ) {
+                    System.out.println( " >>>> Service Deleted Successfully!" );
+                }
+                FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource = kubernetes.pods().withLabel( "app", selector );
+                Boolean deletedPod = podResource.delete();
+                if ( deletedPod ) {
+                    System.out.println( " >>>> POD Deleted Successfully!" );
+                }
+            } else {
+                rcResource.scale( replicas - 1 );
+            }
         }
 
-        FilterWatchListDeletable<ReplicationController, ReplicationControllerList, Boolean, Watch, Watcher<ReplicationController>> rcResource = kubernetes
-                .replicationControllers().withLabel( "app", selector );
-
-        Boolean deletedRC = rcResource.delete();
-        if ( deletedRC ) {
-            System.out.println( " >>>> RC Deleted Successfully!" );
-        }
-
-        FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource = kubernetes.pods().withLabel( "app", selector );
-        Boolean deletedPod = podResource.delete();
-        if ( deletedPod ) {
-            System.out.println( " >>>> POD Deleted Successfully!" );
-        }
     }
 
-    public DefaultKubernetesClient getKubernetes() {
+    @JsonIgnore
+    @XmlTransient
+    public DefaultKubernetesClient getKubernetesClient() {
         return kubernetes;
     }
 

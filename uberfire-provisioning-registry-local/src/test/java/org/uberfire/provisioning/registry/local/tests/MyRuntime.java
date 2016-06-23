@@ -17,6 +17,7 @@
 package org.uberfire.provisioning.registry.local.tests;
 
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
 import org.uberfire.provisioning.runtime.RuntimeInfo;
 import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.base.BaseRuntime;
@@ -28,8 +29,8 @@ import org.uberfire.provisioning.runtime.providers.Provider;
 public class MyRuntime extends BaseRuntime {
 
     public MyRuntime( String id,
-                      RuntimeConfiguration config,
-                      Provider provider ) {
+            RuntimeConfiguration config,
+            Provider provider ) {
         super( id, config, provider );
         if ( !( provider instanceof MyProvider ) ) {
             throw new IllegalStateException( "Wrong provider for MyRuntime" );
@@ -58,6 +59,11 @@ public class MyRuntime extends BaseRuntime {
 
     @Override
     public RuntimeState getState() {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public RuntimeEndpoint getEndpoint() {
         throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 

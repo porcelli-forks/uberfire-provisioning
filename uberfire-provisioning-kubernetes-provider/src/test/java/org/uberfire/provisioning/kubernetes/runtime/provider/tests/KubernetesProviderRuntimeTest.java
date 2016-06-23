@@ -107,7 +107,7 @@ public class KubernetesProviderRuntimeTest {
 
         KubernetesProvider kubernetesProvider = new KubernetesProvider( config, dockerProviderType );
 
-        assertNotNull( kubernetesProvider.getKubernetes() );
+        assertNotNull( kubernetesProvider.getKubernetesClient() );
         KubernetesRuntimeConfiguration runtimeConfig = new KubernetesRuntimeConfiguration();
         runtimeConfig.setNamespace( "default" );
         runtimeConfig.setReplicationController( "test" );
@@ -138,7 +138,7 @@ public class KubernetesProviderRuntimeTest {
 
         KubernetesProvider kubernetesProvider = new KubernetesProvider( config, dockerProviderType );
 
-        assertNotNull( kubernetesProvider.getKubernetes() );
+        assertNotNull( kubernetesProvider.getKubernetesClient() );
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
         runtimeConfig.getProperties().put( "namespace", "default" );
         runtimeConfig.getProperties().put( "replicationController", "test" );

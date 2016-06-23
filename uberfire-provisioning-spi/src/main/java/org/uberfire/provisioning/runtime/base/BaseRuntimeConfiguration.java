@@ -22,9 +22,6 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 
-/**
- * @author salaboy
- */
 public class BaseRuntimeConfiguration implements RuntimeConfiguration {
 
     @JsonIgnore
@@ -52,4 +49,7 @@ public class BaseRuntimeConfiguration implements RuntimeConfiguration {
         this.providerName = providerName;
     }
 
+    public void setContext( String context ) {
+        getProperties().put( "context", context );
+    }
 }

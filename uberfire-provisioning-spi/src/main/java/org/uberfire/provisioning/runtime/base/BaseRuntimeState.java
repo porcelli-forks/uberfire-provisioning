@@ -16,34 +16,29 @@
 
 package org.uberfire.provisioning.runtime.base;
 
-import java.util.Date;
-
 import org.uberfire.provisioning.runtime.RuntimeState;
 
-/**
- * @author salaboy
- */
 public class BaseRuntimeState implements RuntimeState {
 
-    private boolean running;
-    private Date startedAt;
+    private String state;
+    private String startedAt;
 
     public BaseRuntimeState() {
     }
 
-    public BaseRuntimeState( boolean running,
-                             Date startedAt ) {
-        this.running = running;
+    public BaseRuntimeState( String state,
+            String startedAt ) {
+        this.state = state;
         this.startedAt = startedAt;
     }
 
     @Override
-    public boolean isRunning() {
-        return running;
+    public String getState() {
+        return state;
     }
 
     @Override
-    public Date getStartedAt() {
+    public String getStartedAt() {
         return startedAt;
     }
 

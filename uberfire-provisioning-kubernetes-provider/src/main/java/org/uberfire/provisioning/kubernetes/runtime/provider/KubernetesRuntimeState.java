@@ -16,30 +16,18 @@
 
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
-import java.util.Date;
-import org.uberfire.provisioning.runtime.RuntimeState;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeState;
 
-public class KubernetesRuntimeState implements RuntimeState {
-
-    private boolean running;
-    private Date startedAt;
-
+public class KubernetesRuntimeState extends BaseRuntimeState {
+    
+    
     public KubernetesRuntimeState() {
     }
 
-    public KubernetesRuntimeState( boolean running, Date startedAt ) {
-        this.running = running;
-        this.startedAt = startedAt;
+    public KubernetesRuntimeState( String state, String startedAt ) {
+        super( state, startedAt );
     }
-
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
-
-    @Override
-    public Date getStartedAt() {
-        return startedAt;
-    }
+    
+    
 
 }

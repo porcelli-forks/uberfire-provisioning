@@ -5,6 +5,7 @@
  */
 package org.uberfire.provisioning.docker.runtime.provider;
 
+import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.annotation.XmlTransient;
+
 
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerCertificateException;
@@ -29,9 +30,6 @@ import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
-/**
- * @author salaboy
- */
 public class DockerProvider extends BaseProvider {
 
     @XmlTransient

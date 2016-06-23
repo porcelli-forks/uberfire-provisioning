@@ -148,7 +148,7 @@ public class DockerProviderRuntimeTest {
 
         newRuntime.start();
 
-        assertTrue( newRuntime.getState().isRunning() );
+        assertEquals( "Running", newRuntime.getState().getState() );
 
         try {
             dockerProvider.destroy( newRuntime.getId() );

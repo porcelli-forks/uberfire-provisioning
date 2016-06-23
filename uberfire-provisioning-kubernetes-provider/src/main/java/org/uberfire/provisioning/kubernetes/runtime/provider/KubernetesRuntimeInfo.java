@@ -17,36 +17,15 @@
 package org.uberfire.provisioning.kubernetes.runtime.provider;
 
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.RuntimeInfo;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeInfo;
 
-public class KubernetesRuntimeInfo implements RuntimeInfo {
-
-    private String id;
-    private String name;
-    private RuntimeConfiguration config;
+public class KubernetesRuntimeInfo extends BaseRuntimeInfo {
 
     public KubernetesRuntimeInfo() {
     }
 
     public KubernetesRuntimeInfo( String id, String name, RuntimeConfiguration config ) {
-        this.id = id;
-        this.name = name;
-        this.config = config;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public RuntimeConfiguration getConfig() {
-        return config;
+        super( id, name, config );
     }
 
 }

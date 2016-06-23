@@ -30,10 +30,9 @@ import static java.lang.Runtime.*;
 import static java.lang.System.*;
 import static java.util.logging.Level.*;
 import static java.util.logging.Logger.*;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeEndpoint;
 
-/**
- * @author salaboy
- */
 public class LocalRuntime extends BaseRuntime {
 
     private Process p;
@@ -93,5 +92,12 @@ public class LocalRuntime extends BaseRuntime {
 
         return null;
     }
+
+    @Override
+    public RuntimeEndpoint getEndpoint() {
+        return new BaseRuntimeEndpoint();
+    }
+    
+    
 
 }

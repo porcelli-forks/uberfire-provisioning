@@ -17,20 +17,21 @@
 package org.uberfire.provisioning.wildfly.runtime.provider.base;
 
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
 import org.uberfire.provisioning.runtime.RuntimeInfo;
 import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.base.BaseRuntime;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10RuntimeEndpoint;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10RuntimeInfo;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10RuntimeState;
 
-/**
- * @author salaboy
- */
 public class WildflyRuntime extends BaseRuntime {
 
     public WildflyRuntime( String id,
-                           RuntimeConfiguration config,
-                           Provider provider ) {
+            RuntimeConfiguration config,
+            Provider provider ) {
         super( id, config, provider );
         if ( !( provider instanceof Wildfly10Provider ) ) {
             throw new IllegalArgumentException( "Wrong provider! set: " + provider.getClass() + " expected: WildflyProvider" );
@@ -54,12 +55,20 @@ public class WildflyRuntime extends BaseRuntime {
 
     @Override
     public RuntimeInfo getInfo() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        return new Wildfly10RuntimeInfo();
     }
 
     @Override
     public RuntimeState getState() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        return new Wildfly10RuntimeState();
+    }
+
+    @Override
+    public RuntimeEndpoint getEndpoint() {
+        String context = getConfig().getProperties().get( "context" );
+        String port = getConfig().getProperties().get( "port" );
+        String host = getConfig().getProperties().get( "port" );
+        return new Wildfly10RuntimeEndpoint( host, new Integer( port ), context );
     }
 
 }

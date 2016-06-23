@@ -40,6 +40,10 @@ public class WildflyProviderConfiguration extends BaseProviderConfiguration {
         getProperties().put( "host", host );
     }
 
+    public void setPort( String port ) {
+        getProperties().put( "port", port );
+    }
+    
     public void setManagementPort( String port ) {
         getProperties().put( "port", port );
     }

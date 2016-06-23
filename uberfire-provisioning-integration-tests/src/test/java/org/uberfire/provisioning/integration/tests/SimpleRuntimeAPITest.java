@@ -124,7 +124,7 @@ public class SimpleRuntimeAPITest {
 
         WildflyProviderConfiguration wildflyProviderConfig = WildflyProviderConfBuilder.newConfig( "wildfly @ 9990" )
                 .setHost( "localhost" )
-                .setPort( "9990" )
+                .setManagementPort( "9990" )
                 .setUser( "salaboy" )
                 .setPassword( "salaboy123$" ).get();
 

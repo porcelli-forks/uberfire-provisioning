@@ -28,6 +28,8 @@ import org.uberfire.provisioning.runtime.providers.Provider;
 
 import static java.util.logging.Level.*;
 import static java.util.logging.Logger.*;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
+import org.uberfire.provisioning.runtime.base.BaseRuntimeEndpoint;
 
 /**
  * @author salaboy
@@ -35,8 +37,8 @@ import static java.util.logging.Logger.*;
 public class DockerRuntime extends BaseRuntime {
 
     public DockerRuntime( String id,
-                          RuntimeConfiguration config,
-                          Provider provider ) {
+            RuntimeConfiguration config,
+            Provider provider ) {
         super( id, config, provider );
         if ( !( provider instanceof DockerProvider ) ) {
             throw new IllegalArgumentException( "Wrong provider! set: " + provider.getClass() + " expected: DockerProvider" );
@@ -47,7 +49,7 @@ public class DockerRuntime extends BaseRuntime {
     @Override
     public void start() {
         try {
-            ( (DockerProvider) provider ).getDocker().startContainer( getId() );
+            ( ( DockerProvider ) provider ).getDocker().startContainer( getId() );
         } catch ( DockerException | InterruptedException ex ) {
             getLogger( DockerProvider.class.getName() ).log( SEVERE, null, ex );
         }
@@ -58,7 +60,7 @@ public class DockerRuntime extends BaseRuntime {
     public void stop() {
 
         try {
-            ( (DockerProvider) provider ).getDocker().stopContainer( getId(), 0 );
+            ( ( DockerProvider ) provider ).getDocker().stopContainer( getId(), 0 );
         } catch ( DockerException | InterruptedException ex ) {
             getLogger( DockerProvider.class.getName() ).log( SEVERE, null, ex );
         }
@@ -69,7 +71,7 @@ public class DockerRuntime extends BaseRuntime {
     public void restart() {
 
         try {
-            ( (DockerProvider) provider ).getDocker().restartContainer( getId() );
+            ( ( DockerProvider ) provider ).getDocker().restartContainer( getId() );
         } catch ( DockerException | InterruptedException ex ) {
             getLogger( DockerProvider.class.getName() ).log( SEVERE, null, ex );
         }
@@ -84,13 +86,26 @@ public class DockerRuntime extends BaseRuntime {
     @Override
     public RuntimeState getState() {
         try {
-            ContainerInfo containerInfo = ( (DockerProvider) provider ).getDocker().inspectContainer( getId() );
+            ContainerInfo containerInfo = ( ( DockerProvider ) provider ).getDocker().inspectContainer( getId() );
             ContainerState state = containerInfo.state();
-            return new BaseRuntimeState( state.running(), state.startedAt() );
+            String stateString = "NA";
+            if ( state.running() ) {
+                stateString = "Running";
+            } else if ( state.paused() ) {
+                stateString = "Paused";
+            } else if ( state.restarting() ) {
+                stateString = "Restarting";
+            }
+            return new BaseRuntimeState( stateString, state.startedAt().toString() );
         } catch ( DockerException | InterruptedException ex ) {
             getLogger( DockerRuntime.class.getName() ).log( SEVERE, null, ex );
         }
         return null;
+    }
+
+    @Override
+    public RuntimeEndpoint getEndpoint() {
+        return new BaseRuntimeEndpoint();
     }
 
 }

@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.runtime.providers.info;
+package org.uberfire.provisioning.runtime;
 
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
 
 /**
- * @author salaboy
+ * This interface represent the Runtime Endpoint 
  */
-public interface ContainerProviderInstanceInfo {
+@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+public interface RuntimeEndpoint {
 
-    String getName();
+    String getHost();
 
-    String getProviderName();
+    int getPort();
 
-    ProviderConfiguration getConfig();
-
+    String getContext();
 }
