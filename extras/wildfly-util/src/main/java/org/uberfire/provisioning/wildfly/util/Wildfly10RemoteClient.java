@@ -43,7 +43,7 @@ import static org.apache.http.entity.mime.MultipartEntityBuilder.create;
 import static org.apache.http.impl.client.HttpClients.*;
 
 /**
- * @author salaboy Based on: https://github.com/heiko-braun/http-upload
+ * Based on: https://github.com/heiko-braun/http-upload
  */
 @JsonIgnoreType
 public class Wildfly10RemoteClient {

@@ -35,6 +35,10 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteList;
+import io.fabric8.openshift.api.model.RouteSpec;
+import io.fabric8.openshift.client.OpenShiftClient;
 import java.util.List;
 import java.util.Map;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
@@ -169,11 +173,21 @@ public class KubernetesRuntime extends BaseRuntime {
     @Override
     public RuntimeEndpoint getEndpoint() {
         String serviceName = getConfig().getProperties().get( "serviceName" );
-        ClientResource<Service, DoneableService> serviceResource = ( ( KubernetesProvider ) provider ).getKubernetesClient().services().withName( serviceName );
-        ServiceSpec spec = serviceResource.get().getSpec();
-        String host = spec.getClusterIP();
-        List<ServicePort> ports = spec.getPorts();
-        Integer port = ports.get( 0 ).getPort();
+        OpenShiftClient osClient = ( ( KubernetesProvider ) provider ).getKubernetesClient().adapt( OpenShiftClient.class );
+        FilterWatchListDeletable<Route, RouteList, Boolean, Watch, Watcher<Route>> routeResources = osClient.routes().withLabel("name", serviceName );
+//        ClientResource<Service, DoneableService> serviceResource = ( ( KubernetesProvider ) provider ).getKubernetesClient().services().withName( serviceName );
+        List<Route> items = routeResources.list().getItems();
+        RouteSpec spec = items.get( 0 ).getSpec();
+        System.out.println( "Spec: " + spec );
+        String host = spec.getHost();
+        
+        System.out.println( "Host: "+ host );
+        System.out.println( "Port: "+ spec.getPort() );
+        Integer port = 80;
+        if(spec.getPort() != null){
+            port = spec.getPort().getTargetPort().getIntVal();
+        }
+        
         String context = getConfig().getProperties().get( "context" );
         return new BaseRuntimeEndpoint( host, port, context );
     }

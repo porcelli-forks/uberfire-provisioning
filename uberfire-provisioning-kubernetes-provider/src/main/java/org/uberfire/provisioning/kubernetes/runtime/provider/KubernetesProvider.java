@@ -37,6 +37,8 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.client.OpenShiftClient;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
@@ -88,6 +90,8 @@ public class KubernetesProvider extends BaseProvider {
         String label = runtimeConfig.getProperties().get( "label" );
         String image = runtimeConfig.getProperties().get( "image" );
         String serviceName = runtimeConfig.getProperties().get( "serviceName" );
+        Integer internalPort = new Integer( runtimeConfig.getProperties().get( "internalPort" ) );
+
         ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource = kubernetes
                 .replicationControllers()
                 .inNamespace( "default" )
@@ -102,10 +106,10 @@ public class KubernetesProvider extends BaseProvider {
                     resource.scale( replicas + 1 );
                 } else {
                     kubernetes.replicationControllers().inNamespace( namespace ).createNew()
-                            .withNewMetadata().withName( serviceName  + "-rc" ).addToLabels( "app", label ).endMetadata()
+                            .withNewMetadata().withName( serviceName + "-rc" ).addToLabels( "app", label ).endMetadata()
                             .withNewSpec().withReplicas( 1 )
                             .withNewTemplate()
-                            .withNewMetadata().withName( serviceName  + "-rc" ).addToLabels( "app", label ).endMetadata()
+                            .withNewMetadata().withName( serviceName + "-rc" ).addToLabels( "app", label ).endMetadata()
                             .withNewSpec()
                             .addNewContainer().withName( label ).withImage( image )
                             // .addNewPort().withContainerPort(8080).withHostPort(8080).endPort()
@@ -133,9 +137,19 @@ public class KubernetesProvider extends BaseProvider {
                             .withNewMetadata().withName( serviceName ).endMetadata()
                             .withNewSpec()
                             .addToSelector( "app", label )
-                            .addNewPort().withPort( 80 ).withNewTargetPort().withIntVal( 8080 ).endTargetPort().endPort()
+                            .addNewPort().withPort( 80 ).withNewTargetPort().withIntVal( internalPort ).endTargetPort().endPort()
                             .endSpec()
                             .done();
+                    OpenShiftClient osClient = kubernetes.adapt( OpenShiftClient.class );
+                    Route route = osClient.routes().inNamespace( namespace )
+                            .createNew()
+                            .withNewSpec().withHost( serviceName + ".apps.10.2.2.2.xip.io" )
+                            .withNewTo().withName( serviceName ).withKind( "Service" ).endTo()
+                            .endSpec()
+                            .withNewMetadata().addToLabels( "name", serviceName ).withGenerateName( serviceName ).endMetadata()
+                            .done();
+                    String name = route.getMetadata().getName();
+                    System.out.println( " Route generated Name: " + name );
                 }
 
             }
@@ -154,7 +168,7 @@ public class KubernetesProvider extends BaseProvider {
         ClientRollableScallableResource<ReplicationController, DoneableReplicationController> rcResource = kubernetes
                 .replicationControllers()
                 .inNamespace( "default" )
-                .withName( runtimeId + "-rc");
+                .withName( runtimeId + "-rc" );
 
         if ( rcResource != null ) {
             ReplicationController rc = rcResource.get();
@@ -178,6 +192,11 @@ public class KubernetesProvider extends BaseProvider {
                 Boolean deletedPod = podResource.delete();
                 if ( deletedPod ) {
                     System.out.println( " >>>> POD Deleted Successfully!" );
+                }
+                OpenShiftClient osClient = kubernetes.adapt( OpenShiftClient.class );
+                Boolean deletedRoute = osClient.routes().inNamespace( "default" ).withLabel( "name", runtimeId ).delete();
+                if ( deletedRoute ) {
+                    System.out.println( ">>>> Route Deleted! " );
                 }
             } else {
                 rcResource.scale( replicas - 1 );

@@ -32,6 +32,10 @@ public class KubernetesRuntimeConfiguration extends BaseRuntimeConfiguration {
         getProperties().put( "label", label );
     }
 
+    public void setInternalPort( String internalPort ) {
+        getProperties().put( "internalPort", internalPort );
+    }
+    
     public void setServiceName( String serviceName ) {
         getProperties().put( "serviceName", serviceName );
     }

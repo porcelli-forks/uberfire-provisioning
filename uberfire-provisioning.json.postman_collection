@@ -89,7 +89,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration\": {\n        \"name\":\"wildfly at 9990\", \n        \"host\": \"localhost\",\n        \"managementPort\": \"9990\",\n        \"user\": \"salaboy\",\n        \"password\": \"salaboy123$\"\n    }\n}"
+					"raw": "{\n    \"org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration\": {\n        \"name\":\"wildfly at 9990\", \n        \"host\": \"localhost\",\n        \"managementPort\": \"9990\",\n        \"port\": \"8080\",\n        \"user\": \"salaboy\",\n        \"password\": \"salaboy123$\"\n    }\n}"
 				},
 				"description": ""
 			},
@@ -203,7 +203,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration\": {\n        \"providerName\":\"kubernetes local\",\n        \"namespace\": \"default\",\n        \"label\":\"uberfire\",\n        \"serviceName\":\"gameserver\",\n        \"image\":\"salaboy/game-server\",\n        \"context\": \"api\"\n        \n    }\n}"
+					"raw": "{\n    \"org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfiguration\": {\n        \"providerName\":\"kubernetes local\",\n        \"namespace\": \"default\",\n        \"label\":\"uberfire\",\n        \"serviceName\":\"gameserver\",\n        \"image\":\"salaboy/game-server\",\n        \"internalPort\": \"8082\",\n        \"context\": \"api\"\n        \n    }\n}"
 				},
 				"description": ""
 			},
@@ -254,19 +254,12 @@
 		{
 			"name": "Remove Runtime",
 			"request": {
-				"url": "http://localhost:8083/api/containers/instances/dda002af843b",
+				"url": "http://localhost:8082/api/runtimes/gameserver",
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "salaboy/runtime-agent-services",
-							"type": "text",
-							"enabled": true
-						}
-					]
+					"urlencoded": []
 				},
 				"description": ""
 			},

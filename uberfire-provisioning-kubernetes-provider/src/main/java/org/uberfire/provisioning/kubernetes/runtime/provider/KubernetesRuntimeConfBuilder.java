@@ -55,7 +55,12 @@ public class KubernetesRuntimeConfBuilder {
         config.setImage( image );
         return instance;
     }
-    
+
+    public KubernetesRuntimeConfBuilder setInternalPort( String internalPort ) {
+        config.setInternalPort( internalPort );
+        return instance;
+    }
+
     public KubernetesRuntimeConfBuilder setContext( String context ) {
         config.setContext( context );
         return instance;
