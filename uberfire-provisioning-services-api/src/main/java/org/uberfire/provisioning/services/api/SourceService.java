@@ -48,7 +48,7 @@ public interface SourceService {
     @Consumes(value = APPLICATION_JSON)
     @Produces(value = APPLICATION_JSON)
     @Path("")
-    String registerRepository( @NotNull Repository repo ) throws BusinessException;
+    String registerRepository( Repository repo ) throws BusinessException;
 
     @POST
     @Consumes(value = APPLICATION_JSON)
