@@ -68,7 +68,7 @@ import org.uberfire.provisioning.source.git.GitSource;
 import org.uberfire.provisioning.source.git.stages.GitSourceStage;
 
 /*
- * mvn -Dtest=PipelineIntegrationAPITest test
+ *  mvn -Dtest=PipelineIntegrationAPITest -Dmaven.multiModuleProjectDirectory=$M2_HOME test
  */
 @RunWith( Arquillian.class )
 public class PipelineIntegrationAPITest {
