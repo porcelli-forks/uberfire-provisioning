@@ -16,13 +16,17 @@
 
 package org.uberfire.provisioning.pipeline.events;
 
+import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.Stage;
 
 public class BeforeStageExecutionEvent implements PipelineEvent {
 
+    private Pipeline pipeline;
     private Stage stage;
 
-    public BeforeStageExecutionEvent( Stage stage ) {
+    public BeforeStageExecutionEvent( final Pipeline pipeline,
+                                      final Stage stage ) {
+        this.pipeline = pipeline;
         this.stage = stage;
     }
 
@@ -30,4 +34,7 @@ public class BeforeStageExecutionEvent implements PipelineEvent {
         return stage;
     }
 
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
 }
