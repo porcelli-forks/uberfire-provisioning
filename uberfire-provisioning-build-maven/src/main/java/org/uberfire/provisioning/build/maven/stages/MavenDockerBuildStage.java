@@ -40,9 +40,12 @@ public class MavenDockerBuildStage implements Stage {
     @Override
     public void execute( PipelineContext context ) {
         Project project = ( Project ) context.getData().get( "project" );
+        String push = ( String ) context.getData().get( "push" );
+        String username = ( String ) context.getData().get( "username" );
+        String password = ( String ) context.getData().get( "password" );
         Build build = ( Build ) context.getServices().get( "buildService" );
         try {
-            int result = build.createDockerImage(project );
+            int result = build.createDockerImage(project, Boolean.valueOf( push ), username, password);
             System.out.println( "Build Result: " + result );
         } catch ( BuildException ex ) {
             Logger.getLogger(MavenDockerBuildStage.class.getName() ).log( Level.SEVERE, null, ex );

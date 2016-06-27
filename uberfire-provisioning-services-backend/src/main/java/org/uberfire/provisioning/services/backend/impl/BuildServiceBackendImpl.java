@@ -52,7 +52,7 @@ public class BuildServiceBackendImpl implements BuildServiceBackend {
     }
 
     @Override
-    public String createDockerImage( final Project project ) throws BusinessException {
-        return buildService.createDockerImage( project );
+    public String createDockerImage( final Project project, boolean push, String username, String password ) throws BusinessException {
+        return buildService.createDockerImage( project, push, username, password );
     }
 }
