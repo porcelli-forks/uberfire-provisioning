@@ -74,9 +74,9 @@ public class RestBuildServiceImpl implements BuildService {
     }
 
     @Override
-    public String createDockerImage( final Project project ) throws BusinessException {
+    public String createDockerImage( final Project project, boolean push, String username, String password ) throws BusinessException {
         try {
-            int result = build.createDockerImage( project );
+            int result = build.createDockerImage( project, push, username, password );
             if ( result != 0 ) {
                 throw new BusinessException( "Building Docker image failed with code: " + result );
             }
