@@ -16,10 +16,7 @@
 
 package org.uberfire.provisioning.services.rest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -28,6 +25,7 @@ import javax.inject.Inject;
 import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
+import org.uberfire.provisioning.registry.PipelineRegistry;
 import org.uberfire.provisioning.services.api.PipelineService;
 import org.uberfire.provisioning.services.api.RuntimeProvisioningService;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
@@ -35,26 +33,25 @@ import org.uberfire.provisioning.services.exceptions.BusinessException;
 @ApplicationScoped
 public class RestPipelineServiceImpl implements PipelineService {
 
-    private Map<String, Pipeline> pipelines = new HashMap<String, Pipeline>();
+    @Inject
+    private PipelineRegistry pipelineRegistry;
 
     @Inject
     private RuntimeProvisioningService provisioningService;
 
     @PostConstruct
-    public void init() {
-        System.out.println( "Post Construct Pipeline ServiceImpl here!" );
-    }
+    public void init() {}
 
     @Override
     public List<Pipeline> getAllPipelines() throws BusinessException {
-        return new ArrayList<>( pipelines.values() );
+        return pipelineRegistry.getAllPipelines();
     }
 
     @Override
     public String newPipeline( Pipeline pipeline ) throws BusinessException {
         String id = UUID.randomUUID().toString();
         pipeline.setId( id );
-        pipelines.put( pipeline.getId(), pipeline );
+        pipelineRegistry.registerPipeline( pipeline );
         return pipeline.getId();
     }
 
@@ -62,7 +59,7 @@ public class RestPipelineServiceImpl implements PipelineService {
     public void runPipeline( final String id,
                              final PipelineContext context ) throws BusinessException {
         context.getServices().put( "provisioningService", provisioningService );
-        new SimplePipelineInstance( pipelines.get( id ) ).run( context );
+        new SimplePipelineInstance( pipelineRegistry.getPipelineById( id ) ).run( context );
     }
 
 }

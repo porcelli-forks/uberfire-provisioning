@@ -94,7 +94,7 @@ public class KubernetesProvider extends BaseProvider {
 
         ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource = kubernetes
                 .replicationControllers()
-                .inNamespace( "default" )
+                .inNamespace( namespace )
                 .withName( serviceName + "-rc" );
         if ( resource != null ) {
             try {

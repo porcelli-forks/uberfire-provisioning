@@ -20,9 +20,6 @@ import java.util.List;
 
 import org.uberfire.provisioning.build.Binary;
 
-/**
- * @author salaboy
- */
 public interface BuildRegistry {
 
     void registerBinary( Binary binary );

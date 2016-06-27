@@ -21,31 +21,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.uberfire.provisioning.build.Binary;
-import org.uberfire.provisioning.registry.BuildRegistry;
+import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.registry.PipelineRegistry;
 
 /**
  * @TODO: This is a not thread-safe implementation for local testing. A
  * more robust and distributed implementation should be provided for real
- * use cases. All the lookups mechanisms and structures needs to be improved for performance.
+ * use cases. All the lookups mechanisms and structures needs to be improved for
+ * performance.
  */
-public class InMemoryBuildRegistry implements BuildRegistry {
+public class InMemoryPipelineRegistry implements PipelineRegistry {
 
-    private final Map<String, Binary> binariesByName;
+    private final Map<String, Pipeline> pipelineById;
 
-    public InMemoryBuildRegistry() {
-        binariesByName = new HashMap<>();
+    public InMemoryPipelineRegistry() {
+        pipelineById = new HashMap<>();
 
     }
 
     @Override
-    public void registerBinary( Binary binary ) {
-        binariesByName.put( binary.getName(), binary );
+    public void registerPipeline( Pipeline pipeline ) {
+        pipelineById.put( pipeline.getId(), pipeline );
     }
 
     @Override
-    public List<Binary> getAllBinaries() {
-        return new ArrayList<>( binariesByName.values() );
+    public Pipeline getPipelineById( String pipelineId ) {
+        return pipelineById.get( pipelineId );
+    }
+
+    @Override
+    public List<Pipeline> getAllPipelines() {
+        return new ArrayList<Pipeline>( pipelineById.values() );
     }
 
 }

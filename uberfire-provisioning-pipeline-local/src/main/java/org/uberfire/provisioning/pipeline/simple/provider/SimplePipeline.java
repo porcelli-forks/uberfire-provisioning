@@ -25,9 +25,6 @@ import org.uberfire.provisioning.pipeline.Stage;
 
 import static java.util.UUID.*;
 
-/**
- * @author salaboy
- */
 @XmlRootElement
 public class SimplePipeline implements Pipeline {
 

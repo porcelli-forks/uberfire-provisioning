@@ -22,9 +22,6 @@ import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
-/**
- * @author salaboy
- */
 public interface RuntimeRegistry {
 
     void registerProviderType( ProviderType pt );

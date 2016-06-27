@@ -24,11 +24,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,9 +47,6 @@ import org.uberfire.provisioning.source.git.GitHub;
 import org.uberfire.provisioning.source.git.GitRepository;
 import org.uberfire.provisioning.source.git.GitSource;
 
-/**
- * @author salaboy
- */
 @RunWith(Arquillian.class)
 public class SimpleSourceAndBuildAPITest {
 
@@ -77,27 +70,8 @@ public class SimpleSourceAndBuildAPITest {
     private BuildRegistry buildRegistry;
 
     @Inject
-    private Source source;
-
-    @Inject
     private Build build;
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     @Ignore

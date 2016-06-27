@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.pipeline;
+package org.uberfire.provisioning.registry;
 
-import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
+import java.util.List;
 
-public interface PipelineInstance {
+import org.uberfire.provisioning.pipeline.Pipeline;
 
-    void run( PipelineContext context );
+public interface PipelineRegistry {
 
-    void registerEventHandler( PipelineEventHandler handler );
+    void registerPipeline( Pipeline pipeline );
+
+    Pipeline getPipelineById( String pipelineId );
+    
+    List<Pipeline> getAllPipelines();
+
 }

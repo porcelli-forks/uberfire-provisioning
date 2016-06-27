@@ -21,11 +21,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.Stage;
 
-import static java.lang.System.*;
+import java.util.List;
 
-/**
- * @author salaboy
- */
 @XmlRootElement
 public class PrintOutStage2 implements Stage {
 
@@ -49,7 +46,8 @@ public class PrintOutStage2 implements Stage {
 
     @Override
     public void execute( PipelineContext context ) {
-        out.println( ">>> Message Version 2: " + context.getData().get( "message" ) );
+        List<String> messages = ( List<String> ) context.getServices().get( "messages" );
+        messages.add( ">>> Message Version 2: " + context.getData().get( "message" ) );
     }
 
 }

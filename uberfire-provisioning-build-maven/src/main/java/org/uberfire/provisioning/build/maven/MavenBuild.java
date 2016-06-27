@@ -37,7 +37,6 @@ import org.uberfire.provisioning.exceptions.BuildException;
 import static java.util.Collections.*;
 
 /**
- * @author salaboy
  *         The Build services implementation using Maven Invoker
  */
 public class MavenBuild implements Build {

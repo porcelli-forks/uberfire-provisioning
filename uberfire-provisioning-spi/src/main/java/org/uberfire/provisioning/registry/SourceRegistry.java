@@ -22,9 +22,6 @@ import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.source.Repository;
 
-/**
- * @author salaboy
- */
 public interface SourceRegistry {
 
     void registerRepositorySources( final Path path,

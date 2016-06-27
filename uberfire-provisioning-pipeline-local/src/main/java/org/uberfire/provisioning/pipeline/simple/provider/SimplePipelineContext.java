@@ -23,9 +23,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.uberfire.provisioning.pipeline.PipelineContext;
 
-/**
- * @author salaboy
- */
 @XmlRootElement
 public class SimplePipelineContext implements PipelineContext {
 

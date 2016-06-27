@@ -16,19 +16,24 @@
 
 package org.uberfire.provisioning.pipeline.simple.provider;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.PipelineInstance;
 import org.uberfire.provisioning.pipeline.Stage;
+import org.uberfire.provisioning.pipeline.events.AfterPipelineExecutionEvent;
+import org.uberfire.provisioning.pipeline.events.AfterStageExecutionEvent;
+import org.uberfire.provisioning.pipeline.events.BeforePipelineExecutionEvent;
+import org.uberfire.provisioning.pipeline.events.BeforeStageExecutionEvent;
 
-import static java.lang.System.*;
+import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
 
-/**
- * @author salaboy
- */
 public class SimplePipelineInstance implements PipelineInstance {
 
     private final Pipeline pipeline;
+
+    private List<PipelineEventHandler> handlers;
 
     public SimplePipelineInstance( Pipeline pipeline ) {
         this.pipeline = pipeline;
@@ -36,11 +41,37 @@ public class SimplePipelineInstance implements PipelineInstance {
 
     @Override
     public void run( PipelineContext context ) {
-        out.println( " >> Running Pipeline: " + pipeline.getName() );
+        if ( handlers == null ) {
+            handlers = new ArrayList<PipelineEventHandler>();
+            handlers.add( new DefaultPipelineEventHandler() );
+        }
+        for ( PipelineEventHandler h : handlers ) {
+            h.beforePipelineExecution( new BeforePipelineExecutionEvent( pipeline ) );
+        }
 
         for ( Stage s : pipeline.getStages() ) {
-            out.println( " Executing Stage: " + s.getName() );
+            for ( PipelineEventHandler h : handlers ) {
+                h.beforeStageExecution( new BeforeStageExecutionEvent( s ) );
+            }
+
             s.execute( context );
+
+            for ( PipelineEventHandler h : handlers ) {
+                h.afterStageExecution( new AfterStageExecutionEvent( s ) );
+            }
+
         }
+        for ( PipelineEventHandler h : handlers ) {
+            h.afterPipelineExecution( new AfterPipelineExecutionEvent( pipeline ) );
+        }
+
+    }
+
+    @Override
+    public void registerEventHandler( PipelineEventHandler handler ) {
+        if ( handlers == null ) {
+            handlers = new ArrayList<PipelineEventHandler>();
+        }
+        handlers.add( handler );
     }
 }
