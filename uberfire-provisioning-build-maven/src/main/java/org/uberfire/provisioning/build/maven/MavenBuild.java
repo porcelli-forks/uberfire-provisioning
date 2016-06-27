@@ -17,6 +17,7 @@
 package org.uberfire.provisioning.build.maven;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.exceptions.BuildException;
 
 import static java.util.Collections.*;
+import java.util.List;
 
 /**
  *         The Build services implementation using Maven Invoker
@@ -71,11 +73,22 @@ public class MavenBuild implements Build {
      * for this to work you need to have the Docker Client running on your environment where this method is executed.
     */
     @Override
-    public int createDockerImage( Project project ) throws BuildException {
+    public int createDockerImage( Project project, boolean push, String username, String password ) throws BuildException {
         if ( !project.getType().equals( "Maven" ) ) {
             throw new BuildException( "This builder only support maven projects" );
         }
-        return executeMaven( project, "package", "docker:build", "-DfailIfNoTests=false" );
+        List<String> goals = new ArrayList<String>();
+        goals.add("package");
+        if(push){
+            goals.add("-Ddocker.username="+username);
+            goals.add("-Ddocker.password="+password);
+        }
+        goals.add("docker:build");
+        goals.add("-DfailIfNoTests=false");
+        if(push){
+            goals.add("docker:push");
+        }
+        return executeMaven( project,  goals.toArray(new String[0]));
     }
 
     private int executeMaven( final Project project,

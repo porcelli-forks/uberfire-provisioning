@@ -30,6 +30,6 @@ public interface BuildServiceBackend {
 
     String newBuild( final Project project ) throws BusinessException;
 
-    String createDockerImage( final Project project ) throws BusinessException;
+    String createDockerImage( final Project project, boolean push, String username, String password ) throws BusinessException;
 
 }
