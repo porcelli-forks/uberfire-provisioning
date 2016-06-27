@@ -90,8 +90,16 @@ public class KubernetesProvider extends BaseProvider {
         String label = runtimeConfig.getProperties().get( "label" );
         String image = runtimeConfig.getProperties().get( "image" );
         String serviceName = runtimeConfig.getProperties().get( "serviceName" );
-        Integer internalPort = new Integer( runtimeConfig.getProperties().get( "internalPort" ) );
-
+        String internalPortString = runtimeConfig.getProperties().get( "internalPort" );
+        
+        assert(namespace != null && !namespace.isEmpty());
+        assert(label != null && !label.isEmpty());
+        assert(image != null && !image.isEmpty());
+        assert(serviceName != null && !serviceName.isEmpty());
+        assert(internalPortString != null && !internalPortString.isEmpty());
+        
+        Integer internalPort = new Integer( internalPortString );
+        
         ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource = kubernetes
                 .replicationControllers()
                 .inNamespace( namespace )

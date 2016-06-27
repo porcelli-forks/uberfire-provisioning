@@ -134,7 +134,7 @@ public class PipelineIntegrationAPITest {
     /*
      * Ignoring this test because it requires Openshift Origin + M2_HOME set 
      * mvn -Dtest=PipelineIntegrationAPITest -Dmaven.multiModuleProjectDirectory=$M2_HOME test
-    */
+     */
     @Test
     @Ignore
     public void helloPipelinedAPIs() throws SourcingException, BuildException {
@@ -145,7 +145,7 @@ public class PipelineIntegrationAPITest {
 
         ProviderType kubernetesProviderType = runtimeRegistry.getProviderTypeByName( "kubernetes" );
         KubernetesProviderConfiguration kubeProviderConfig = KubernetesProviderConfBuilder.newConfig( "kubernetes @ openshift origin" )
-                .setMasterUrl( "https://10.2.2.2:8443" ).setUsername( "admin").setPassword( "admin")
+                .setMasterUrl( "https://10.2.2.2:8443" ).setUsername( "admin" ).setPassword( "admin" )
                 .get();
 
         KubernetesProvider kubernetesProvider = new KubernetesProvider( kubeProviderConfig, kubernetesProviderType );
@@ -203,8 +203,6 @@ public class PipelineIntegrationAPITest {
         simplePipelineInstance.run( simplePipelineContext );
 
         assertEquals( 10, eventHandler.getFiredEvents().size() );
-        
-        
 
     }
 

@@ -113,12 +113,14 @@ public class KubernetesProviderRuntimeTest {
         runtimeConfig.setReplicationController( "test" );
         runtimeConfig.setLabel( "uberfire" );
         runtimeConfig.setServiceName( "test" );
+        runtimeConfig.setInternalPort( "8080" );
         runtimeConfig.setImage( "kitematic/hello-world-nginx" );
 
         Runtime newRuntime;
         try {
             newRuntime = kubernetesProvider.create( runtimeConfig );
         } catch ( Exception ex ) {
+            ex.printStackTrace();
             // If the kubernetes  is not running and the system variables for locating the
             //   kubernetes deamon are not set, this is expected to fail.
             // If you are openshift origin you need to be logged in with the remote client
@@ -144,6 +146,7 @@ public class KubernetesProviderRuntimeTest {
         runtimeConfig.getProperties().put( "replicationController", "test" );
         runtimeConfig.getProperties().put( "label", "uberfire" );
         runtimeConfig.getProperties().put( "serviceName", "test" );
+        runtimeConfig.getProperties().put( "internalPort", "8080" );
         runtimeConfig.getProperties().put( "image", "kitematic/hello-world-nginx" );
 
         Runtime newRuntime = kubernetesProvider.create( runtimeConfig );

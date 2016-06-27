@@ -65,10 +65,10 @@ import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Prov
 
 @RunWith( Arquillian.class )
 public class SimpleRuntimeAPITest {
-
+    
     @Deployment
     public static JavaArchive createDeployment() {
-
+        
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
                 .addClass( ProviderType.class )
                 .addClass( LocalProviderType.class )
@@ -80,99 +80,100 @@ public class SimpleRuntimeAPITest {
 //        System.out.println( jar.toString( true ) );
         return jar;
     }
-
+    
     @Inject
     private RuntimeRegistry registry;
-
+    
     @Inject
     @Any
     private Instance<ProviderType> providerTypes;
-
+    
     @BeforeClass
     public static void setUpClass() {
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
         for ( ProviderType pt : providerTypes ) {
             registry.registerProviderType( pt );
         }
     }
-
+    
     @After
     public void tearDown() {
     }
-
+    
     @Test
     public void helloAPIs() {
-
+        
         List<ProviderType> allProviderTypes = registry.getAllProviderTypes();
-
+        
         Assert.assertEquals( 4, allProviderTypes.size() );
-
+        
         ProviderType localProviderType = registry.getProviderTypeByName( "local" );
         LocalProviderConfiguration localProviderConfig = LocalProviderConfBuilder.newConfig( "local" ).get();
-
+        
         LocalProvider localProvider = new LocalProvider( localProviderConfig, localProviderType );
         registry.registerProvider( localProvider );
-
+        
         ProviderType wildflyProviderType = registry.getProviderTypeByName( "wildfly" );
-
+        
         WildflyProviderConfiguration wildflyProviderConfig = WildflyProviderConfBuilder.newConfig( "wildfly @ 9990" )
                 .setHost( "localhost" )
                 .setManagementPort( "9990" )
                 .setUser( "salaboy" )
                 .setPassword( "salaboy123$" ).get();
-
+        
         Wildfly10Provider wildflyProvider = new Wildfly10Provider( wildflyProviderConfig, wildflyProviderType );
-
+        
         Assert.assertNotNull( wildflyProvider.getWildfly() );
         registry.registerProvider( wildflyProvider );
-
+        
         ProviderType kubernetesProviderType = registry.getProviderTypeByName( "kubernetes" );
         KubernetesProviderConfiguration kubeProviderConfig = KubernetesProviderConfBuilder.newConfig( "kubernetes @ openshift origin" )
                 .get();
-
+        
         KubernetesProvider kubernetesProvider = new KubernetesProvider( kubeProviderConfig, kubernetesProviderType );
         registry.registerProvider( kubernetesProvider );
-
+        
         ProviderType dockerProviderType = registry.getProviderTypeByName( "docker" );
         DockerProviderConfiguration dockerProviderConfig = DockerProviderConfBuilder.newConfig( "docker local deamon" )
                 .get();
-
+        
         DockerProvider dockerProvider = new DockerProvider( dockerProviderConfig, dockerProviderType );
         registry.registerProvider( dockerProvider );
-
+        
         List<Provider> allProviders = registry.getAllProviders();
-
+        
         Assert.assertEquals( 4, allProviders.size() );
-
+        
         RuntimeConfiguration localRuntimeConfig = LocalRuntimeConfBuilder.newConfig()
                 .setJar( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" )
                 .get();
-
+        
         Runtime newLocalRuntime;
         try {
             newLocalRuntime = localProvider.create( localRuntimeConfig );
             Assert.assertNotNull( newLocalRuntime );
             Assert.assertNotNull( newLocalRuntime.getId() );
             registry.registerRuntime( newLocalRuntime );
-
+            
             newLocalRuntime.start();
         } catch ( Exception ex ) {
+            ex.printStackTrace();
             Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
             Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-
+        
         RuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
                 .setWarPath( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT.war" )
                 .get();
-
+        
         Runtime newWildflyRuntime;
         try {
             newWildflyRuntime = wildflyProvider.create( wildflyRuntimeConfig );
@@ -180,19 +181,21 @@ public class SimpleRuntimeAPITest {
             Assert.assertNotNull( newWildflyRuntime.getId() );
             registry.registerRuntime( newWildflyRuntime );
         } catch ( Exception ex ) {
+            ex.printStackTrace();
             Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
             Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-
+        
         RuntimeConfiguration kubernetesRuntimeConfig = KubernetesRuntimeConfBuilder.newConfig()
                 .setNamespace( "default" )
                 .setReplicationController( "test" )
                 .setLabel( "uberfire" )
                 .setServiceName( "test" )
+                .setInternalPort( "8080" )
                 .setImage( "kitematic/hello-world-nginx" )
                 .get();
-
+        
         Runtime newKubernetesRuntime;
         try {
             newKubernetesRuntime = kubernetesProvider.create( kubernetesRuntimeConfig );
@@ -200,16 +203,17 @@ public class SimpleRuntimeAPITest {
             Assert.assertNotNull( newKubernetesRuntime.getId() );
             registry.registerRuntime( newKubernetesRuntime );
         } catch ( Exception ex ) {
+            ex.printStackTrace();
             Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
             Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-
+        
         RuntimeConfiguration dockerRuntimeConfig = DockerRuntimeConfBuilder.newConfig()
                 .setPull( true )
                 .setImage( "kitematic/hello-world-nginx" )
                 .get();
-
+        
         Runtime newDockerRuntime;
         try {
             newDockerRuntime = dockerProvider.create( dockerRuntimeConfig );
@@ -217,11 +221,12 @@ public class SimpleRuntimeAPITest {
             Assert.assertNotNull( newDockerRuntime.getId() );
             registry.registerRuntime( newDockerRuntime );
         } catch ( Exception ex ) {
+            ex.printStackTrace();
             Logger.getLogger( SimpleRuntimeAPITest.class.getName() ).log( Level.SEVERE, null, ex );
             Assert.assertTrue( ex instanceof ProvisioningException );
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
-
+        
     }
-
+    
 }
