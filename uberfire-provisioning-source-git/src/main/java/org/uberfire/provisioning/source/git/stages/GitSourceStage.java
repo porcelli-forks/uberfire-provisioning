@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
+
 import org.uberfire.java.nio.file.FileSystem;
 import org.uberfire.java.nio.file.FileSystems;
 import org.uberfire.provisioning.pipeline.PipelineContext;
@@ -39,11 +40,11 @@ public class GitSourceStage implements Stage {
     @Override
     public void execute( PipelineContext context ) {
 
-        String repository = ( String ) context.getData().get( "repository" );
-        String branch = ( String ) context.getData().get( "branch" );
-        String origin = ( String ) context.getData().get( "origin" );
-        String uriString = ( String ) context.getData().get( "uri" );
-        File path = ( File ) context.getData().get( "path" );
+        String repository = (String) context.getData().get( "repository" );
+        String branch = (String) context.getData().get( "branch" );
+        String origin = (String) context.getData().get( "origin" );
+        String uriString = (String) context.getData().get( "uri" );
+        File path = (File) context.getData().get( "path" );
 
         final URI uri = URI.create( uriString );
         final FileSystem fs = FileSystems.newFileSystem( uri, new HashMap<String, Object>() {
@@ -55,15 +56,35 @@ public class GitSourceStage implements Stage {
         } );
 
         final UFLocal local = new UFLocal();
-        final GitRepository gitRepository = ( GitRepository ) local.getRepository( repository, Collections.emptyMap() );
+        final GitRepository gitRepository = (GitRepository) local.getRepository( repository, Collections.emptyMap() );
         final Source source = gitRepository.getSource( branch );
 
-        SourceRegistry sourceRegistry = ( SourceRegistry ) context.getServices().get( "sourceRegistry" );
+        SourceRegistry sourceRegistry = (SourceRegistry) context.getServices().get( "sourceRegistry" );
         sourceRegistry.registerRepositorySources( source.getPath(), gitRepository );
         //Setting source and repo to be used by another stage
         context.getData().put( "source", source );
         context.getData().put( "repository", gitRepository );
 
+    }
+
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof Stage ) ) {
+            return false;
+        }
+
+        final Stage that = (Stage) o;
+
+        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
     }
 
 }

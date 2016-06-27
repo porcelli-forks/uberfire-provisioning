@@ -18,6 +18,7 @@ package org.uberfire.provisioning.build.maven.stages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.exceptions.BuildException;
@@ -39,8 +40,8 @@ public class MavenBuildStage implements Stage {
 
     @Override
     public void execute( PipelineContext context ) {
-        Project project = ( Project ) context.getData().get( "project" );
-        Build build = ( Build ) context.getServices().get( "buildService" );
+        Project project = (Project) context.getData().get( "project" );
+        Build build = (Build) context.getServices().get( "buildService" );
 
         int result = 0;
         try {
@@ -52,6 +53,26 @@ public class MavenBuildStage implements Stage {
             throw new IllegalStateException( "Maven Build Failed! Review Logs for errors" );
         }
 
+    }
+
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof Stage ) ) {
+            return false;
+        }
+
+        final Stage that = (Stage) o;
+
+        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
     }
 
 }
