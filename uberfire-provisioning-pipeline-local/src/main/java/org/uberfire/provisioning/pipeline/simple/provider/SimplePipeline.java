@@ -72,4 +72,23 @@ public class SimplePipeline implements Pipeline {
         this.name = name;
     }
 
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof SimplePipeline ) ) {
+            return false;
+        }
+
+        final SimplePipeline that = (SimplePipeline) o;
+
+        return id != null ? id.equals( that.id ) : that.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

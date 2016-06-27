@@ -45,4 +45,24 @@ public class MavenProjectConfigurationStage implements Stage {
         context.getData().put( "project", project );
     }
 
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof Stage ) ) {
+            return false;
+        }
+
+        final Stage that = (Stage) o;
+
+        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
 }
