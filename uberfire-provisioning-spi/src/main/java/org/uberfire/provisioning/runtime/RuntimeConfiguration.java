@@ -37,5 +37,9 @@ public interface RuntimeConfiguration {
     Map<String, String> getProperties();
 
     void setProperties( Map<String, String> props );
+    
+    void setContext( String context );
+    
+    String getContext();
 
 }

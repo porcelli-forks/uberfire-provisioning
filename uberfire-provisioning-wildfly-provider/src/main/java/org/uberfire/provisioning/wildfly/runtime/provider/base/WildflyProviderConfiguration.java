@@ -45,7 +45,7 @@ public class WildflyProviderConfiguration extends BaseProviderConfiguration {
     }
     
     public void setManagementPort( String port ) {
-        getProperties().put( "port", port );
+        getProperties().put( "managementPort", port );
     }
 
     public void setUser( String user ) {

@@ -18,9 +18,6 @@ package org.uberfire.provisioning.wildfly.runtime.provider.base;
 
 import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
 
-/**
- * @author salaboy
- */
 public class WildflyRuntimeConfiguration extends BaseRuntimeConfiguration {
 
     public void setWarPath( String warPath ) {

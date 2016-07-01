@@ -41,7 +41,8 @@ public class MavenProjectConfigurationStage implements Stage {
         Project project = new MavenProject( projectName, expectedBinary, source.getPath().resolve( projectName ), source.getPath() );
 
         sourceRegistry.registerProject( repository, project );
-
+        RepositoryVisitor repositoryVisitor = new RepositoryVisitor( project );
+        context.getData().put( "warPath", repositoryVisitor.getTargetFolder().toString() + "/" + expectedBinary );
         context.getData().put( "project", project );
     }
 
@@ -54,7 +55,7 @@ public class MavenProjectConfigurationStage implements Stage {
             return false;
         }
 
-        final Stage that = (Stage) o;
+        final Stage that = ( Stage ) o;
 
         return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
 

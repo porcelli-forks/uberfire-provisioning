@@ -27,7 +27,6 @@ import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
 /**
- * @author salaboy
  * @TODO: This is a not thread-safe implementation for local testing. A
  * more robust and distributed implementation should be provided for real
  * use cases. All the lookups mechanisms and structures needs to be improved for performance.

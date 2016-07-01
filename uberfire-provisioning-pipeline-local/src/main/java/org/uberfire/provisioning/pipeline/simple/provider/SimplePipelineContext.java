@@ -27,6 +27,8 @@ import org.uberfire.provisioning.pipeline.PipelineContext;
 public class SimplePipelineContext implements PipelineContext {
 
     private Map<String, Object> context = new HashMap<String, Object>();
+    
+    private Map<String, Object> output = new HashMap<String, Object>();
 
     @XmlTransient
     private Map<String, Object> services = new HashMap<String, Object>();
@@ -40,5 +42,12 @@ public class SimplePipelineContext implements PipelineContext {
     public Map<String, Object> getServices() {
         return services;
     }
+
+    @Override
+    public Map<String, Object> getOutput() {
+        return output;
+    }
+    
+    
 
 }

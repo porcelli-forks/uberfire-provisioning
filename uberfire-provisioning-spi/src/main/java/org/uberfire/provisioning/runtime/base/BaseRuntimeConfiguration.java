@@ -49,7 +49,14 @@ public class BaseRuntimeConfiguration implements RuntimeConfiguration {
         this.providerName = providerName;
     }
 
+    @Override
     public void setContext( String context ) {
         getProperties().put( "context", context );
     }
+
+    @Override
+    public String getContext() {
+        return getProperties().get( "context" );
+    }
+
 }

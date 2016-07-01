@@ -65,9 +65,9 @@ public class WildflyRuntime extends BaseRuntime {
 
     @Override
     public RuntimeEndpoint getEndpoint() {
-        String context = getConfig().getProperties().get( "context" );
         String port = getConfig().getProperties().get( "port" );
-        String host = getConfig().getProperties().get( "port" );
+        String host = getConfig().getProperties().get( "host" );
+        String context = getConfig().getProperties().get( "context" );
         return new Wildfly10RuntimeEndpoint( host, new Integer( port ), context );
     }
 

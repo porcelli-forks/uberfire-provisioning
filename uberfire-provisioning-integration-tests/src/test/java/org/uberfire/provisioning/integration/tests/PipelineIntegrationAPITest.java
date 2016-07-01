@@ -32,6 +32,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -62,10 +63,17 @@ import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryPipelineRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemorySourceRegistry;
+import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.source.git.GitSource;
 import org.uberfire.provisioning.source.git.stages.GitSourceStage;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.stages.WildflyProvisionRuntimeStage;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
 /*
  *  mvn -Dtest=PipelineIntegrationAPITest -Dmaven.multiModuleProjectDirectory=$M2_HOME test
@@ -85,6 +93,7 @@ public class PipelineIntegrationAPITest {
                 .addClass( InMemoryPipelineRegistry.class )
                 .addClass( InMemoryRuntimeRegistry.class )
                 .addClass( KubernetesProviderType.class )
+                .addClass( Wildfly10ProviderType.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
         System.out.println( jar.toString( true ) );
         return jar;
@@ -137,11 +146,11 @@ public class PipelineIntegrationAPITest {
      */
     @Test
     @Ignore
-    public void helloPipelinedAPIs() throws SourcingException, BuildException {
+    public void kubernetesPipelinedAPIsTest() throws SourcingException, BuildException {
 
         List<ProviderType> allProviderTypes = runtimeRegistry.getAllProviderTypes();
 
-        assertEquals( 1, allProviderTypes.size() );
+        assertEquals( 2, allProviderTypes.size() );
 
         ProviderType kubernetesProviderType = runtimeRegistry.getProviderTypeByName( "kubernetes" );
         KubernetesProviderConfiguration kubeProviderConfig = KubernetesProviderConfBuilder.newConfig( "kubernetes @ openshift origin" )
@@ -188,11 +197,12 @@ public class PipelineIntegrationAPITest {
 
         //MavenBuildStage
         //Provision Runtime to Kubernetes Stage
+        String serviceName = "testservice";
         simplePipelineContext.getData().put( "providerName", "kubernetes @ openshift origin" );
         simplePipelineContext.getData().put( "namespace", "default" );
         simplePipelineContext.getData().put( "label", "uberfire" );
-        simplePipelineContext.getData().put( "image", "kitematic/hello-world-nginx" );
-        simplePipelineContext.getData().put( "serviceName", "testservice" );
+        simplePipelineContext.getData().put( "image", "salaboy/users-new" );
+        simplePipelineContext.getData().put( "serviceName", serviceName );
         simplePipelineContext.getData().put( "internalPort", "8080" );
 
         simplePipelineContext.getServices().put( "sourceRegistry", sourceRegistry );
@@ -204,6 +214,104 @@ public class PipelineIntegrationAPITest {
 
         assertEquals( 10, eventHandler.getFiredEvents().size() );
 
+        String runtimeId = ( String ) simplePipelineContext.getOutput().get( "runtimeId" );
+
+        assertEquals( serviceName, runtimeId );
+
+        Runtime runtimeById = runtimeRegistry.getRuntimeById( runtimeId );
+        assertNotNull( runtimeById );
+
+        RuntimeEndpoint endpoint = runtimeById.getEndpoint();
+        assertNotNull( endpoint );
+        assertEquals( serviceName + ".apps.10.2.2.2.xip.io", endpoint.getHost() );
+
+    }
+
+    /*
+     * Ignoring this test because it requires Openshift Origin + M2_HOME set 
+     * mvn -Dtest=PipelineIntegrationAPITest -Dmaven.multiModuleProjectDirectory=$M2_HOME test
+     */
+    @Test
+    @Ignore
+    public void wildflyPipelinedAPIsTest() throws SourcingException, BuildException {
+
+        List<ProviderType> allProviderTypes = runtimeRegistry.getAllProviderTypes();
+
+        assertEquals( 2, allProviderTypes.size() );
+
+        ProviderType wildflyProviderType = runtimeRegistry.getProviderTypeByName( "wildfly" );
+        WildflyProviderConfiguration wildflyProviderConfig = WildflyProviderConfBuilder.newConfig( "wildfly @ localhost" )
+                .setHost( "localhost" )
+                .setManagementPort( "9990" )
+                .setPort( "8080" )
+                .setUser( "salaboy" ).setPassword( "salaboy123$" )
+                .get();
+
+        Wildfly10Provider wildflyProvider = new Wildfly10Provider( wildflyProviderConfig, wildflyProviderType );
+        runtimeRegistry.registerProvider( wildflyProvider );
+
+        List<Provider> allProviders = runtimeRegistry.getAllProviders();
+
+        assertEquals( 1, allProviders.size() );
+
+        Pipeline p = new SimplePipeline( "simple pipe" );
+
+        p.addStage( new GitSourceStage() );
+
+        p.addStage( new MavenProjectConfigurationStage() );
+
+        p.addStage( new MavenBuildStage() );
+
+        p.addStage( new WildflyProvisionRuntimeStage() );
+
+        pipelineRegistry.registerPipeline( p );
+
+        List<Pipeline> allPipelines = pipelineRegistry.getAllPipelines();
+        assertEquals( 1, allPipelines.size() );
+
+        PipelineInstance simplePipelineInstance = new SimplePipelineInstance( p );
+        simplePipelineInstance.registerEventHandler( eventHandler );
+
+        PipelineContext simplePipelineContext = new SimplePipelineContext();
+
+        // GitSourceStage
+        simplePipelineContext.getData().put( "uri", "git://livespark-playground" );
+        simplePipelineContext.getData().put( "origin", "https://github.com/pefernan/livespark-playground" );
+        simplePipelineContext.getData().put( "repository", "livespark-playground" );
+        simplePipelineContext.getData().put( "branch", "master" );
+        simplePipelineContext.getData().put( "path", tempPath );
+
+        //MavenProjectConfigurationStage
+        simplePipelineContext.getData().put( "projectName", "users-new" );
+        simplePipelineContext.getData().put( "expectedBinary", "users-new.war" );
+
+        //MavenBuildStage
+        //Provision Runtime to Wildfly Stage
+        String context = "users-new";
+        simplePipelineContext.getData().put( "providerName", "wildfly @ localhost" );
+        simplePipelineContext.getData().put( "context",  context);
+
+        simplePipelineContext.getServices().put( "sourceRegistry", sourceRegistry );
+        simplePipelineContext.getServices().put( "buildRegistry", buildRegistry );
+        simplePipelineContext.getServices().put( "runtimeRegistry", runtimeRegistry );
+        simplePipelineContext.getServices().put( "buildService", buildService );
+
+        simplePipelineInstance.run( simplePipelineContext );
+
+        assertEquals( 10, eventHandler.getFiredEvents().size() );
+
+        String runtimeId = ( String ) simplePipelineContext.getOutput().get( "runtimeId" );
+
+        Runtime runtimeById = runtimeRegistry.getRuntimeById( runtimeId );
+        assertNotNull( runtimeById );
+
+        RuntimeEndpoint endpoint = runtimeById.getEndpoint();
+        assertNotNull( endpoint );
+
+        System.out.println( "Endpoint : " + endpoint.getHost() + ":" + endpoint.getPort() + "/" + endpoint.getContext() );
+        assertEquals( "localhost", endpoint.getHost() );
+        assertEquals( 8080, endpoint.getPort() );
+        assertEquals( context, endpoint.getContext() );
     }
 
 }

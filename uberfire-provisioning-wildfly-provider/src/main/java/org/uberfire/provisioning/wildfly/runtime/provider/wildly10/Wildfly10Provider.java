@@ -61,18 +61,23 @@ public class Wildfly10Provider extends BaseProvider {
          */
 
         String warPath = runtimeConfig.getProperties().get( "warPath" );
+        String context = runtimeConfig.getProperties().get( "context" );
         String user = config.getProperties().get( "user" );
         String password = config.getProperties().get( "password" );
         String host = config.getProperties().get( "host" );
         String port = config.getProperties().get( "port" );
+        String managementPort = config.getProperties().get( "managementPort" );
 
-        int result = wildfly.deploy( user, password, host, new Integer( port ), warPath );
+        int result = wildfly.deploy( user, password, host, new Integer( managementPort ), warPath );
         if ( result != 200 ) {
             throw new ProvisioningException( "Deployment to Wildfly Failed with error code: " + result );
         }
         String id = randomUUID().toString();
         String shortId = id.substring( 0, 12 );
-
+        
+        runtimeConfig.getProperties().put( "host", host);
+        runtimeConfig.getProperties().put( "port", port);
+        
         return new WildflyRuntime( shortId, runtimeConfig, this );
     }
 

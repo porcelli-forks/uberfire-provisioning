@@ -174,15 +174,12 @@ public class KubernetesRuntime extends BaseRuntime {
     public RuntimeEndpoint getEndpoint() {
         String serviceName = getConfig().getProperties().get( "serviceName" );
         OpenShiftClient osClient = ( ( KubernetesProvider ) provider ).getKubernetesClient().adapt( OpenShiftClient.class );
-        FilterWatchListDeletable<Route, RouteList, Boolean, Watch, Watcher<Route>> routeResources = osClient.routes().withLabel("name", serviceName );
-//        ClientResource<Service, DoneableService> serviceResource = ( ( KubernetesProvider ) provider ).getKubernetesClient().services().withName( serviceName );
+        FilterWatchListDeletable<Route, RouteList, Boolean, Watch, Watcher<Route>> routeResources = 
+                                                    osClient.routes().withLabel("name", serviceName );
         List<Route> items = routeResources.list().getItems();
         RouteSpec spec = items.get( 0 ).getSpec();
-        System.out.println( "Spec: " + spec );
         String host = spec.getHost();
-        
-        System.out.println( "Host: "+ host );
-        System.out.println( "Port: "+ spec.getPort() );
+
         Integer port = 80;
         if(spec.getPort() != null){
             port = spec.getPort().getTargetPort().getIntVal();

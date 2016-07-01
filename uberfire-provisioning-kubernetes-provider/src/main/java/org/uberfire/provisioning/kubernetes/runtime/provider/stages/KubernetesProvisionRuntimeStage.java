@@ -56,6 +56,7 @@ public class KubernetesProvisionRuntimeStage implements Stage {
         try {
             newKubernetesRuntime = kubernetesProvider.create( kubernetesRuntimeConfig );
             runtimeRegistry.registerRuntime( newKubernetesRuntime );
+            context.getOutput().put( "runtimeId", newKubernetesRuntime.getId() );
         } catch ( ProvisioningException ex ) {
             ex.printStackTrace();
             Logger.getLogger( KubernetesProvisionRuntimeStage.class.getName() ).log( Level.SEVERE, null, ex );
@@ -72,7 +73,7 @@ public class KubernetesProvisionRuntimeStage implements Stage {
             return false;
         }
 
-        final Stage that = (Stage) o;
+        final Stage that = ( Stage ) o;
 
         return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
 

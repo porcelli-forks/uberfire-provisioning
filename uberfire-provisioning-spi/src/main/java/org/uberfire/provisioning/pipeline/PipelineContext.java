@@ -20,13 +20,12 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/**
- * @author salaboy
- */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface PipelineContext {
 
     Map<String, Object> getData();
 
     Map<String, Object> getServices();
+    
+    Map<String, Object> getOutput();
 }
