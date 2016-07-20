@@ -37,20 +37,7 @@ public class MyRuntime extends BaseRuntime {
         }
     }
 
-    @Override
-    public void start() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void stop() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void restart() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public RuntimeInfo getInfo() {

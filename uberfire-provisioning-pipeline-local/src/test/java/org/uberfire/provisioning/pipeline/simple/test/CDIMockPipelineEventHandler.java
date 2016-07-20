@@ -36,7 +36,7 @@ public class CDIMockPipelineEventHandler implements PipelineEventHandler {
     @Inject
     private Event<PipelineEvent> events;
 
-    private List<PipelineEvent> firedEvents = new ArrayList<PipelineEvent>();
+    private List<PipelineEvent> firedEvents = new ArrayList<>();
 
     @Override
     public void beforePipelineExecution( BeforePipelineExecutionEvent bpee ) {

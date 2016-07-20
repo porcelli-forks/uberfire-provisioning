@@ -24,13 +24,14 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
+import org.uberfire.provisioning.pipeline.simple.provider.PipelineInstanceImpl;
 import org.uberfire.provisioning.registry.PipelineRegistry;
 import org.uberfire.provisioning.services.api.PipelineService;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
+import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
 @ApplicationScoped
 public class RestPipelineServiceImpl implements PipelineService {
@@ -57,19 +58,21 @@ public class RestPipelineServiceImpl implements PipelineService {
     @Override
     public String newPipeline( Pipeline pipeline ) throws BusinessException {
         String id = UUID.randomUUID().toString();
-        pipeline.setId( id );
+        pipeline.setName( id );
         pipelineRegistry.registerPipeline( pipeline );
-        return pipeline.getId();
+        return pipeline.getName();
     }
 
     @Override
-    public void runPipeline( final String id,
-                             final PipelineContext context ) throws BusinessException {
-        SimplePipelineInstance pipeInstance = new SimplePipelineInstance( pipelineRegistry.getPipelineById( id ) );
+    public void runPipeline( final String name ) throws BusinessException {
+        
+        PipelineInstance newPipelineInstance = new PipelineInstanceImpl( pipelineRegistry.getPipelineByName( name ) );
+        
         for(PipelineEventHandler peh : eventHandlers){
-            pipeInstance.registerEventHandler( peh );
+            newPipelineInstance.registerEventHandler( peh );
         }
-        pipeInstance.run( context );
+        PipelineDataContext results = newPipelineInstance.execute();
+        
     }
 
 }

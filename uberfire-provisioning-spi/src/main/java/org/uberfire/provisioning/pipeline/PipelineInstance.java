@@ -20,7 +20,13 @@ import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
 
 public interface PipelineInstance {
 
-    void run( PipelineContext context );
+    void registerService( Class type, Object service );
 
+    PipelineDataContext execute();
+
+    <T> T getService( Class<T> type );
+    
+    Pipeline getPipeline();
+    
     void registerEventHandler( PipelineEventHandler handler );
 }

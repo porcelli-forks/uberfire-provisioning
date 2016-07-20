@@ -16,25 +16,11 @@
 
 package org.uberfire.provisioning.wildfly.runtime.provider.wildly10;
 
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.uberfire.provisioning.exceptions.ProvisioningException;
-import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
-import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
-
-import static java.util.UUID.*;
 
 public class Wildfly10Provider extends BaseProvider {
-
-    @XmlTransient
-    @JsonIgnore
-    private Wildfly10RemoteClient wildfly;
 
     public Wildfly10Provider() {
     }
@@ -47,47 +33,7 @@ public class Wildfly10Provider extends BaseProvider {
     public Wildfly10Provider( ProviderConfiguration config,
             ProviderType type ) {
         super( config.getName(), type );
-        /*
-         I should check here for the required configuration parameters for the provider
-         */
-        wildfly = new Wildfly10RemoteClient();
         this.config = config;
-    }
-
-    @Override
-    public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
-        /*
-         I should check here for the required configuration parameters for the runtime
-         */
-
-        String warPath = runtimeConfig.getProperties().get( "warPath" );
-        String context = runtimeConfig.getProperties().get( "context" );
-        String user = config.getProperties().get( "user" );
-        String password = config.getProperties().get( "password" );
-        String host = config.getProperties().get( "host" );
-        String port = config.getProperties().get( "port" );
-        String managementPort = config.getProperties().get( "managementPort" );
-
-        int result = wildfly.deploy( user, password, host, new Integer( managementPort ), warPath );
-        if ( result != 200 ) {
-            throw new ProvisioningException( "Deployment to Wildfly Failed with error code: " + result );
-        }
-        String id = randomUUID().toString();
-        String shortId = id.substring( 0, 12 );
-        
-        runtimeConfig.getProperties().put( "host", host);
-        runtimeConfig.getProperties().put( "port", port);
-        
-        return new WildflyRuntime( shortId, runtimeConfig, this );
-    }
-
-    @Override
-    public void destroy( String runtimeId ) throws ProvisioningException {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Wildfly10RemoteClient getWildfly() {
-        return wildfly;
     }
 
 }

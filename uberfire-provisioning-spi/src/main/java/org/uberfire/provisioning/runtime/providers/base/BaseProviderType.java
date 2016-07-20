@@ -17,21 +17,21 @@ package org.uberfire.provisioning.runtime.providers.base;
 
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
-/**
- * @author salaboy
- */
 public abstract class BaseProviderType implements ProviderType {
 
     private String providerName;
     private String version;
     private Class provider;
+    private Class providerService;
+    private Class runtimeService;
 
-    public BaseProviderType(String providerName,
+    public BaseProviderType( String providerName,
             String version,
-            Class provider) {
+            Class provider, Class providerService ) {
         this.providerName = providerName;
         this.version = version;
         this.provider = provider;
+        this.providerService = providerService;
     }
 
     @Override
@@ -50,23 +50,43 @@ public abstract class BaseProviderType implements ProviderType {
     }
 
     @Override
-    public void setProviderTypeName(String providerName) {
+    public void setProviderTypeName( String providerName ) {
         this.providerName = providerName;
     }
 
     @Override
-    public void setVersion(String version) {
+    public void setVersion( String version ) {
         this.version = version;
     }
 
     @Override
-    public void setProvider(Class provider) {
+    public void setProvider( Class provider ) {
         this.provider = provider;
     }
 
     @Override
+    public Class getProviderService() {
+        return providerService;
+    }
+
+    @Override
+    public void setProviderService( Class providerService ) {
+        this.providerService = providerService;
+    }
+
+    @Override
+    public Class getRuntimeService() {
+        return runtimeService;
+    }
+
+    @Override
+    public void setRuntimeService( Class runtimeService ) {
+        this.runtimeService = runtimeService;
+    }
+
+    @Override
     public String toString() {
-        return "BaseProviderType{" + "providerName=" + providerName + ", version=" + version + ", providerClass=" + provider + '}';
+        return "BaseProviderType{" + "providerName=" + providerName + ", version=" + version + ", provider=" + provider + ", providerService=" + providerService + ", runtimeService=" + runtimeService + '}';
     }
 
 }

@@ -30,12 +30,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.uberfire.provisioning.docker.runtime.provider.DockerProviderConfBuilder;
 import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfBuilder;
-import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesProviderConfBuilder;
-import org.uberfire.provisioning.kubernetes.runtime.provider.KubernetesRuntimeConfBuilder;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfBuilder;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfBuilder;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfBuilder;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeConfBuilder;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
@@ -83,12 +84,12 @@ public class RestProvisioningCDITest {
         provisioningService.registerProvider(wildfly10Conf);
         
 
-        ProviderConfiguration kubernetesConf = KubernetesProviderConfBuilder
-                                                                .newConfig("kubernetes with oc logged in")
+        ProviderConfiguration openshiftConf = OpenshiftProviderConfBuilder
+                                                                .newConfig("openshift with oc logged in")
                                                                 .get();
-        provisioningService.registerProvider(kubernetesConf);
+        provisioningService.registerProvider(openshiftConf);
         
-        ProviderConfiguration dockerConf = KubernetesProviderConfBuilder
+        ProviderConfiguration dockerConf = DockerProviderConfBuilder
                                                                 .newConfig("docker with local connection")
                                                                 .get();
         provisioningService.registerProvider(dockerConf);
@@ -126,7 +127,7 @@ public class RestProvisioningCDITest {
             // If we get to this point something failed at creating a runtime, so it might be not configured.
         }
 
-        RuntimeConfiguration kubernetesRuntimeConfig = KubernetesRuntimeConfBuilder.newConfig().setProviderName("kubernetes with oc logged in")
+        RuntimeConfiguration openshiftRuntimeConfig = OpenshiftRuntimeConfBuilder.newConfig().setProviderName("openshift with oc logged in")
                 .setNamespace( "default" )
                 .setReplicationController( "test" )
                 .setLabel( "uberfire" )
@@ -136,9 +137,9 @@ public class RestProvisioningCDITest {
 
         
         try {
-            String newKubernetesRuntime = provisioningService.newRuntime( kubernetesRuntimeConfig );
+            String newOpenshiftRuntime = provisioningService.newRuntime( openshiftRuntimeConfig );
             
-            Assert.assertNotNull( newKubernetesRuntime );
+            Assert.assertNotNull( newOpenshiftRuntime );
             
         } catch ( Exception ex ) {
             Logger.getLogger(RestProvisioningCDITest.class.getName() ).log( Level.SEVERE, null, ex );

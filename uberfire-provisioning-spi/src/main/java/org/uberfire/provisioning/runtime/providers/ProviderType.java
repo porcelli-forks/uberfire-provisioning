@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
  * @author salaboy This class provides the definition for a ProviderType.
  * Different provider types can be implemented and discovered at runtime.
  */
-@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
 public interface ProviderType {
 
     String getProviderTypeName();
@@ -32,10 +32,18 @@ public interface ProviderType {
 
     Class getProvider();
 
-    void setProviderTypeName(String providerTypeName);
+    void setProviderTypeName( String providerTypeName );
 
-    void setVersion(String version);
+    void setVersion( String version );
 
-    void setProvider(Class providerClass);
+    void setProvider( Class providerClass );
+
+    Class getProviderService();
+
+    void setProviderService( Class providerService );
+
+    Class getRuntimeService();
+
+    void setRuntimeService( Class runtimeService );
 
 }

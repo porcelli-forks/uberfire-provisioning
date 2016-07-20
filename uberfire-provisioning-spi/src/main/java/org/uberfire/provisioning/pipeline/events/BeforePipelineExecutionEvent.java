@@ -18,6 +18,8 @@ package org.uberfire.provisioning.pipeline.events;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
 
+
+
 public class BeforePipelineExecutionEvent implements PipelineEvent {
 
     private Pipeline pipeline;

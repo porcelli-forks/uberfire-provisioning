@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.pipeline.PipelineTemplate;
 import org.uberfire.provisioning.registry.PipelineRegistry;
 
 /**
@@ -32,26 +33,43 @@ import org.uberfire.provisioning.registry.PipelineRegistry;
  */
 public class InMemoryPipelineRegistry implements PipelineRegistry {
 
-    private final Map<String, Pipeline> pipelineById;
+    private final Map<String, Pipeline> pipelineByName;
+
+    private final Map<String, PipelineTemplate> templateByName;
 
     public InMemoryPipelineRegistry() {
-        pipelineById = new HashMap<>();
-
+        pipelineByName = new HashMap<>();
+        templateByName = new HashMap<>();
     }
 
     @Override
     public void registerPipeline( Pipeline pipeline ) {
-        pipelineById.put( pipeline.getId(), pipeline );
+        pipelineByName.put( pipeline.getName(), pipeline );
     }
 
     @Override
-    public Pipeline getPipelineById( String pipelineId ) {
-        return pipelineById.get( pipelineId );
+    public Pipeline getPipelineByName( String pipelineName ) {
+        return pipelineByName.get( pipelineName );
     }
 
     @Override
     public List<Pipeline> getAllPipelines() {
-        return new ArrayList<Pipeline>( pipelineById.values() );
+        return new ArrayList<>( pipelineByName.values() );
+    }
+
+    @Override
+    public void registerTemplate( PipelineTemplate template ) {
+        templateByName.put( template.getName(), template );
+    }
+
+    @Override
+    public List<PipelineTemplate> getAllTemplates() {
+        return new ArrayList<>( templateByName.values() );
+    }
+
+    @Override
+    public PipelineTemplate getTemplateByName( String name ) {
+        return templateByName.get( name );
     }
 
 }

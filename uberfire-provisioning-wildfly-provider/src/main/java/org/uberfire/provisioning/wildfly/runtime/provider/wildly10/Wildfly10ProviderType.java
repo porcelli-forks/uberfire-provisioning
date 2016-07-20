@@ -20,15 +20,12 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.uberfire.provisioning.runtime.providers.base.BaseProviderType;
 
-/**
- * @author salaboy
- */
 @ApplicationScoped
 @Wildfly10
 public class Wildfly10ProviderType extends BaseProviderType {
 
     public Wildfly10ProviderType() {
-        super( "wildfly", "10.0.0", Wildfly10Provider.class );
+        super( "wildfly", "10.0.0", Wildfly10Provider.class, Wildfly10ProviderService.class );
     }
 
 }

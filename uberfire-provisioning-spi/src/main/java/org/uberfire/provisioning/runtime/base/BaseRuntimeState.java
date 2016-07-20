@@ -20,21 +20,21 @@ import org.uberfire.provisioning.runtime.RuntimeState;
 
 public class BaseRuntimeState implements RuntimeState {
 
-    private String state;
+    private String status;
     private String startedAt;
 
     public BaseRuntimeState() {
     }
 
-    public BaseRuntimeState( String state,
+    public BaseRuntimeState( String status,
             String startedAt ) {
-        this.state = state;
+        this.status = status;
         this.startedAt = startedAt;
     }
 
     @Override
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
     @Override

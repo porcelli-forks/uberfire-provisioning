@@ -18,14 +18,11 @@ package org.uberfire.provisioning.registry.local.tests;
 
 import org.uberfire.provisioning.runtime.providers.base.BaseProviderType;
 
-/**
- * @author salaboy
- */
 public class MyProviderType extends BaseProviderType {
 
     public MyProviderType( String providerName,
-                           String version ) {
-        super( providerName, version, MyProvider.class );
+            String version ) {
+        super( providerName, version, MyProvider.class, MyProviderService.class );
     }
 
     public MyProviderType() {

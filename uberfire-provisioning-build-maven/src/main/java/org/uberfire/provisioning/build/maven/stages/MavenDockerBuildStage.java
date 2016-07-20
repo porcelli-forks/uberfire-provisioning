@@ -21,56 +21,172 @@ import java.util.logging.Logger;
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.exceptions.BuildException;
-import org.uberfire.provisioning.pipeline.PipelineContext;
-import org.uberfire.provisioning.pipeline.Stage;
+import org.uberfire.provisioning.pipeline.BaseStage;
+import org.uberfire.provisioning.pipeline.BaseStageBuilder;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
-public class MavenDockerBuildStage implements Stage {
+public class MavenDockerBuildStage extends BaseStage {
 
-    private final String name;
+    private Project project;
+    private String projectHolder;
+    private String username;
+    private String password;
+    private Boolean push;
+
+    private String pushHolder;
+    private String usernameHolder;
+    private String passwordHolder;
 
     public MavenDockerBuildStage() {
-        this.name = "Maven Docker Build Stage";
+        addRequiredService( Build.class );
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject( Project project ) {
+        this.project = project;
+    }
+
+    public String getProjectHolder() {
+        return projectHolder;
+    }
+
+    public void setProjectHolder( String projectHolder ) {
+        this.projectHolder = projectHolder;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername( String username ) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword( String password ) {
+        this.password = password;
+    }
+
+    public Boolean getPush() {
+        return push;
+    }
+
+    public void setPush( Boolean push ) {
+        this.push = push;
+    }
+
+    public String getPushHolder() {
+        return pushHolder;
+    }
+
+    public void setPushHolder( String pushHolder ) {
+        this.pushHolder = pushHolder;
+    }
+
+    public String getUsernameHolder() {
+        return usernameHolder;
+    }
+
+    public void setUsernameHolder( String usernameHolder ) {
+        this.usernameHolder = usernameHolder;
+    }
+
+    public String getPasswordHolder() {
+        return passwordHolder;
+    }
+
+    public void setPasswordHolder( String passwordHolder ) {
+        this.passwordHolder = passwordHolder;
     }
 
     @Override
-    public String getName() {
-        return this.name;
-    }
+    public void execute( PipelineInstance pipe, PipelineDataContext pipeData ) {
+        if ( getProject() == null && getProjectHolder() != null ) {
+            setProject( ( Project ) pipeData.getData( getProjectHolder() ) );
+        }
 
-    @Override
-    public void execute( PipelineContext context ) {
-        Project project = ( Project ) context.getData().get( "project" );
-        String push = ( String ) context.getData().get( "push" );
-        String username = ( String ) context.getData().get( "username" );
-        String password = ( String ) context.getData().get( "password" );
-        Build build = ( Build ) context.getServices().get( "buildService" );
+        if ( getPush() == null && getPushHolder() != null ) {
+            setPush( Boolean.getBoolean( ( String ) pipeData.getData( getPushHolder() ) ) );
+        }
+
+        if ( getUsername() == null && getUsernameHolder() != null ) {
+            setUsername( ( String ) pipeData.getData( getUsernameHolder() ) );
+        }
+
+        if ( getPassword() == null && getPassword() != null ) {
+            setPassword( ( String ) pipeData.getData( getPasswordHolder() ) );
+        }
+
+        int result = 0;
         try {
-            int result = build.createDockerImage(project, Boolean.valueOf( push ), username, password);
-            System.out.println( "Build Result: " + result );
+            result = pipe.getService( Build.class ).createDockerImage( getProject(), getPush(), getUsername(), getPassword() );
         } catch ( BuildException ex ) {
             Logger.getLogger(MavenDockerBuildStage.class.getName() ).log( Level.SEVERE, null, ex );
         }
-
-    }
-
-    @Override
-    public boolean equals( final Object o ) {
-        if ( this == o ) {
-            return true;
+        if ( result != 0 ) {
+            throw new IllegalStateException( "Maven Build Failed! Review Logs for errors" );
         }
-        if ( !( o instanceof Stage ) ) {
-            return false;
+    }
+
+    public static MavenBuildStageBuilder builder() {
+        return new MavenBuildStageBuilder();
+
+    }
+
+    public static class MavenBuildStageBuilder extends BaseStageBuilder<MavenDockerBuildStage> {
+
+        private MavenBuildStageBuilder() {
+            stage = new MavenDockerBuildStage();
         }
 
-        final Stage that = (Stage) o;
+        @Override
+        public MavenBuildStageBuilder withRequiredService( Class type ) {
+            super.withRequiredService( type );
+            return this;
+        }
 
-        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+        @Override
+        public MavenBuildStageBuilder withName( String name ) {
+            super.withName( name );
+            return this;
+        }
+
+        public MavenBuildStageBuilder withProject( Project project ) {
+            stage.setProject( project );
+            return this;
+        }
+
+        public MavenBuildStageBuilder withUsername( String username ) {
+            stage.setUsername( username );
+            return this;
+        }
+
+        public MavenBuildStageBuilder withPassword( String password ) {
+            stage.setPassword( password );
+            return this;
+        }
+
+        public MavenBuildStageBuilder withPush( Boolean push ) {
+            stage.setPush( push );
+            return this;
+        }
+
+        public MavenBuildStageBuilder inProject( String projectHolder ) {
+            stage.setProjectHolder( projectHolder );
+            return this;
+        }
+
+        public MavenBuildStageBuilder inPush( String pushHolder ) {
+            stage.setPushHolder( pushHolder );
+            return this;
+        }
 
     }
-
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
-    }
-
 }

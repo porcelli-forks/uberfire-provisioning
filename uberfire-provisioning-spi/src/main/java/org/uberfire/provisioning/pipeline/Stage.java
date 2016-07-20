@@ -20,14 +20,21 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
+import java.util.Set;
 
-/**
- * @author salaboy
- */
-@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
 public interface Stage {
 
     String getName();
 
-    void execute( PipelineContext context );
+    void setName( String name );
+
+    void execute( PipelineInstance pipe, PipelineDataContext pipeData );
+
+    Set<Class> getRequiredServices();
+
+    void setRequiredServices( Set<Class> requiredServices );
+    
+    void addRequiredService( Class type );
+
 }

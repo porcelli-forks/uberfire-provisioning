@@ -16,10 +16,7 @@
 
 package org.uberfire.provisioning.exceptions;
 
-/**
- * @author salaboy
- */
-public class ProvisioningException extends Exception {
+public class ProvisioningException extends RuntimeException {
 
     public ProvisioningException( String message ) {
         super( message );

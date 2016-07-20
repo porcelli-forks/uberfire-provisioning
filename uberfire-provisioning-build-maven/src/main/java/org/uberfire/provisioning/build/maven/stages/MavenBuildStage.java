@@ -18,61 +18,87 @@ package org.uberfire.provisioning.build.maven.stages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.exceptions.BuildException;
-import org.uberfire.provisioning.pipeline.PipelineContext;
-import org.uberfire.provisioning.pipeline.Stage;
+import org.uberfire.provisioning.pipeline.BaseStage;
+import org.uberfire.provisioning.pipeline.BaseStageBuilder;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
-public class MavenBuildStage implements Stage {
+public class MavenBuildStage extends BaseStage {
 
-    private final String name;
+    private Project project;
+    private String projectHolder;
 
     public MavenBuildStage() {
-        this.name = "Maven Build Stage";
+        addRequiredService( Build.class );
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject( Project project ) {
+        this.project = project;
+    }
+
+    public String getProjectHolder() {
+        return projectHolder;
+    }
+
+    public void setProjectHolder( String projectHolder ) {
+        this.projectHolder = projectHolder;
     }
 
     @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public void execute( PipelineContext context ) {
-        Project project = (Project) context.getData().get( "project" );
-        Build build = (Build) context.getServices().get( "buildService" );
-
+    public void execute( PipelineInstance pipe, PipelineDataContext pipeData ) {
+        if ( getProject() == null && getProjectHolder() != null ) {
+            setProject( ( Project ) pipeData.getData( getProjectHolder() ) );
+        }
         int result = 0;
         try {
-            result = build.build( project );
+            result = pipe.getService( Build.class ).build( getProject() );
         } catch ( BuildException ex ) {
-            Logger.getLogger( MavenBuildStage.class.getName() ).log( Level.SEVERE, null, ex );
+            Logger.getLogger(MavenBuildStage.class.getName() ).log( Level.SEVERE, null, ex );
         }
         if ( result != 0 ) {
             throw new IllegalStateException( "Maven Build Failed! Review Logs for errors" );
         }
+    }
+
+    public static MavenBuildStageBuilder builder() {
+        return new MavenBuildStageBuilder();
 
     }
 
-    @Override
-    public boolean equals( final Object o ) {
-        if ( this == o ) {
-            return true;
+    public static class MavenBuildStageBuilder extends BaseStageBuilder<MavenBuildStage> {
+
+        private MavenBuildStageBuilder() {
+            stage = new MavenBuildStage();
         }
-        if ( !( o instanceof Stage ) ) {
-            return false;
+
+        @Override
+        public MavenBuildStageBuilder withRequiredService( Class type ) {
+            super.withRequiredService( type );
+            return this;
         }
 
-        final Stage that = (Stage) o;
+        @Override
+        public MavenBuildStageBuilder withName( String name ) {
+            super.withName( name );
+            return this;
+        }
 
-        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+        public MavenBuildStageBuilder withProject( Project project ) {
+            stage.setProject( project );
+            return this;
+        }
+
+        public MavenBuildStageBuilder inProject( String projectHolder ) {
+            stage.setProjectHolder( projectHolder );
+            return this;
+        }
 
     }
-
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
-    }
-
 }

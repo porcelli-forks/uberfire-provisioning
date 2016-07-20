@@ -16,6 +16,7 @@
 
 package org.uberfire.provisioning.services.rest;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -33,8 +34,10 @@ import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.RuntimeService;
 import org.uberfire.provisioning.runtime.providers.Provider;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
+import org.uberfire.provisioning.runtime.providers.ProviderService;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.api.RuntimeProvisioningService;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
@@ -93,9 +96,11 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
     public String newRuntime( RuntimeConfiguration conf ) throws BusinessException {
         String providerName = conf.getProviderName();
         Provider provider = registry.getProvider( providerName );
+
+        ProviderService providerService = createProviderService( provider );
         Runtime runtime;
         try {
-            runtime = provider.create( conf );
+            runtime = providerService.create( conf );
             registry.registerRuntime( runtime );
             return runtime.getId();
         } catch ( Exception ex ) {
@@ -109,8 +114,9 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
     public void destroyRuntime( String runtimeId ) throws BusinessException {
         Runtime runtimeById = registry.getRuntimeById( runtimeId );
         Provider provider = runtimeById.getProvider();
+        ProviderService providerService = createProviderService( provider );
         try {
-            provider.destroy( runtimeId );
+            providerService.destroy( runtimeId );
             registry.unregisterRuntime( runtimeById );
         } catch ( ProvisioningException ex ) {
             Logger.getLogger( RestRuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
@@ -126,19 +132,46 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
     @Override
     public void startRuntime( String runtimeId ) throws BusinessException {
         Runtime runtimeById = registry.getRuntimeById( runtimeId );
-        runtimeById.start();
+        RuntimeService runtimeService = createRuntimeService( runtimeById );
+        runtimeService.start();
     }
 
     @Override
     public void stopRuntime( String runtimeId ) throws BusinessException {
         Runtime runtimeById = registry.getRuntimeById( runtimeId );
-        runtimeById.stop();
+        RuntimeService runtimeService = createRuntimeService( runtimeById );
+        runtimeService.stop();
     }
 
     @Override
     public void restartRuntime( String runtimeId ) throws BusinessException {
         Runtime runtimeById = registry.getRuntimeById( runtimeId );
-        runtimeById.restart();
+        RuntimeService runtimeService = createRuntimeService( runtimeById );
+        runtimeService.restart();
+    }
+
+    private ProviderService createProviderService( Provider provider ) {
+        Class providerService = provider.getProviderType().getProviderService();
+        try {
+            Constructor c = providerService.getConstructor( provider.getClass() );
+            ProviderService service = ( ProviderService ) c.newInstance( provider );
+            return service;
+        } catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private RuntimeService createRuntimeService( Runtime runtime ) {
+        Class runtimeService = runtime.getProvider().getProviderType().getRuntimeService();
+        try {
+            Constructor c = runtimeService.getConstructor( runtime.getClass() );
+            RuntimeService service = ( RuntimeService ) c.newInstance( runtime );
+            return service;
+        } catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 }

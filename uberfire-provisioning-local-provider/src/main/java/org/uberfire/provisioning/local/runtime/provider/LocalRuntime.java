@@ -16,88 +16,15 @@
 
 package org.uberfire.provisioning.local.runtime.provider;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
-import org.uberfire.provisioning.runtime.RuntimeInfo;
-import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.base.BaseRuntime;
-import org.uberfire.provisioning.runtime.providers.Provider;
-
-import static java.lang.Runtime.*;
-import static java.lang.System.*;
-import static java.util.logging.Level.*;
-import static java.util.logging.Logger.*;
-import org.uberfire.provisioning.runtime.RuntimeEndpoint;
-import org.uberfire.provisioning.runtime.base.BaseRuntimeEndpoint;
 
 public class LocalRuntime extends BaseRuntime {
 
-    private Process p;
-
     public LocalRuntime( String id,
-                         RuntimeConfiguration config,
-                         Provider provider ) {
+            RuntimeConfiguration config, LocalProvider provider ) {
         super( id, config, provider );
-        if ( !( provider instanceof LocalProvider ) ) {
-            throw new IllegalArgumentException( "Wrong provider! set: " + provider.getClass() + " expected: LocalProvider" );
-        }
 
     }
-
-    @Override
-    public void start() {
-        try {
-            p = getRuntime().exec( "java -jar " + config.getProperties().get( "jar" ) );
-            new Thread( new Runnable() {
-                public void run() {
-                    BufferedReader input = new BufferedReader( new InputStreamReader( p.getInputStream() ) );
-                    String line = null;
-
-                    try {
-                        while ( ( line = input.readLine() ) != null ) {
-                            out.println( line );
-                        }
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
-                    }
-                }
-            } ).start();
-
-        } catch ( IOException ex ) {
-            getLogger( LocalRuntime.class.getName() ).log( SEVERE, null, ex );
-        }
-
-    }
-
-    @Override
-    public void stop() {
-        Process destroyForcibly = p.destroyForcibly();
-    }
-
-    @Override
-    public void restart() {
-
-    }
-
-    @Override
-    public RuntimeInfo getInfo() {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public RuntimeState getState() {
-
-        return null;
-    }
-
-    @Override
-    public RuntimeEndpoint getEndpoint() {
-        return new BaseRuntimeEndpoint();
-    }
-    
-    
 
 }

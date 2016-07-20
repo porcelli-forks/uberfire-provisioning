@@ -47,11 +47,13 @@ import static java.util.logging.Logger.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
+import org.uberfire.provisioning.docker.runtime.provider.DockerProviderService;
+import org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeService;
 
 /**
  * @author salaboy
  */
-@RunWith(Arquillian.class)
+@RunWith( Arquillian.class )
 public class DockerProviderRuntimeTest {
 
     @Deployment
@@ -105,15 +107,18 @@ public class DockerProviderRuntimeTest {
     public void newDockerProviderWithoutDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
         DockerProviderConfiguration config = new DockerProviderConfiguration( "docker local deamon" );
+
         DockerProvider dockerProvider = new DockerProvider( config, dockerProviderType );
 
-        assertNotNull( dockerProvider.getDocker() );
+        DockerProviderService dockerProviderService = new DockerProviderService( dockerProvider );
+
+        assertNotNull( dockerProviderService.getDocker() );
         DockerRuntimeConfiguration runtimeConfig = new DockerRuntimeConfiguration();
         runtimeConfig.setImage( "kitematic/hello-world-nginx" );
 
         Runtime newRuntime;
         try {
-            newRuntime = dockerProvider.create( runtimeConfig );
+            newRuntime = dockerProviderService.create( runtimeConfig );
         } catch ( Exception ex ) {
             // If the docker deamon is not running and the system variables for locating the
             //   docker deamon are not set, this is expected to fail.
@@ -127,9 +132,12 @@ public class DockerProviderRuntimeTest {
     public void newDockerProviderWithDockerClientRunningTest() {
         ProviderType dockerProviderType = providerTypes.iterator().next();
         DockerProviderConfiguration config = new DockerProviderConfiguration( "docker local deamon" );
+        
         DockerProvider dockerProvider = new DockerProvider( config, dockerProviderType );
+        
+        DockerProviderService dockerProviderService = new DockerProviderService( dockerProvider );
 
-        assertNotNull( dockerProvider.getDocker() );
+        assertNotNull( dockerProviderService.getDocker() );
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
         //Notice that it will not pull images that you don't have locally 
         // The hello-world-nginx is a very small image to test with, 
@@ -138,20 +146,31 @@ public class DockerProviderRuntimeTest {
 
         Runtime newRuntime = null;
         try {
-            newRuntime = dockerProvider.create( runtimeConfig );
+            newRuntime = dockerProviderService.create( runtimeConfig );
         } catch ( Exception ex ) {
             ex.printStackTrace();
             fail( "Docker client is not configured" );
 
         }
         assertNotNull( newRuntime );
+        DockerRuntimeService dockerRuntimeService = new DockerRuntimeService( dockerProviderService, ( DockerRuntime ) newRuntime );
 
-        newRuntime.start();
+        dockerRuntimeService.start();
+        
+        assertEquals( "Running", newRuntime.getState().getStatus() );
+        
+        newRuntime = dockerRuntimeService.getRuntime();
+        
+        dockerRuntimeService.refresh();
+        
+        newRuntime = dockerRuntimeService.getRuntime();
 
-        assertEquals( "Running", newRuntime.getState().getState() );
+        dockerRuntimeService.refresh();
+
+        dockerRuntimeService.stop();
 
         try {
-            dockerProvider.destroy( newRuntime.getId() );
+            dockerProviderService.destroy( newRuntime.getId() );
         } catch ( Exception ex ) {
             getLogger( DockerProviderRuntimeTest.class.getName() ).log( SEVERE, null, ex );
 

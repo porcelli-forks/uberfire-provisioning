@@ -16,15 +16,9 @@
 
 package org.uberfire.provisioning.registry.local.tests;
 
-import org.uberfire.provisioning.exceptions.ProvisioningException;
-import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
-/**
- * @author salaboy
- */
 public class MyProvider extends BaseProvider {
 
     public MyProvider( String name,
@@ -32,14 +26,5 @@ public class MyProvider extends BaseProvider {
         super( name, providerType );
     }
 
-    @Override
-    public Runtime create( RuntimeConfiguration config ) throws ProvisioningException {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void destroy( String runtimeId ) throws ProvisioningException {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
+   
 }

@@ -16,9 +16,6 @@
 package org.uberfire.provisioning.runtime.providers;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.uberfire.provisioning.exceptions.ProvisioningException;
-import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
@@ -42,8 +39,6 @@ public interface Provider {
 
     void setProviderType( ProviderType providerType );
 
-    Runtime create( RuntimeConfiguration config ) throws ProvisioningException;
-
-    void destroy( String runtimeId ) throws ProvisioningException;
+    
 
 }

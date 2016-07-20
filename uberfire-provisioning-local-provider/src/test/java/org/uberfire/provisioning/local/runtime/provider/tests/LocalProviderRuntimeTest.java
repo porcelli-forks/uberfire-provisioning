@@ -43,11 +43,14 @@ import static java.lang.Thread.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
+import org.uberfire.provisioning.local.runtime.provider.LocalProviderService;
+import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeService;
+import org.uberfire.provisioning.runtime.providers.ProviderService;
 
 /**
  * @author salaboy
  */
-@RunWith(Arquillian.class)
+@RunWith( Arquillian.class )
 public class LocalProviderRuntimeTest {
 
     @Deployment
@@ -106,12 +109,15 @@ public class LocalProviderRuntimeTest {
         LocalRuntimeConfiguration runtimeConfig = new LocalRuntimeConfiguration();
         runtimeConfig.setJar( "../extras/sample-war/target/sample-war-1.0-SNAPSHOT-swarm.jar" );
 
+        ProviderService providerService = new LocalProviderService( localProvider );
+
         Runtime newRuntime;
         try {
-            newRuntime = localProvider.create( runtimeConfig );
-            newRuntime.start();
+            newRuntime = providerService.create( runtimeConfig );
+            LocalRuntimeService localRuntimeService = new LocalRuntimeService( providerService, newRuntime );
+            localRuntimeService.start();
             sleep( 20000 );
-            newRuntime.stop();
+            localRuntimeService.stop();
         } catch ( ProvisioningException | InterruptedException ex ) {
 
         }

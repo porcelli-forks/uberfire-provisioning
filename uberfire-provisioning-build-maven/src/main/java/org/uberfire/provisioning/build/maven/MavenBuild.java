@@ -77,7 +77,7 @@ public class MavenBuild implements Build {
         if ( !project.getType().equals( "Maven" ) ) {
             throw new BuildException( "This builder only support maven projects" );
         }
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
         goals.add("package");
         if(push){
             goals.add("-Ddocker.username="+username);

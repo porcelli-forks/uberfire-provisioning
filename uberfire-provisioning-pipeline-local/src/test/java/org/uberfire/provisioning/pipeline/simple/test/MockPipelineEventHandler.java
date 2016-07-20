@@ -27,7 +27,7 @@ import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
 
 public class MockPipelineEventHandler implements PipelineEventHandler {
 
-    private List<PipelineEvent> events = new ArrayList<PipelineEvent>();
+    private List<PipelineEvent> events = new ArrayList<>();
 
     @Override
     public void beforePipelineExecution( BeforePipelineExecutionEvent bpee ) {

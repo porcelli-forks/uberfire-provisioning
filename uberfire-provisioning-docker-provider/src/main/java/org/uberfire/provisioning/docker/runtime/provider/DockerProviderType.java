@@ -28,7 +28,7 @@ import org.uberfire.provisioning.runtime.providers.base.BaseProviderType;
 public class DockerProviderType extends BaseProviderType {
 
     public DockerProviderType() {
-        super( "docker", "1.9.1", DockerProvider.class );
+        super( "docker", "1.9.1", DockerProvider.class, DockerProviderService.class );
     }
 
 }

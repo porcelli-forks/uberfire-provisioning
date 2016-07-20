@@ -16,14 +16,10 @@
 
 package org.uberfire.provisioning.local.runtime.provider;
 
-import org.uberfire.provisioning.exceptions.ProvisioningException;
-import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
-import static java.util.UUID.*;
 
 /**
  * @author salaboy
@@ -44,16 +40,6 @@ public class LocalProvider extends BaseProvider {
 
     }
 
-    @Override
-    public Runtime create( RuntimeConfiguration runtimeConfig ) throws ProvisioningException {
-        String shortId = randomUUID().toString().substring( 0, 12 );
-        return new LocalRuntime( shortId, runtimeConfig, this );
-
-    }
-
-    @Override
-    public void destroy( String runtimeId ) throws ProvisioningException {
-
-    }
+    
 
 }

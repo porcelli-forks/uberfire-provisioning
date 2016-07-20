@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
 @JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
 public interface RuntimeState {
 
-    String getState();
+    String getStatus();
 
     String getStartedAt();
 }

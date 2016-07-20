@@ -19,9 +19,8 @@ package org.uberfire.provisioning.services.api.backend;
 import java.util.List;
 
 import org.jboss.errai.bus.server.annotations.Remote;
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
+import org.uberfire.provisioning.pipeline.Pipeline;
 
 @Remote
 public interface PipelineServiceBackend {
@@ -30,7 +29,6 @@ public interface PipelineServiceBackend {
 
     String newPipeline( final Pipeline pipeline ) throws BusinessException;
 
-    void runPipeline( final String id,
-                      final PipelineContext context ) throws BusinessException;
+    void runPipeline( final String id ) throws BusinessException;
 
 }

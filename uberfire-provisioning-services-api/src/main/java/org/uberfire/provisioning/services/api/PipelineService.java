@@ -25,29 +25,27 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineContext;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
 
 import static javax.ws.rs.core.MediaType.*;
+import org.uberfire.provisioning.pipeline.Pipeline;
 
-@Path("pipelines")
+@Path( "pipelines" )
 public interface PipelineService {
 
     @GET
-    @Produces(value = APPLICATION_JSON)
-    @Path("")
+    @Produces( value = APPLICATION_JSON )
+    @Path( "" )
     List<Pipeline> getAllPipelines() throws BusinessException;
 
     @POST
-    @Consumes(value = APPLICATION_JSON)
-    @Path("")
+    @Consumes( value = APPLICATION_JSON )
+    @Path( "" )
     String newPipeline( @NotNull Pipeline pipeline ) throws BusinessException;
 
     @POST
-    @Consumes(value = APPLICATION_JSON)
-    @Path("{id}/run")
-    void runPipeline( @PathParam("id") String id,
-                      @NotNull PipelineContext context ) throws BusinessException;
+    @Consumes( value = APPLICATION_JSON )
+    @Path( "{id}/run" )
+    void runPipeline( @PathParam( "id" ) String id ) throws BusinessException;
 
 }

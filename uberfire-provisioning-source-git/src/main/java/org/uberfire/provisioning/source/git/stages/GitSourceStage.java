@@ -17,37 +17,87 @@
 package org.uberfire.provisioning.source.git.stages;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
-
-import org.uberfire.java.nio.file.FileSystem;
-import org.uberfire.java.nio.file.FileSystems;
-import org.uberfire.provisioning.pipeline.PipelineContext;
-import org.uberfire.provisioning.pipeline.Stage;
-import org.uberfire.provisioning.registry.SourceRegistry;
+import java.net.URI;
 import org.uberfire.provisioning.source.Source;
 import org.uberfire.provisioning.source.git.GitRepository;
 import org.uberfire.provisioning.source.git.UFLocal;
+import org.uberfire.java.nio.file.FileSystems;
+import org.uberfire.provisioning.pipeline.BaseStage;
+import org.uberfire.provisioning.pipeline.BaseStageBuilder;
+import org.uberfire.provisioning.registry.SourceRegistry;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
-public class GitSourceStage implements Stage {
+public class GitSourceStage extends BaseStage {
 
-    @Override
-    public String getName() {
-        return "Git Source Stage";
+    private String repository;
+    private String branch;
+    private String origin;
+    private String uriString;
+    private File path;
+
+    // Out Variables
+    private String sourceHolder;
+
+    public GitSourceStage() {
+        addRequiredService( SourceRegistry.class );
+    }
+
+    public String getRepository() {
+        return repository;
+    }
+
+    public void setRepository( String repository ) {
+        this.repository = repository;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch( String branch ) {
+        this.branch = branch;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin( String origin ) {
+        this.origin = origin;
+    }
+
+    public String getUriString() {
+        return uriString;
+    }
+
+    public void setUriString( String uriString ) {
+        this.uriString = uriString;
+    }
+
+    public File getPath() {
+        return path;
+    }
+
+    public void setPath( File path ) {
+        this.path = path;
+    }
+
+    public String getSourceHolder() {
+        return sourceHolder;
+    }
+
+    public void setSourceHolder( String sourceHolder ) {
+        this.sourceHolder = sourceHolder;
     }
 
     @Override
-    public void execute( PipelineContext context ) {
-
-        String repository = (String) context.getData().get( "repository" );
-        String branch = (String) context.getData().get( "branch" );
-        String origin = (String) context.getData().get( "origin" );
-        String uriString = (String) context.getData().get( "uri" );
-        File path = (File) context.getData().get( "path" );
+    public void execute( PipelineInstance pipe, PipelineDataContext results ) {
 
         final URI uri = URI.create( uriString );
-        final FileSystem fs = FileSystems.newFileSystem( uri, new HashMap<String, Object>() {
+        FileSystems.newFileSystem( uri, new HashMap<String, Object>() {
             {
                 put( "init", Boolean.TRUE );
                 put( "origin", origin );
@@ -56,35 +106,68 @@ public class GitSourceStage implements Stage {
         } );
 
         final UFLocal local = new UFLocal();
-        final GitRepository gitRepository = (GitRepository) local.getRepository( repository, Collections.emptyMap() );
+        final GitRepository gitRepository = ( GitRepository ) local.getRepository( repository, Collections.emptyMap() );
         final Source source = gitRepository.getSource( branch );
 
-        SourceRegistry sourceRegistry = (SourceRegistry) context.getServices().get( "sourceRegistry" );
+        SourceRegistry sourceRegistry = pipe.getService( SourceRegistry.class );
         sourceRegistry.registerRepositorySources( source.getPath(), gitRepository );
-        //Setting source and repo to be used by another stage
-        context.getData().put( "source", source );
-        context.getData().put( "repository", gitRepository );
+        //Setting source to be used by another stage
+        results.setData( "${" + getSourceHolder() + "}", source );
+    }
+
+    public static GitSourceStageBuilder builder() {
+        return new GitSourceStageBuilder();
 
     }
 
-    @Override
-    public boolean equals( final Object o ) {
-        if ( this == o ) {
-            return true;
-        }
-        if ( !( o instanceof Stage ) ) {
-            return false;
+    public static class GitSourceStageBuilder extends BaseStageBuilder<GitSourceStage> {
+
+        private GitSourceStageBuilder() {
+            stage = new GitSourceStage();
         }
 
-        final Stage that = (Stage) o;
+        @Override
+        public GitSourceStageBuilder withRequiredService( Class type ) {
+            super.withRequiredService( type );
+            return this;
+        }
 
-        return getName() != null ? getName().equals( that.getName() ) : that.getName() == null;
+        @Override
+        public GitSourceStageBuilder withName( String name ) {
+            super.withName( name );
+            return this;
+        }
 
-    }
+        public GitSourceStageBuilder withRepository( String repository ) {
+            stage.setRepository( repository );
+            return this;
+        }
 
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
+        public GitSourceStageBuilder withOrigin( String origin ) {
+            stage.setOrigin( origin );
+            return this;
+        }
+
+        public GitSourceStageBuilder withPath( File path ) {
+            stage.setPath( path );
+            return this;
+        }
+
+        public GitSourceStageBuilder withURI( String uriString ) {
+            stage.setUriString( uriString );
+            return this;
+        }
+
+        public GitSourceStageBuilder withBranch( String branch ) {
+            stage.setBranch( branch );
+            return this;
+        }
+
+        public GitSourceStageBuilder outSource( String sourceHolder ) {
+            stage.setSourceHolder( sourceHolder );
+            return this;
+        }
+
     }
 
 }

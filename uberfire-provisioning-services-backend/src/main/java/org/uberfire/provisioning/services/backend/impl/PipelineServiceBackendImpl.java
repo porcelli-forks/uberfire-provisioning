@@ -21,11 +21,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.errai.bus.server.annotations.Service;
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineContext;
+
 import org.uberfire.provisioning.services.api.PipelineService;
 import org.uberfire.provisioning.services.api.backend.PipelineServiceBackend;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
+import org.uberfire.provisioning.pipeline.Pipeline;
 
 @Service
 @ApplicationScoped
@@ -52,9 +52,8 @@ public class PipelineServiceBackendImpl implements PipelineServiceBackend {
     }
 
     @Override
-    public void runPipeline( final String id,
-                             final PipelineContext context ) throws BusinessException {
-        pipelineService.runPipeline( id, context );
+    public void runPipeline( final String id ) throws BusinessException {
+        pipelineService.runPipeline( id );
     }
 
 }

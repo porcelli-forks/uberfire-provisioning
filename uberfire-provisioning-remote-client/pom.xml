@@ -72,7 +72,7 @@
     </dependency>
     <dependency>
       <groupId>org.uberfire.provisioning</groupId>
-      <artifactId>uberfire-provisioning-kubernetes-provider</artifactId>
+      <artifactId>uberfire-provisioning-openshift-provider</artifactId>
       <scope>test</scope>
       <type>jar</type>
     </dependency>

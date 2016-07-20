@@ -16,7 +16,6 @@
 
 package org.uberfire.provisioning.pipeline.simple.test;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -25,17 +24,16 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.uberfire.provisioning.pipeline.simple.provider.PipelineInstanceImpl;
 import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineContext;
-import org.uberfire.provisioning.pipeline.PipelineInstance;
-import org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage;
-import org.uberfire.provisioning.pipeline.simple.provider.PrintOutStage2;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipeline;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineContext;
-import org.uberfire.provisioning.pipeline.simple.provider.SimplePipelineInstance;
+import org.uberfire.provisioning.pipeline.Stage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
+
 
 @RunWith( Arquillian.class )
 public class CDIPipelineEventsAPITest {
@@ -54,29 +52,47 @@ public class CDIPipelineEventsAPITest {
 
     @Test
     public void helloCDIPipeline() {
-
-        Pipeline p = new SimplePipeline( "simple pipe" );
-        p.addStage( new PrintOutStage( "Simple Print" ) );
-        p.addStage( new PrintOutStage2( "Second Print" ) );
-
-        PipelineInstance simplePipelineInstance = new SimplePipelineInstance( p );
-        simplePipelineInstance.registerEventHandler( eventHandler );
-
-        PipelineContext simplePipelineContext = new SimplePipelineContext();
-        String message = "hi there!";
-        simplePipelineContext.getData().put( "message", message );
-
-        List<String> messagesList = new ArrayList<String>();
-        simplePipelineContext.getServices().put( "messages", messagesList );
-
-        simplePipelineInstance.run( simplePipelineContext );
-
-        assertEquals( 2, messagesList.size() );
-
-        assertEquals( ">>> Message: " + message, messagesList.get( 0 ) );
-        assertEquals( ">>> Message Version 2: " + message, messagesList.get( 1 ) );
-
-        assertEquals( 6, eventHandler.getFiredEvents().size() );
+        
+         Pipeline np = Pipeline.builder()
+                .newPipeline( "my pipe" )
+                .newStage(PrintOutStage.builder().withName( "my stage" )
+                        .withMessage( "my message" ).outMessage( "result" ).build() )
+                .newStage(PrintOutStage2.builder().withName( "my stage 2" ).withMessage( "${result}" ).outMessage( "result2" ).build() )
+                .newStage( TestServiceStage.builder().withName( "my test service" ).withData( "${result2}" ).withRequiredService( MockService.class ).build() )
+                .build();
+        
+        assertNotNull( np );
+        
+        List<Stage> stages = np.getStages();
+        assertEquals( 3, stages.size() );
+        
+        assertEquals( "my stage", stages.get( 0 ).getName() );
+        assertEquals( "my stage 2", stages.get( 1 ).getName() );
+        assertEquals( "my test service", stages.get( 2 ).getName() );
+        
+        assertEquals(PrintOutStage.class, stages.get( 0 ).getClass() );
+        assertEquals(PrintOutStage2.class, stages.get( 1 ).getClass() );
+        assertEquals( TestServiceStage.class, stages.get( 2 ).getClass() );
+        
+        assertEquals( 1, np.getRequiredServices().size() );
+        assertTrue( np.getRequiredServices().contains( MockService.class ) );
+        
+        PipelineInstanceImpl instance = new PipelineInstanceImpl( np );
+        instance.registerEventHandler( eventHandler );
+        instance.registerService( MockService.class, new MockServiceImpl() );
+        PipelineDataContext results = instance.execute();
+        
+        String result1 = ( String ) results.getData( "${result}" );
+        String result2 = ( String ) results.getData( "${result2}" );
+        
+        assertEquals( "my message-v2", result1 );
+        assertEquals( "my message-v2-v3", result2 );
+        
+        MockService service = instance.getService( MockService.class );
+        
+        assertEquals( "my message-v2-v3", ( ( MockServiceImpl ) service ).getTexts().get( 0 ) );
+        
+        assertEquals( 8, eventHandler.getFiredEvents().size() );
 
     }
 

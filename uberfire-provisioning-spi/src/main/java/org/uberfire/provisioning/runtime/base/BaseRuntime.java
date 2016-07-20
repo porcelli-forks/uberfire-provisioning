@@ -16,25 +16,24 @@
 
 package org.uberfire.provisioning.runtime.base;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
+import org.uberfire.provisioning.runtime.RuntimeState;
+import org.uberfire.provisioning.runtime.RuntimeInfo;
 import org.uberfire.provisioning.runtime.providers.Provider;
 
-/**
- * @author salaboy
- */
 public abstract class BaseRuntime implements Runtime {
 
     private String id;
     protected RuntimeConfiguration config;
-    @XmlTransient
-    protected Provider provider;
+    private RuntimeInfo info;
+    private RuntimeState state;
+    private RuntimeEndpoint endpoint;
+    private Provider provider;
 
     public BaseRuntime( String id,
-                        RuntimeConfiguration config,
-                        Provider provider ) {
+            RuntimeConfiguration config, Provider provider ) {
         this.id = id;
         this.config = config;
         this.provider = provider;
@@ -46,8 +45,13 @@ public abstract class BaseRuntime implements Runtime {
     }
 
     @Override
-    public Provider getProvider() {
-        return provider;
+    public void setId( String id ) {
+        this.id = id;
+    }
+
+    @Override
+    public void setConfig( RuntimeConfiguration config ) {
+        this.config = config;
     }
 
     @Override
@@ -56,13 +60,38 @@ public abstract class BaseRuntime implements Runtime {
     }
 
     @Override
-    public void setId( String id ) {
-        this.id = id;
+    public RuntimeInfo getInfo() {
+        return info;
     }
 
     @Override
-    public void setConfig( RuntimeConfiguration config ) {
-        this.config = config;
+    public void setInfo( RuntimeInfo info ) {
+        this.info = info;
+    }
+
+    @Override
+    public RuntimeState getState() {
+        return state;
+    }
+
+    @Override
+    public void setState( RuntimeState state ) {
+        this.state = state;
+    }
+
+    @Override
+    public RuntimeEndpoint getEndpoint() {
+        return endpoint;
+    }
+
+    @Override
+    public void setEndpoint( RuntimeEndpoint endpoint ) {
+        this.endpoint = endpoint;
+    }
+
+    @Override
+    public Provider getProvider() {
+        return provider;
     }
 
     @Override

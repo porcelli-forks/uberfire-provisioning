@@ -23,10 +23,6 @@ import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,10 +42,9 @@ import static java.util.logging.Logger.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeService;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderService;
 
-/**
- * @author salaboy
- */
 @RunWith( Arquillian.class )
 public class WildflyProviderRuntimeTest {
 
@@ -70,22 +65,6 @@ public class WildflyProviderRuntimeTest {
     private Instance<ProviderType> providerTypes;
 
     public WildflyProviderRuntimeTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test
@@ -111,15 +90,16 @@ public class WildflyProviderRuntimeTest {
         config.setPassword( "somepassword" );
 
         Wildfly10Provider wildflyProvider = new Wildfly10Provider( config, wildlyProviderType );
+        Wildfly10ProviderService providerService = new Wildfly10ProviderService( wildflyProvider );
 
-        assertNotNull( wildflyProvider.getWildfly() );
+        assertNotNull( providerService.getWildfly() );
         WildflyRuntimeConfiguration runtimeConfig = new WildflyRuntimeConfiguration();
         runtimeConfig.setWarPath( "" );
 
         Runtime newRuntime = null;
 
         try {
-            newRuntime = wildflyProvider.create( runtimeConfig );
+            newRuntime = providerService.create( runtimeConfig );
         } catch ( Exception ex ) {
             assertTrue( ex instanceof ProvisioningException );
         }
@@ -139,15 +119,16 @@ public class WildflyProviderRuntimeTest {
         config.setPassword( "admin" );
 
         Wildfly10Provider wildflyProvider = new Wildfly10Provider( config, wildflyProviderType );
+        Wildfly10ProviderService providerService = new Wildfly10ProviderService( wildflyProvider );
 
-        assertNotNull( wildflyProvider.getWildfly() );
+        assertNotNull( providerService.getWildfly() );
         RuntimeConfiguration runtimeConfig = new BaseRuntimeConfiguration();
         runtimeConfig.getProperties().put( "warPath", "../extras/sample-war/target/sample-war-1.0-SNAPSHOT.war" );
 
         Runtime newRuntime = null;
 
         try {
-            newRuntime = wildflyProvider.create( runtimeConfig );
+            newRuntime = providerService.create( runtimeConfig );
         } catch ( ProvisioningException ex ) {
             getLogger( WildflyProviderRuntimeTest.class.getName() ).log( SEVERE, null, ex );
         }
@@ -155,6 +136,13 @@ public class WildflyProviderRuntimeTest {
         assertNotNull( newRuntime );
         assertNotNull( newRuntime.getId() );
 
+        WildflyRuntimeService wildflyRuntimeService = new WildflyRuntimeService( providerService, newRuntime );
+
+        wildflyRuntimeService.refresh();
+
+        newRuntime = wildflyRuntimeService.getRuntime();
+
+        // TODO: check state and info
     }
 
 }
