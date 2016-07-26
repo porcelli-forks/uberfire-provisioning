@@ -19,7 +19,7 @@ package org.uberfire.provisioning.exceptions;
 /**
  * @author salaboy
  */
-public class BuildException extends Exception {
+public class BuildException extends RuntimeException {
 
     public BuildException( String message ) {
         super( message );

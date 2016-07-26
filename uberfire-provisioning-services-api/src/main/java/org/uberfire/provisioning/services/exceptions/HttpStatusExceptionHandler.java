@@ -28,7 +28,7 @@ import javax.ws.rs.ext.Provider;
 public class HttpStatusExceptionHandler implements ExceptionMapper<BusinessException> {
 
     @Override
-    public Response toResponse( BusinessException exception ) {
+    public Response toResponse( final BusinessException exception ) {
         return Response.status( Status.INTERNAL_SERVER_ERROR ).entity( "Error: Business Exception " + exception.getMessage() ).build();
     }
 }

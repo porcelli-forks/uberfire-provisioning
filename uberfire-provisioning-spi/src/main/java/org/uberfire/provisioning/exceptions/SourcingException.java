@@ -19,7 +19,7 @@ package org.uberfire.provisioning.exceptions;
 /**
  * @author salaboy
  */
-public class SourcingException extends Exception {
+public class SourcingException extends RuntimeException {
 
     public SourcingException( String message ) {
         super( message );
