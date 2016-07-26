@@ -6,9 +6,9 @@
         <artifactId>uberfire-provisioning</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>uberfire-provisioning-services-swarm</artifactId>
+    <artifactId>uberfire-provisioning-distribution</artifactId>
     <packaging>jar</packaging>
-    <name>Uberfire Provisioning :: Services Swarm</name>
+    <name>Uberfire Provisioning :: Distribution (Swarm/Docker)</name>
     <dependencies>
         <dependency>
             <groupId>org.uberfire.provisioning</groupId>

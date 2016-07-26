@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.util.wildfly8;
+package org.uberfire.provisioning.wildfly.runtime.extras.tests;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
+import org.uberfire.provisioning.wildfly.runtime.provider.extras.Wildfly10RemoteClient;
 
 import static java.lang.System.*;
 

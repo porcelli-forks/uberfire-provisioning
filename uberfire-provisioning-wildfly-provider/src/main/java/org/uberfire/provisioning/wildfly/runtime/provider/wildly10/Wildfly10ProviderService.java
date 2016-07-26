@@ -21,7 +21,7 @@ import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
-import org.uberfire.provisioning.wildfly.util.Wildfly10RemoteClient;
+import org.uberfire.provisioning.wildfly.runtime.provider.extras.Wildfly10RemoteClient;
 
 public class Wildfly10ProviderService implements ProviderService {
 

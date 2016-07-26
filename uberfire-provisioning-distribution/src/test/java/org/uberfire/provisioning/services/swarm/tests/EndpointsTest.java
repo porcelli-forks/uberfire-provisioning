@@ -20,6 +20,8 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 @RunWith( Arquillian.class )
 public class EndpointsTest {
 
+    private final String APP_URL = "http://localhost:8080/";
+
     @Deployment( testable = true )
     public static Archive createDeployment() throws Exception {
         JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
@@ -33,13 +35,13 @@ public class EndpointsTest {
     @RunAsClient
     public void checkService() {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target( "http://localhost:8080/providertypes" );
+        WebTarget target = client.target( APP_URL + "runtime/providertypes" );
         Response response = target.request( MediaType.APPLICATION_JSON ).get();
         Assert.assertEquals( Response.Status.OK.getStatusCode(), response.getStatus() );
-        
-        String responseAsString = response.readEntity(String.class);
-        assertNotNull(responseAsString);
-        
+
+        String responseAsString = response.readEntity( String.class );
+        assertNotNull( responseAsString );
+
     }
 
 }

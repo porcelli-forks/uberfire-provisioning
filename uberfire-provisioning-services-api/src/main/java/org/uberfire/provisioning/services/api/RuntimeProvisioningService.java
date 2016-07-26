@@ -36,10 +36,11 @@ import org.uberfire.provisioning.services.exceptions.BusinessException;
 
 import static javax.ws.rs.core.MediaType.*;
 
-@Path("")
+@Path("runtime")
 public interface RuntimeProvisioningService {
 
     @GET
+    @Consumes(value = APPLICATION_JSON)
     @Produces(value = APPLICATION_JSON)
     @Path("providertypes")
     List<ProviderType> getAllProviderTypes() throws BusinessException;

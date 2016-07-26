@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.uberfire.provisioning.wildfly.util;
+package org.uberfire.provisioning.wildfly.runtime.provider.extras;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
