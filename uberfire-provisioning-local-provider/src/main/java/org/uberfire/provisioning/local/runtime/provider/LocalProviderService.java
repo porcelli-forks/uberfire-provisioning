@@ -16,10 +16,11 @@
 
 package org.uberfire.provisioning.local.runtime.provider;
 
-import static java.util.UUID.randomUUID;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
+
+import static java.util.UUID.*;
 
 public class LocalProviderService implements ProviderService {
 

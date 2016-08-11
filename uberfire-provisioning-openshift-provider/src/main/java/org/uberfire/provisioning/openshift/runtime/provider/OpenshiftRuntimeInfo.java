@@ -24,7 +24,9 @@ public class OpenshiftRuntimeInfo extends BaseRuntimeInfo {
     public OpenshiftRuntimeInfo() {
     }
 
-    public OpenshiftRuntimeInfo( String id, String name, RuntimeConfiguration config ) {
+    public OpenshiftRuntimeInfo( String id,
+                                 String name,
+                                 RuntimeConfiguration config ) {
         super( id, name, config );
     }
 

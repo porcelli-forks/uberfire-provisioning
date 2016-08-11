@@ -19,10 +19,9 @@ package org.uberfire.provisioning.services.api.backend;
 import java.util.List;
 
 import org.jboss.errai.bus.server.annotations.Remote;
+import org.uberfire.provisioning.config.RuntimeConfig;
 import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
 
@@ -33,11 +32,11 @@ public interface RuntimeProvisioningServiceBackend {
 
     List<Provider> getAllProviders() throws BusinessException;
 
-    void registerProvider( final ProviderConfiguration conf ) throws BusinessException;
+    void registerProvider( final RuntimeConfig conf ) throws BusinessException;
 
     void unregisterProvider( final String name ) throws BusinessException;
 
-    String newRuntime( final RuntimeConfiguration conf ) throws BusinessException;
+    String newRuntime( final RuntimeConfig conf ) throws BusinessException;
 
     List<Runtime> getAllRuntimes() throws BusinessException;
 

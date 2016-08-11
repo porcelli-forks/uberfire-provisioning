@@ -17,8 +17,9 @@
 package org.uberfire.provisioning.source;
 
 import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.config.SourceConfig;
 
-public interface Source {
+public interface Source extends SourceConfig {
 
     Path getPath();
 

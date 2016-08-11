@@ -18,15 +18,16 @@ package org.uberfire.provisioning.wildfly.runtime.provider.stages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.pipeline.BaseStage;
 import org.uberfire.provisioning.pipeline.BaseStageBuilder;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
-import org.uberfire.provisioning.pipeline.PipelineInstance;
-import org.uberfire.provisioning.pipeline.PipelineDataContext;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfBuilder;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderService;
 
@@ -105,18 +106,19 @@ public class WildflyProvisionRuntimeStage extends BaseStage {
     }
 
     @Override
-    public void execute( PipelineInstance pipe, PipelineDataContext pipeData ) {
+    public void execute( PipelineInstance pipe,
+                         PipelineDataContext pipeData ) {
 
         if ( getWarPath() == null && getWarPathHolder() != null ) {
-            setWarPath( ( String ) pipeData.getData( getWarPathHolder() ) );
+            setWarPath( (String) pipeData.getData( getWarPathHolder() ) );
         }
 
         if ( getAppContext() == null && getAppContextHolder() != null ) {
-            setAppContext( ( String ) pipeData.getData( getAppContextHolder() ) );
+            setAppContext( (String) pipeData.getData( getAppContextHolder() ) );
         }
 
         if ( getProviderName() == null && getProviderNameHolder() != null ) {
-            setProviderName( ( String ) pipeData.getData( getProviderNameHolder() ) );
+            setProviderName( (String) pipeData.getData( getProviderNameHolder() ) );
         }
 
         RuntimeConfiguration wildflyRuntimeConfig = WildflyRuntimeConfBuilder.newConfig()
@@ -126,7 +128,7 @@ public class WildflyProvisionRuntimeStage extends BaseStage {
                 .get();
 
         RuntimeRegistry runtimeRegistry = pipe.getService( RuntimeRegistry.class );
-        Wildfly10Provider provider = ( Wildfly10Provider ) runtimeRegistry.getProvider( getProviderName() );
+        Wildfly10Provider provider = (Wildfly10Provider) runtimeRegistry.getProvider( getProviderName() );
         org.uberfire.provisioning.runtime.Runtime newWildflyRuntime;
         ProviderService providerService = new Wildfly10ProviderService( provider );
         try {

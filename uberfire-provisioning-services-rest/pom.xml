@@ -68,9 +68,9 @@
       <groupId>org.uberfire.provisioning</groupId>
       <artifactId>uberfire-provisioning-wildfly-provider</artifactId>
     </dependency>
-   
+
     <!-- Do I really need this?? -->
-    
+
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
@@ -88,5 +88,5 @@
       <version>4.5.2</version>
     </dependency>
   </dependencies>
-  
+
 </project>

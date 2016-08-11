@@ -27,7 +27,8 @@ public class WildflyRuntimeService implements RuntimeService {
     private ProviderService providerService;
     protected org.uberfire.provisioning.runtime.Runtime runtime;
 
-    public WildflyRuntimeService( ProviderService providerService, Runtime runtime ) {
+    public WildflyRuntimeService( ProviderService providerService,
+                                  Runtime runtime ) {
         this.providerService = providerService;
         this.runtime = runtime;
         if ( !( providerService instanceof Wildfly10ProviderService ) ) {

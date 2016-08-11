@@ -17,11 +17,12 @@
 package org.uberfire.provisioning.runtime;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
 /**
- * This interface represent the Runtime Endpoint 
+ * This interface represent the Runtime Endpoint
  */
 @JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
 public interface RuntimeEndpoint {

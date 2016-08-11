@@ -31,7 +31,7 @@ public class Wildfly10Provider extends BaseProvider {
     }
 
     public Wildfly10Provider( ProviderConfiguration config,
-            ProviderType type ) {
+                              ProviderType type ) {
         super( config.getName(), type );
         this.config = config;
     }

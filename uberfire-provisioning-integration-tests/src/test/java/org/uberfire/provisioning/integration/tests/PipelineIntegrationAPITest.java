@@ -23,8 +23,8 @@ import java.util.List;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import org.apache.commons.io.FileUtils;
 
+import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,13 +36,29 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.build.Build;
-import org.uberfire.provisioning.build.maven.MavenBuild;
-import org.uberfire.provisioning.build.maven.MavenProject;
+import org.uberfire.provisioning.build.maven.model.MavenBuild;
+import org.uberfire.provisioning.build.maven.model.MavenProject;
+import org.uberfire.provisioning.build.maven.config.MavenBuildConfig;
+import org.uberfire.provisioning.build.maven.config.MavenBuildExecConfig;
 import org.uberfire.provisioning.build.maven.stages.MavenBuildStage;
+import org.uberfire.provisioning.docker.config.DockerBuildConfig;
+import org.uberfire.provisioning.build.maven.config.MavenProjectConfig;
 import org.uberfire.provisioning.build.maven.stages.MavenProjectConfigStage;
 import org.uberfire.provisioning.exceptions.BuildException;
-
 import org.uberfire.provisioning.exceptions.SourcingException;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProvider;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfBuilder;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfiguration;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderService;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderType;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeService;
+import org.uberfire.provisioning.openshift.runtime.provider.stages.OpenshiftProvisionConfig;
+import org.uberfire.provisioning.openshift.runtime.provider.stages.OpenshiftProvisionExecConfig;
+import org.uberfire.provisioning.openshift.runtime.provider.stages.OpenshiftProvisionRuntimeStage;
+import org.uberfire.provisioning.pipeline.Input;
+import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.pipeline.PipelineFactory;
+import org.uberfire.provisioning.pipeline.execution.PipelineExecutor;
 import org.uberfire.provisioning.pipeline.simple.provider.PipelineInstanceImpl;
 import org.uberfire.provisioning.registry.BuildRegistry;
 import org.uberfire.provisioning.registry.PipelineRegistry;
@@ -52,39 +68,29 @@ import org.uberfire.provisioning.registry.local.InMemoryBuildRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryPipelineRegistry;
 import org.uberfire.provisioning.registry.local.InMemoryRuntimeRegistry;
 import org.uberfire.provisioning.registry.local.InMemorySourceRegistry;
-import org.uberfire.provisioning.runtime.RuntimeEndpoint;
-
-import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderType;
-
-import org.uberfire.provisioning.source.git.GitSource;
-import org.uberfire.provisioning.source.git.stages.GitSourceStage;
-import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeEndpoint;
+import org.uberfire.provisioning.runtime.RuntimeService;
+import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderService;
+import org.uberfire.provisioning.runtime.providers.ProviderType;
+import org.uberfire.provisioning.source.git.model.GitSource;
+import org.uberfire.provisioning.source.git.config.GitConfig;
+import org.uberfire.provisioning.source.git.executor.GitConfigExecutor;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfBuilder;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.stages.WildflyProvisionRuntimeStage;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineInstance;
-import org.uberfire.provisioning.pipeline.PipelineDataContext;
-import org.uberfire.provisioning.runtime.RuntimeService;
-import org.uberfire.provisioning.runtime.providers.ProviderService;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProvider;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfBuilder;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfiguration;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderService;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderType;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeService;
-import org.uberfire.provisioning.openshift.runtime.provider.stages.OpenshiftProvisionRuntimeStage;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.*;
+import static org.uberfire.provisioning.pipeline.StageUtil.*;
 
 /*
  *  mvn -Dtest=PipelineIntegrationAPITest -Dmaven.multiModuleProjectDirectory=$M2_HOME test
  */
-@RunWith( Arquillian.class )
+@RunWith(Arquillian.class)
 public class PipelineIntegrationAPITest {
 
     @Deployment
@@ -171,34 +177,50 @@ public class PipelineIntegrationAPITest {
         assertEquals( 1, allProviders.size() );
         String serviceName = "testservice";
 
+        Pipeline pipe = PipelineFactory.startFrom( config( "Git Source", () -> new GitConfig( tempPath.getAbsolutePath() ) ) )
+                .andThen( config( "Maven Project", MavenProjectConfig::new ) )
+                .andThen( config( "Maven Build Config", MavenBuildConfig::new ) )
+                .andThen( config( "Docker Config", DockerBuildConfig::new ) )
+                .andThen( config( "Maven Build", MavenBuildExecConfig::new ) )
+                .andThen( config( "OpenShift Config", OpenshiftProvisionConfig::new ) )
+                .andThen( config( "OpenShift Provisioning", OpenshiftProvisionExecConfig::new ) )
+                .buildAs( "my pipe" );
+
+        final PipelineExecutor executor = new PipelineExecutor( asList( new GitConfigExecutor( sourceRegistry ) ) );
+
+        executor.execute( new Input() {{
+            put( "repo-name", "livespark-playground" );
+            put( "origin", "https://github.com/pefernan/livespark-playground" );
+        }}, pipe, ( Runtime r ) -> System.out.println( r.getId() ) );
+
         Pipeline np = Pipeline.builder()
                 .newPipeline( "my pipe" )
                 .newStage( GitSourceStage.builder().withName( "Git Clone Stage" )
-                        .withURI( "git://livespark-playground" )
-                        .withOrigin( "https://github.com/pefernan/livespark-playground" )
-                        .withRepository( "livespark-playground" )
-                        .withPath( tempPath )
-                        .outSource( "source" )
-                        .build() )
+                                   .withURI( "git://livespark-playground" )
+                                   .withOrigin( "https://github.com/pefernan/livespark-playground" )
+                                   .withRepository( "livespark-playground" )
+                                   .withPath( tempPath )
+                                   .outSource( "source" )
+                                   .build() )
                 .newStage( MavenProjectConfigStage.builder().withName( "Maven Project Config Stage" )
-                        .withProjectName( "users-new" )
-                        .withExpectedBinary( "users-new-swarm.jar" )
-                        .inSource( "${source}" )
-                        .outProject( "project" )
-                        .outWarPath( "warPath" )
-                        .build() )
+                                   .withProjectName( "users-new" )
+                                   .withExpectedBinary( "users-new-swarm.jar" )
+                                   .inSource( "${source}" )
+                                   .outProject( "project" )
+                                   .outWarPath( "warPath" )
+                                   .build() )
                 .newStage( MavenBuildStage.builder().withName( "Build Stage" )
-                        .inProject( "${project}" )
-                        .build() )
+                                   .inProject( "${project}" )
+                                   .build() )
                 .newStage( OpenshiftProvisionRuntimeStage.builder().withName( "Provision To Openshift Stage" )
-                        .withProviderName( "openshift origin" )
-                        .withServiceName( serviceName )
-                        .withLabel( "uberfire" )
-                        .withNamespace( "default" )
-                        .withInternalPort( "8080" )
-                        .withImage( "salaboy/users-new" )
-                        .outRuntimeId( "runtimeId" )
-                        .build() )
+                                   .withProviderName( "openshift origin" )
+                                   .withServiceName( serviceName )
+                                   .withLabel( "uberfire" )
+                                   .withNamespace( "default" )
+                                   .withInternalPort( "8080" )
+                                   .withImage( "salaboy/users-new" )
+                                   .outRuntimeId( "runtimeId" )
+                                   .build() )
                 .build();
 
         pipelineRegistry.registerPipeline( np );
@@ -220,7 +242,7 @@ public class PipelineIntegrationAPITest {
 
         PipelineDataContext results = newPipelineInstance.execute();
 
-        String runtimeId = ( String ) results.getData( "${runtimeId}" );
+        String runtimeId = (String) results.getData( "${runtimeId}" );
 
         assertEquals( 10, eventHandler.getFiredEvents().size() );
 
@@ -233,7 +255,7 @@ public class PipelineIntegrationAPITest {
 
         RuntimeService runtimeService = new OpenshiftRuntimeService( providerService, runtimeById );
         runtimeService.refresh();
-        
+
         RuntimeEndpoint endpoint = runtimeById.getEndpoint();
         assertNotNull( endpoint );
         assertEquals( serviceName + ".apps.10.2.2.2.xip.io", endpoint.getHost() );
@@ -269,28 +291,28 @@ public class PipelineIntegrationAPITest {
         Pipeline np = Pipeline.builder()
                 .newPipeline( "my pipe" )
                 .newStage( GitSourceStage.builder().withName( "Git Clone Stage" )
-                        .withURI( "git://livespark-playground" )
-                        .withOrigin( "https://github.com/pefernan/livespark-playground" )
-                        .withRepository( "livespark-playground" )
-                        .withPath( tempPath )
-                        .outSource( "source" )
-                        .build() )
+                                   .withURI( "git://livespark-playground" )
+                                   .withOrigin( "https://github.com/pefernan/livespark-playground" )
+                                   .withRepository( "livespark-playground" )
+                                   .withPath( tempPath )
+                                   .outSource( "source" )
+                                   .build() )
                 .newStage( MavenProjectConfigStage.builder().withName( "Maven Project Config Stage" )
-                        .withProjectName( "users-new" )
-                        .withExpectedBinary( "users-new.war" )
-                        .inSource( "${source}" )
-                        .outProject( "project" )
-                        .outWarPath( "warPath" )
-                        .build() )
+                                   .withProjectName( "users-new" )
+                                   .withExpectedBinary( "users-new.war" )
+                                   .inSource( "${source}" )
+                                   .outProject( "project" )
+                                   .outWarPath( "warPath" )
+                                   .build() )
                 .newStage( MavenBuildStage.builder().withName( "Build Stage" )
-                        .inProject( "${project}" )
-                        .build() )
+                                   .inProject( "${project}" )
+                                   .build() )
                 .newStage( WildflyProvisionRuntimeStage.builder().withName( "Provision To Wildfly Stage" )
-                        .withProviderName( "wildfly @ localhost" )
-                        .withAppContext( appContext )
-                        .inWarPath( "${warPath}" )
-                        .outRuntimeId( "runtimeId" )
-                        .build() )
+                                   .withProviderName( "wildfly @ localhost" )
+                                   .withAppContext( appContext )
+                                   .inWarPath( "${warPath}" )
+                                   .outRuntimeId( "runtimeId" )
+                                   .build() )
                 .build();
         pipelineRegistry.registerPipeline( np );
 
@@ -311,7 +333,7 @@ public class PipelineIntegrationAPITest {
 
         PipelineDataContext results = newPipelineInstance.execute();
 
-        String runtimeId = ( String ) results.getData( "${runtimeId}" );
+        String runtimeId = (String) results.getData( "${runtimeId}" );
 
         assertEquals( 10, eventHandler.getFiredEvents().size() );
 

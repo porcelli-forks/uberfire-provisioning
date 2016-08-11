@@ -17,8 +17,9 @@
 package org.uberfire.provisioning.runtime;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
 /**
  * @author salaboy

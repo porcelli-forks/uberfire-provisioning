@@ -47,9 +47,9 @@ public class OpenshiftProviderService implements ProviderService {
     public OpenshiftProviderService( OpenshiftProvider provider ) {
         this.provider = provider;
         if ( provider.getConfig() instanceof OpenshiftProviderConfiguration ) {
-            String masterUrl = ( ( OpenshiftProviderConfiguration ) provider.getConfig() ).getMasterUrl();
-            String username = ( ( OpenshiftProviderConfiguration ) provider.getConfig() ).getUsername();
-            String password = ( ( OpenshiftProviderConfiguration ) provider.getConfig() ).getPassword();
+            String masterUrl = ( (OpenshiftProviderConfiguration) provider.getConfig() ).getMasterUrl();
+            String username = ( (OpenshiftProviderConfiguration) provider.getConfig() ).getUsername();
+            String password = ( (OpenshiftProviderConfiguration) provider.getConfig() ).getPassword();
             if ( masterUrl != null && username != null && password != null ) {
                 ConfigBuilder configBuilder = new ConfigBuilder();
                 configBuilder.withMasterUrl( masterUrl );

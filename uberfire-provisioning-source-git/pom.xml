@@ -34,7 +34,10 @@
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-nio2-api</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>

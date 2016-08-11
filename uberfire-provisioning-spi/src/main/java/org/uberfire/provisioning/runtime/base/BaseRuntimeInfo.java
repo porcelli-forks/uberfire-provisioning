@@ -16,19 +16,21 @@
 
 package org.uberfire.provisioning.runtime.base;
 
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.config.RuntimeConfig;
 import org.uberfire.provisioning.runtime.RuntimeInfo;
 
 public class BaseRuntimeInfo implements RuntimeInfo {
 
     private String id;
     private String name;
-    private RuntimeConfiguration config;
+    private RuntimeConfig config;
 
     public BaseRuntimeInfo() {
     }
 
-    public BaseRuntimeInfo( String id, String name, RuntimeConfiguration config ) {
+    public BaseRuntimeInfo( String id,
+                            String name,
+                            RuntimeConfig config ) {
         this.id = id;
         this.name = name;
         this.config = config;
@@ -45,7 +47,7 @@ public class BaseRuntimeInfo implements RuntimeInfo {
     }
 
     @Override
-    public RuntimeConfiguration getConfig() {
+    public RuntimeConfig getConfig() {
         return config;
     }
 }

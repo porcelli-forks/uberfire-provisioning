@@ -21,6 +21,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.errai.bus.server.annotations.Service;
+import org.uberfire.provisioning.config.ProviderConfig;
+import org.uberfire.provisioning.config.RuntimeConfig;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
@@ -55,7 +57,7 @@ public class RuntimeProvisioningServiceBackendImpl implements RuntimeProvisionin
     }
 
     @Override
-    public void registerProvider( ProviderConfiguration conf ) throws BusinessException {
+    public void registerProvider( ProviderConfig conf ) throws BusinessException {
         runtimeProvisioningService.registerProvider( conf );
     }
 
@@ -65,7 +67,7 @@ public class RuntimeProvisioningServiceBackendImpl implements RuntimeProvisionin
     }
 
     @Override
-    public String newRuntime( final RuntimeConfiguration conf ) throws BusinessException {
+    public String newRuntime( final RuntimeConfig conf ) throws BusinessException {
         return runtimeProvisioningService.newRuntime( conf );
     }
 

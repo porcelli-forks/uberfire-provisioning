@@ -34,7 +34,9 @@ import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyProviderConfiguration;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeConfiguration;
+import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeService;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Provider;
+import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderService;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
 import static java.util.logging.Level.*;
@@ -42,10 +44,8 @@ import static java.util.logging.Logger.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
-import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntimeService;
-import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderService;
 
-@RunWith( Arquillian.class )
+@RunWith(Arquillian.class)
 public class WildflyProviderRuntimeTest {
 
     @Deployment

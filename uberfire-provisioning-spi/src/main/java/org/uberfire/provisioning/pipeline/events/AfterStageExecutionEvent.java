@@ -19,15 +19,13 @@ package org.uberfire.provisioning.pipeline.events;
 import org.uberfire.provisioning.pipeline.Pipeline;
 import org.uberfire.provisioning.pipeline.Stage;
 
-
-
 public class AfterStageExecutionEvent implements PipelineEvent {
 
     private final Stage stage;
     private final Pipeline pipeline;
 
     public AfterStageExecutionEvent( final Pipeline pipeline,
-                                     final Stage stage) {
+                                     final Stage stage ) {
         this.stage = stage;
         this.pipeline = pipeline;
     }

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineTemplate;
 import org.uberfire.provisioning.registry.PipelineRegistry;
 
 /**
@@ -35,11 +34,8 @@ public class InMemoryPipelineRegistry implements PipelineRegistry {
 
     private final Map<String, Pipeline> pipelineByName;
 
-    private final Map<String, PipelineTemplate> templateByName;
-
     public InMemoryPipelineRegistry() {
         pipelineByName = new HashMap<>();
-        templateByName = new HashMap<>();
     }
 
     @Override
@@ -55,21 +51,6 @@ public class InMemoryPipelineRegistry implements PipelineRegistry {
     @Override
     public List<Pipeline> getAllPipelines() {
         return new ArrayList<>( pipelineByName.values() );
-    }
-
-    @Override
-    public void registerTemplate( PipelineTemplate template ) {
-        templateByName.put( template.getName(), template );
-    }
-
-    @Override
-    public List<PipelineTemplate> getAllTemplates() {
-        return new ArrayList<>( templateByName.values() );
-    }
-
-    @Override
-    public PipelineTemplate getTemplateByName( String name ) {
-        return templateByName.get( name );
     }
 
 }

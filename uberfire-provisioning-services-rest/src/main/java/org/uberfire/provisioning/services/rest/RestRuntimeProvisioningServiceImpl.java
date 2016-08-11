@@ -18,6 +18,7 @@ package org.uberfire.provisioning.services.rest;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,14 +30,14 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import org.uberfire.provisioning.exceptions.ProvisioningException;
 
+import org.uberfire.provisioning.exceptions.ProvisioningException;
+import org.uberfire.provisioning.config.ProviderConfig;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.RuntimeService;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.api.RuntimeProvisioningService;
@@ -48,6 +49,9 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
 
     @Inject
     private BeanManager beanManager;
+
+    @Inject
+    private ProviderFactory providerFactory;
 
     @Inject
     private RuntimeRegistry registry;
@@ -62,7 +66,7 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
             for ( final Bean b : beans ) {
                 try {
                     // I don't want to register the CDI proxy, I need a fresh instance :(
-                    registry.registerProviderType( ( ProviderType ) b.getBeanClass().newInstance() );
+                    registry.registerProviderType( (ProviderType) b.getBeanClass().newInstance() );
                 } catch ( InstantiationException | IllegalAccessException ex ) {
                     Logger.getLogger( RestRuntimeProvisioningServiceImpl.class.getName() ).log( Level.SEVERE, null, ex );
                 }
@@ -82,9 +86,11 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
     }
 
     @Override
-    public void registerProvider( @NotNull ProviderConfiguration conf ) throws BusinessException {
-        Provider newProvider = ProviderFactory.newProvider( conf );
-        registry.registerProvider( newProvider );
+    public void registerProvider( @NotNull ProviderConfig conf ) throws BusinessException {
+        final Optional<Provider> newProvider = providerFactory.newProvider( conf );
+        if ( newProvider.isPresent() ) {
+            registry.registerProvider( newProvider.get() );
+        }
     }
 
     @Override
@@ -154,7 +160,7 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
         Class providerService = provider.getProviderType().getProviderService();
         try {
             Constructor c = providerService.getConstructor( provider.getClass() );
-            ProviderService service = ( ProviderService ) c.newInstance( provider );
+            ProviderService service = (ProviderService) c.newInstance( provider );
             return service;
         } catch ( Exception ex ) {
             ex.printStackTrace();
@@ -166,7 +172,7 @@ public class RestRuntimeProvisioningServiceImpl implements RuntimeProvisioningSe
         Class runtimeService = runtime.getProvider().getProviderType().getRuntimeService();
         try {
             Constructor c = runtimeService.getConstructor( runtime.getClass() );
-            RuntimeService service = ( RuntimeService ) c.newInstance( runtime );
+            RuntimeService service = (RuntimeService) c.newInstance( runtime );
             return service;
         } catch ( Exception ex ) {
             ex.printStackTrace();

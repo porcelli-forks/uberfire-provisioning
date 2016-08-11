@@ -27,7 +27,7 @@ public class BaseRuntimeState implements RuntimeState {
     }
 
     public BaseRuntimeState( String status,
-            String startedAt ) {
+                             String startedAt ) {
         this.status = status;
         this.startedAt = startedAt;
     }

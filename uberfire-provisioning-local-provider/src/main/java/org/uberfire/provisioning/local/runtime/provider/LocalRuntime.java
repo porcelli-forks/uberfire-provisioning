@@ -22,7 +22,8 @@ import org.uberfire.provisioning.runtime.base.BaseRuntime;
 public class LocalRuntime extends BaseRuntime {
 
     public LocalRuntime( String id,
-            RuntimeConfiguration config, LocalProvider provider ) {
+                         RuntimeConfiguration config,
+                         LocalProvider provider ) {
         super( id, config, provider );
 
     }

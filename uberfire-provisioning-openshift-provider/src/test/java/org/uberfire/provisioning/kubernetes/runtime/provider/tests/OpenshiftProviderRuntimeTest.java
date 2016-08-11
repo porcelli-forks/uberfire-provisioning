@@ -32,12 +32,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProvider;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfBuilder;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfiguration;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderService;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderType;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntime;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeConfiguration;
+import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeService;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
+import org.uberfire.provisioning.runtime.RuntimeInfo;
+import org.uberfire.provisioning.runtime.RuntimeService;
+import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.base.BaseRuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
@@ -45,23 +51,17 @@ import static java.lang.System.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderConfBuilder;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderService;
-import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeService;
-import org.uberfire.provisioning.runtime.RuntimeInfo;
-import org.uberfire.provisioning.runtime.RuntimeService;
-import org.uberfire.provisioning.runtime.RuntimeState;
 
-@RunWith( Arquillian.class )
+@RunWith(Arquillian.class)
 public class OpenshiftProviderRuntimeTest {
 
     @Deployment
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = create( JavaArchive.class )
-                .addClass(OpenshiftProviderType.class )
-                .addClass(OpenshiftProvider.class )
-                .addClass(OpenshiftRuntime.class )
+                .addClass( OpenshiftProviderType.class )
+                .addClass( OpenshiftProvider.class )
+                .addClass( OpenshiftRuntime.class )
                 .addAsManifestResource( INSTANCE, "beans.xml" );
         out.println( jar.toString( true ) );
         return jar;
@@ -169,14 +169,14 @@ public class OpenshiftProviderRuntimeTest {
 
         RuntimeState state = newRuntime.getState();
         RuntimeInfo info = newRuntime.getInfo();
-        
+
         runtimeService.stop();
-        
+
         newRuntime = runtimeService.getRuntime();
-        
+
         state = newRuntime.getState();
         info = newRuntime.getInfo();
-        
+
         openshiftProviderService.destroy( newRuntime.getId() );
 
     }

@@ -16,26 +16,32 @@
 
 package org.uberfire.provisioning.services.rest.factories;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 
+import org.uberfire.provisioning.config.ProviderConfig;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
-
-import static java.lang.Class.*;
-import static java.util.logging.Level.*;
-import static java.util.logging.Logger.*;
+import org.uberfire.provisioning.runtime.providers.ProviderBuilder;
 
 public class ProviderFactory {
 
-    public static Provider newProvider( ProviderConfiguration config ) {
-        String provider = config.getProvider();
-        try {
-            Constructor<?> constructor = forName( provider ).getConstructor( ProviderConfiguration.class );
-            return (Provider) constructor.newInstance( config );
-        } catch ( InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex ) {
-            getLogger( ProviderFactory.class.getName() ).log( SEVERE, null, ex );
+    private final Collection<ProviderBuilder> builders = new ArrayList<>();
+
+    @Inject
+    public ProviderFactory( final Instance<ProviderBuilder> builders ) {
+        builders.forEach( this.builders::add );
+    }
+
+    public Optional<Provider> newProvider( ProviderConfig config ) {
+        final Optional<ProviderBuilder> providerBuilder = builders.stream()
+                .filter( p -> p.supports( config ) )
+                .findFirst();
+        if ( providerBuilder.isPresent() ) {
+            return (Optional<Provider>) providerBuilder.get().apply( config );
         }
-        return null;
+        return Optional.empty();
     }
 }

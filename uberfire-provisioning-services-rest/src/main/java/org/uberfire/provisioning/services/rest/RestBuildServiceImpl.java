@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import org.uberfire.provisioning.build.Binary;
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
-import org.uberfire.provisioning.build.maven.MavenBinary;
+import org.uberfire.provisioning.build.maven.model.MavenBinary;
 import org.uberfire.provisioning.docker.runtime.provider.DockerBinary;
 import org.uberfire.provisioning.exceptions.BuildException;
 import org.uberfire.provisioning.registry.BuildRegistry;
@@ -74,7 +74,10 @@ public class RestBuildServiceImpl implements BuildService {
     }
 
     @Override
-    public String createDockerImage( final Project project, boolean push, String username, String password ) throws BusinessException {
+    public String createDockerImage( final Project project,
+                                     boolean push,
+                                     String username,
+                                     String password ) throws BusinessException {
         try {
             int result = build.createDockerImage( project, push, username, password );
             if ( result != 0 ) {

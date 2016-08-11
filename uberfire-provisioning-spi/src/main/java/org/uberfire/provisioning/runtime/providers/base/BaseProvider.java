@@ -15,27 +15,27 @@
  */
 package org.uberfire.provisioning.runtime.providers.base;
 
+import org.uberfire.provisioning.config.ProviderConfig;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
 public abstract class BaseProvider implements Provider {
 
     protected String name;
-    protected ProviderConfiguration config;
+    protected ProviderConfig config;
     protected ProviderType providerType;
 
     public BaseProvider() {
     }
 
-    public BaseProvider( String name,
-            ProviderType providerType ) {
+    public BaseProvider( final String name,
+                         final ProviderType providerType ) {
         this.name = name;
         this.providerType = providerType;
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return name;
     }
 
@@ -44,23 +44,13 @@ public abstract class BaseProvider implements Provider {
     }
 
     @Override
-    public ProviderConfiguration getConfig() {
+    public ProviderConfig getConfig() {
         return config;
     }
 
     @Override
     public ProviderType getProviderType() {
         return providerType;
-    }
-
-    @Override
-    public void setConfig( ProviderConfiguration config ) {
-        this.config = config;
-    }
-
-    @Override
-    public void setProviderType( ProviderType providerType ) {
-        this.providerType = providerType;
     }
 
 }

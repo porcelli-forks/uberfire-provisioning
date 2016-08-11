@@ -22,7 +22,7 @@ import org.uberfire.provisioning.build.Binary;
 
 public interface BuildRegistry {
 
-    void registerBinary( Binary binary );
+    void registerBinary( final Binary binary );
 
     List<Binary> getAllBinaries();
 

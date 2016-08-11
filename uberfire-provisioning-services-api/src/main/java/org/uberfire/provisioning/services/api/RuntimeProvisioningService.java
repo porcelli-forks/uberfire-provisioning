@@ -27,10 +27,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.uberfire.provisioning.config.ProviderConfig;
+import org.uberfire.provisioning.config.RuntimeConfig;
 import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
 
@@ -53,7 +53,7 @@ public interface RuntimeProvisioningService {
     @POST
     @Consumes(value = APPLICATION_JSON)
     @Path("providers")
-    void registerProvider( @NotNull ProviderConfiguration conf ) throws BusinessException;
+    void registerProvider( @NotNull ProviderConfig conf ) throws BusinessException;
 
     @DELETE
     @Path("providers")
@@ -62,17 +62,16 @@ public interface RuntimeProvisioningService {
     @POST
     @Path("runtimes/")
     @Consumes(value = APPLICATION_JSON)
-    String newRuntime( @NotNull RuntimeConfiguration conf ) throws BusinessException;
-    
+    String newRuntime( @NotNull RuntimeConfig conf ) throws BusinessException;
+
     @DELETE
     @Path("runtimes/{id}")
-    void destroyRuntime(@PathParam(value = "id") String runtimeId ) throws BusinessException;
+    void destroyRuntime( @PathParam(value = "id") String runtimeId ) throws BusinessException;
 
     @GET
     @Produces(value = APPLICATION_JSON)
     @Path("runtimes/")
     List<Runtime> getAllRuntimes() throws BusinessException;
-
 
     @POST
     @Path("runtimes/{id}/start")

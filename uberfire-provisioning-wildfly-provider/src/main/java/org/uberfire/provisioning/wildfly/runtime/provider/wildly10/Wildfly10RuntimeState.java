@@ -23,7 +23,8 @@ public class Wildfly10RuntimeState extends BaseRuntimeState {
     public Wildfly10RuntimeState() {
     }
 
-    public Wildfly10RuntimeState( String state, String startedAt ) {
+    public Wildfly10RuntimeState( String state,
+                                  String startedAt ) {
         super( state, startedAt );
     }
 

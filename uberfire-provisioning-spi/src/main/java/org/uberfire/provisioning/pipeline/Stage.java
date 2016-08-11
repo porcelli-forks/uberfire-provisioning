@@ -16,25 +16,19 @@
 
 package org.uberfire.provisioning.pipeline;
 
+import java.util.function.Consumer;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
-import java.util.Set;
 
-@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
-public interface Stage {
+@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+public interface Stage<INPUT, OUTPUT> {
+
+    void execute( final INPUT input,
+                  final Consumer<OUTPUT> callback );
 
     String getName();
-
-    void setName( String name );
-
-    void execute( PipelineInstance pipe, PipelineDataContext pipeData );
-
-    Set<Class> getRequiredServices();
-
-    void setRequiredServices( Set<Class> requiredServices );
-    
-    void addRequiredService( Class type );
 
 }

@@ -16,27 +16,28 @@
 
 package org.uberfire.provisioning.runtime.base;
 
+import org.uberfire.provisioning.config.RuntimeConfig;
 import org.uberfire.provisioning.runtime.Runtime;
-import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.RuntimeEndpoint;
-import org.uberfire.provisioning.runtime.RuntimeState;
 import org.uberfire.provisioning.runtime.RuntimeInfo;
-import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.RuntimeState;
+import org.uberfire.provisioning.runtime.providers.ProviderId;
 
 public abstract class BaseRuntime implements Runtime {
 
     private String id;
-    protected RuntimeConfiguration config;
+    protected RuntimeConfig config;
     private RuntimeInfo info;
     private RuntimeState state;
     private RuntimeEndpoint endpoint;
-    private Provider provider;
+    private ProviderId providerId;
 
-    public BaseRuntime( String id,
-            RuntimeConfiguration config, Provider provider ) {
+    public BaseRuntime( final String id,
+                        final RuntimeConfig config,
+                        final ProviderId providerId ) {
         this.id = id;
         this.config = config;
-        this.provider = provider;
+        this.providerId = providerId;
     }
 
     @Override
@@ -50,12 +51,12 @@ public abstract class BaseRuntime implements Runtime {
     }
 
     @Override
-    public void setConfig( RuntimeConfiguration config ) {
+    public void setConfig( RuntimeConfig config ) {
         this.config = config;
     }
 
     @Override
-    public RuntimeConfiguration getConfig() {
+    public RuntimeConfig getConfig() {
         return config;
     }
 
@@ -90,13 +91,8 @@ public abstract class BaseRuntime implements Runtime {
     }
 
     @Override
-    public Provider getProvider() {
-        return provider;
-    }
-
-    @Override
-    public void setProvider( Provider provider ) {
-        this.provider = provider;
+    public ProviderId getProviderId() {
+        return providerId;
     }
 
 }

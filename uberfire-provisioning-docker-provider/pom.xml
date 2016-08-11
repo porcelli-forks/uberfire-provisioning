@@ -19,6 +19,24 @@
       <artifactId>uberfire-provisioning-spi</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.uberfire.provisioning</groupId>
+      <artifactId>uberfire-provisioning-services-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire.provisioning</groupId>
+      <artifactId>uberfire-provisioning-build-maven</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire.provisioning</groupId>
+      <artifactId>uberfire-provisioning-source-git</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire.provisioning</groupId>
+      <artifactId>uberfire-provisioning-registry-local</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
     </dependency>

@@ -19,15 +19,8 @@ package org.uberfire.provisioning.registry;
 import java.util.List;
 
 import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineTemplate;
 
 public interface PipelineRegistry {
-
-    void registerTemplate( PipelineTemplate template );
-
-    List<PipelineTemplate> getAllTemplates();
-
-    PipelineTemplate getTemplateByName( String name );
 
     void registerPipeline( Pipeline pipeline );
 

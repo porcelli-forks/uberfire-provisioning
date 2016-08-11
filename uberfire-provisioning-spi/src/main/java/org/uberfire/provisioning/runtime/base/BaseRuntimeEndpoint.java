@@ -27,7 +27,9 @@ public class BaseRuntimeEndpoint implements RuntimeEndpoint {
     public BaseRuntimeEndpoint() {
     }
 
-    public BaseRuntimeEndpoint( String host, int port, String context ) {
+    public BaseRuntimeEndpoint( String host,
+                                int port,
+                                String context ) {
         this.host = host;
         this.port = port;
         this.context = context;

@@ -17,8 +17,10 @@
 package org.uberfire.provisioning.runtime;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+import org.uberfire.provisioning.config.RuntimeConfig;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
 
 /**
  * @author salaboy This class represent the Container instance information,
@@ -32,5 +34,5 @@ public interface RuntimeInfo {
 
     String getName();
 
-    RuntimeConfiguration getConfig();
+    RuntimeConfig getConfig();
 }

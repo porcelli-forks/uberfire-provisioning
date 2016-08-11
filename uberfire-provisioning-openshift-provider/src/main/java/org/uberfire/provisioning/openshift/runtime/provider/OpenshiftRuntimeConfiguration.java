@@ -35,7 +35,7 @@ public class OpenshiftRuntimeConfiguration extends BaseRuntimeConfiguration {
     public void setInternalPort( String internalPort ) {
         getProperties().put( "internalPort", internalPort );
     }
-    
+
     public void setServiceName( String serviceName ) {
         getProperties().put( "serviceName", serviceName );
     }

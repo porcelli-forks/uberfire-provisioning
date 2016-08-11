@@ -19,12 +19,14 @@ package org.uberfire.provisioning.local.runtime.provider;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import static java.lang.System.out;
-import static java.util.logging.Level.SEVERE;
-import static java.util.logging.Logger.getLogger;
+
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeService;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
+
+import static java.lang.System.*;
+import static java.util.logging.Level.*;
+import static java.util.logging.Logger.*;
 
 public class LocalRuntimeService implements RuntimeService {
 
@@ -32,8 +34,9 @@ public class LocalRuntimeService implements RuntimeService {
     private org.uberfire.provisioning.runtime.Runtime runtime;
 
     private Process p;
-    
-    public LocalRuntimeService( ProviderService providerService, Runtime runtime ) {
+
+    public LocalRuntimeService( ProviderService providerService,
+                                Runtime runtime ) {
         this.providerService = providerService;
         this.runtime = runtime;
         if ( !( providerService instanceof LocalProviderService ) ) {

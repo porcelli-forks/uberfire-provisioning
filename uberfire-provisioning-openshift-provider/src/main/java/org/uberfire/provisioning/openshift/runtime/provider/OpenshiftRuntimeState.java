@@ -19,15 +19,13 @@ package org.uberfire.provisioning.openshift.runtime.provider;
 import org.uberfire.provisioning.runtime.base.BaseRuntimeState;
 
 public class OpenshiftRuntimeState extends BaseRuntimeState {
-    
-    
+
     public OpenshiftRuntimeState() {
     }
 
-    public OpenshiftRuntimeState( String state, String startedAt ) {
+    public OpenshiftRuntimeState( String state,
+                                  String startedAt ) {
         super( state, startedAt );
     }
-    
-    
 
 }

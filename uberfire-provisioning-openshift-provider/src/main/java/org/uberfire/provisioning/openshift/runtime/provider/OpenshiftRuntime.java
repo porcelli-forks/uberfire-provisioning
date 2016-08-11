@@ -22,7 +22,8 @@ import org.uberfire.provisioning.runtime.base.BaseRuntime;
 public class OpenshiftRuntime extends BaseRuntime {
 
     public OpenshiftRuntime( String id,
-            RuntimeConfiguration config, OpenshiftProvider provider ) {
+                             RuntimeConfiguration config,
+                             OpenshiftProvider provider ) {
         super( id, config, provider );
 
     }

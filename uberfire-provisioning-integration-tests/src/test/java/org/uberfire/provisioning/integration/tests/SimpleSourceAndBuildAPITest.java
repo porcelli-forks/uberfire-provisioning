@@ -32,9 +32,9 @@ import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Binary;
 import org.uberfire.provisioning.build.Build;
 import org.uberfire.provisioning.build.Project;
-import org.uberfire.provisioning.build.maven.MavenBinary;
-import org.uberfire.provisioning.build.maven.MavenBuild;
-import org.uberfire.provisioning.build.maven.MavenProject;
+import org.uberfire.provisioning.build.maven.model.MavenBinary;
+import org.uberfire.provisioning.build.maven.model.MavenBuild;
+import org.uberfire.provisioning.build.maven.model.MavenProject;
 import org.uberfire.provisioning.exceptions.BuildException;
 import org.uberfire.provisioning.exceptions.SourcingException;
 import org.uberfire.provisioning.registry.BuildRegistry;
@@ -45,7 +45,7 @@ import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
 import org.uberfire.provisioning.source.git.GitHub;
 import org.uberfire.provisioning.source.git.GitRepository;
-import org.uberfire.provisioning.source.git.GitSource;
+import org.uberfire.provisioning.source.git.model.GitSource;
 
 @RunWith(Arquillian.class)
 public class SimpleSourceAndBuildAPITest {
@@ -71,7 +71,6 @@ public class SimpleSourceAndBuildAPITest {
 
     @Inject
     private Build build;
-
 
     @Test
     @Ignore

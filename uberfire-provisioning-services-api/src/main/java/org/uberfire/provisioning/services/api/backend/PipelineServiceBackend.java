@@ -19,8 +19,8 @@ package org.uberfire.provisioning.services.api.backend;
 import java.util.List;
 
 import org.jboss.errai.bus.server.annotations.Remote;
-import org.uberfire.provisioning.services.exceptions.BusinessException;
 import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.services.exceptions.BusinessException;
 
 @Remote
 public interface PipelineServiceBackend {

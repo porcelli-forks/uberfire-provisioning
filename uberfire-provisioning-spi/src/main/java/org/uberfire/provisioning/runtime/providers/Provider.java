@@ -16,6 +16,7 @@
 package org.uberfire.provisioning.runtime.providers;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.uberfire.provisioning.config.ProviderConfig;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
@@ -26,19 +27,9 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
  * runtimes. Such as: Docker, Kubernetes, Application Servers (Wildfly, Tomcat,
  * etc)
  */
-@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
-public interface Provider {
+@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+public interface Provider extends ProviderId {
 
-    String getName();
-
-    ProviderConfiguration getConfig();
-
-    ProviderType getProviderType();
-
-    void setConfig( ProviderConfiguration config );
-
-    void setProviderType( ProviderType providerType );
-
-    
+    ProviderConfig getConfig();
 
 }

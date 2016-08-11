@@ -16,12 +16,13 @@
 
 package org.uberfire.provisioning.wildfly.runtime.provider.wildly10;
 
-import static java.util.UUID.randomUUID;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderService;
 import org.uberfire.provisioning.wildfly.runtime.provider.base.WildflyRuntime;
 import org.uberfire.provisioning.wildfly.runtime.provider.extras.Wildfly10RemoteClient;
+
+import static java.util.UUID.*;
 
 public class Wildfly10ProviderService implements ProviderService {
 

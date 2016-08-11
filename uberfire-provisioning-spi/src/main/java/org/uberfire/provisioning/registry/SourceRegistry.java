@@ -21,6 +21,7 @@ import java.util.List;
 import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.source.Repository;
+import org.uberfire.provisioning.source.Source;
 
 public interface SourceRegistry {
 
@@ -44,4 +45,9 @@ public interface SourceRegistry {
 
     Repository getRepositoryById( final String repositoryId );
 
+    void registerSource( final Repository repo,
+                         final Source source );
+
+    void registerProject( final Source source,
+                          final Project projectConfig );
 }

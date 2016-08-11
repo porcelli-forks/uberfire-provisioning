@@ -17,42 +17,46 @@
 package org.uberfire.provisioning.registry;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeId;
 import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderId;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
 public interface RuntimeRegistry {
 
-    void registerProviderType( ProviderType pt );
+    void registerProviderType( final ProviderType pt );
 
     List<ProviderType> getAllProviderTypes();
 
-    ProviderType getProviderTypeByName( String provider );
+    ProviderType getProviderTypeByName( final String provider );
 
-    void unregisterProviderType( ProviderType providerType );
+    void unregisterProviderType( final ProviderType providerType );
 
-    void registerProvider( Provider provider );
+    void registerProvider( final Provider provider );
 
-    Provider getProvider( String providerName );
+    Provider getProvider( final String providerName );
 
     List<Provider> getAllProviders();
 
-    List<Provider> getProvidersByType( ProviderType type );
+    List<Provider> getProvidersByType( final ProviderType type );
 
-    void unregisterProvider( Provider provider );
+    void unregisterProvider( final Provider provider );
 
-    void unregisterProvider( String providerName );
+    void unregisterProvider( final String providerName );
 
-    void registerRuntime( Runtime runtime );
+    void registerRuntime( final Runtime runtime );
 
     List<Runtime> getAllRuntimes();
 
-    List<Runtime> getRuntimesByProvider( ProviderType provider );
+    List<Runtime> getRuntimesByProvider( final ProviderType provider );
 
-    Runtime getRuntimeById( String id );
+    Runtime getRuntimeById( final String id );
 
-    void unregisterRuntime( Runtime runtime );
+    void unregisterRuntime( final RuntimeId runtime );
 
-
+    <T extends Provider> Optional<T> getProvider( final ProviderId providerId,
+                                                  final Class<T> clazz );
 }

@@ -183,7 +183,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration\":{\n        \"providerName\":\"docker local\",\n        \"image\":\"salaboy/users-new\"\n        \n    }\n}"
+					"raw": "{\n    \"org.uberfire.provisioning.docker.config.DockerRuntimeConfiguration\":{\n        \"providerName\":\"docker local\",\n        \"image\":\"salaboy/users-new\"\n        \n    }\n}"
 				},
 				"description": ""
 			},
@@ -473,7 +473,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\":{\n        \"name\":\"users-new\",\n        \"rootPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n        \"path\": \"users-new\",\n        \"expectedBinary\": \"users-new.war\"\n    }\n}"
+					"raw": "{\n    \"org.uberfire.provisioning.build.maven.model.MavenProject\":{\n        \"name\":\"users-new\",\n        \"rootPath\":\"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n        \"path\": \"users-new\",\n        \"expectedBinary\": \"users-new.war\"\n    }\n}"
 				},
 				"description": ""
 			},
@@ -513,7 +513,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"cf02e842-bed\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source3675147079410032296\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new.war\"\n    }\n  }"
+					"raw": "{\n    \"org.uberfire.provisioning.build.maven.model.MavenProject\": {\n      \"id\": \"cf02e842-bed\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source3675147079410032296\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new.war\"\n    }\n  }"
 				},
 				"description": ""
 			},
@@ -533,7 +533,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\n    \"org.uberfire.provisioning.build.maven.MavenProject\": {\n      \"id\": \"91aec094-c5e\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new\"\n    }\n  }"
+					"raw": "  {\n    \"org.uberfire.provisioning.build.maven.model.MavenProject\": {\n      \"id\": \"91aec094-c5e\",\n      \"name\": \"users-new\",\n      \"type\": \"Maven\",\n      \"rootPath\": \"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2299791269931823364\",\n      \"path\": \"users-new\",\n      \"expectedBinary\": \"users-new\"\n    }\n  }"
 				},
 				"description": ""
 			},

@@ -63,5 +63,8 @@ public interface Build {
     * @return the output of the execution, if 0 the docker image was created
     * @see Project
     */
-    int createDockerImage( Project project, boolean push, String username, String password ) throws BuildException;
+    int createDockerImage( Project project,
+                           boolean push,
+                           String username,
+                           String password ) throws BuildException;
 }

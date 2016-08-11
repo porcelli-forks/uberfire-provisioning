@@ -23,47 +23,47 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.uberfire.provisioning.config.ProviderConfig;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
 import org.uberfire.provisioning.runtime.providers.Provider;
-import org.uberfire.provisioning.runtime.providers.ProviderConfiguration;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 import org.uberfire.provisioning.services.api.RuntimeProvisioningService;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
 
 @ApplicationScoped
 public class RestClientRuntimeProvisioningService implements RuntimeProvisioningService {
-    
+
     private RuntimeProvisioningService remoteService;
-    
+
     @PostConstruct
     public void init() {
         final Client client = ClientBuilder.newBuilder().build();
         final WebTarget target = client.target( "http://localhost:8082/api/" );
-        final ResteasyWebTarget rtarget = ( ResteasyWebTarget ) target;
+        final ResteasyWebTarget rtarget = (ResteasyWebTarget) target;
         remoteService = rtarget.proxy( RuntimeProvisioningService.class );
     }
-    
+
     @Override
     public List<ProviderType> getAllProviderTypes() throws BusinessException {
         return remoteService.getAllProviderTypes();
     }
-    
+
     @Override
     public List<Provider> getAllProviders() throws BusinessException {
         return remoteService.getAllProviders();
     }
-    
+
     @Override
-    public void registerProvider( ProviderConfiguration conf ) throws BusinessException {
+    public void registerProvider( ProviderConfig conf ) throws BusinessException {
         remoteService.registerProvider( conf );
     }
-    
+
     @Override
     public void unregisterProvider( String name ) throws BusinessException {
         remoteService.unregisterProvider( name );
     }
-    
+
     @Override
     public String newRuntime( RuntimeConfiguration conf ) throws BusinessException {
         String newRuntime = null;
@@ -74,30 +74,30 @@ public class RestClientRuntimeProvisioningService implements RuntimeProvisioning
         }
         return newRuntime;
     }
-    
+
     @Override
     public List<Runtime> getAllRuntimes() throws BusinessException {
         return remoteService.getAllRuntimes();
     }
-    
+
     @Override
     public void destroyRuntime( String runtimeId ) throws BusinessException {
         remoteService.destroyRuntime( runtimeId );
     }
-    
+
     @Override
     public void startRuntime( String runtimeId ) throws BusinessException {
         remoteService.startRuntime( runtimeId );
     }
-    
+
     @Override
     public void stopRuntime( String runtimeId ) throws BusinessException {
         remoteService.stopRuntime( runtimeId );
     }
-    
+
     @Override
     public void restartRuntime( String runtimeId ) throws BusinessException {
         remoteService.restartRuntime( runtimeId );
     }
-    
+
 }

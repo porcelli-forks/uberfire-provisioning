@@ -23,16 +23,13 @@ import org.uberfire.provisioning.runtime.providers.base.BaseProvider;
 
 public class OpenshiftProvider extends BaseProvider {
 
- 
-
     public OpenshiftProvider() {
     }
 
     public OpenshiftProvider( ProviderConfiguration config,
-            ProviderType type ) throws KubernetesClientException {
+                              ProviderType type ) throws KubernetesClientException {
         super( config.getName(), type );
         this.config = config;
-        
 
     }
 
@@ -40,7 +37,5 @@ public class OpenshiftProvider extends BaseProvider {
         this( config, new OpenshiftProviderType() );
 
     }
-
-    
 
 }

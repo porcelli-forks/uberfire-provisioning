@@ -46,6 +46,9 @@ public interface BuildService {
     @POST
     @Consumes(value = APPLICATION_JSON)
     @Path("/docker")
-    String createDockerImage( Project project, boolean push, String username, String password ) throws BusinessException;
+    String createDockerImage( Project project,
+                              boolean push,
+                              String username,
+                              String password ) throws BusinessException;
 
 }

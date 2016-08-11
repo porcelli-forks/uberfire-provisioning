@@ -48,7 +48,7 @@ public class WildflyProviderConfBuilder {
         config.setPort( port );
         return instance;
     }
-    
+
     public WildflyProviderConfBuilder setManagementPort( String port ) {
         config.setManagementPort( port );
         return instance;

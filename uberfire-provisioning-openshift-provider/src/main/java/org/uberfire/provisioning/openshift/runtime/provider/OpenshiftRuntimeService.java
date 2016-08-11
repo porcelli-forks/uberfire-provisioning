@@ -16,6 +16,9 @@
 
 package org.uberfire.provisioning.openshift.runtime.provider;
 
+import java.util.List;
+import java.util.Map;
+
 import io.fabric8.kubernetes.api.model.ContainerState;
 import io.fabric8.kubernetes.api.model.ContainerStateRunning;
 import io.fabric8.kubernetes.api.model.ContainerStateTerminated;
@@ -39,8 +42,6 @@ import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.RouteSpec;
 import io.fabric8.openshift.client.OpenShiftClient;
-import java.util.List;
-import java.util.Map;
 import org.uberfire.provisioning.runtime.Runtime;
 import org.uberfire.provisioning.runtime.RuntimeService;
 import org.uberfire.provisioning.runtime.base.BaseRuntimeEndpoint;
@@ -51,7 +52,8 @@ public class OpenshiftRuntimeService implements RuntimeService {
     protected ProviderService providerService;
     protected org.uberfire.provisioning.runtime.Runtime runtime;
 
-    public OpenshiftRuntimeService( ProviderService providerService, Runtime runtime ) {
+    public OpenshiftRuntimeService( ProviderService providerService,
+                                    Runtime runtime ) {
         this.providerService = providerService;
         this.runtime = runtime;
         if ( !( providerService instanceof OpenshiftProviderService ) ) {
@@ -68,7 +70,7 @@ public class OpenshiftRuntimeService implements RuntimeService {
     public void stop() {
         String replicationControllerName = runtime.getConfig().getProperties().get( "replicationController" );
         ClientRollableScallableResource<ReplicationController, DoneableReplicationController> resource
-                = ( ( OpenshiftProviderService ) providerService ).getKubernetesClient().replicationControllers().inNamespace( "default" )
+                = ( (OpenshiftProviderService) providerService ).getKubernetesClient().replicationControllers().inNamespace( "default" )
                 .withName( replicationControllerName );
         resource.scale( 0 );
     }
@@ -83,9 +85,9 @@ public class OpenshiftRuntimeService implements RuntimeService {
         String serviceName = runtime.getConfig().getProperties().get( "serviceName" );
         String namespace = runtime.getConfig().getProperties().get( "namespace" );
 
-        ClientResource<Service, DoneableService> serviceResource = 
-                ( ( OpenshiftProviderService ) providerService ).getKubernetesClient().services()
-                                    .inNamespace( namespace ).withName( serviceName );
+        ClientResource<Service, DoneableService> serviceResource =
+                ( (OpenshiftProviderService) providerService ).getKubernetesClient().services()
+                        .inNamespace( namespace ).withName( serviceName );
 
         try {
             if ( serviceResource != null ) {
@@ -115,11 +117,11 @@ public class OpenshiftRuntimeService implements RuntimeService {
         } catch ( Exception ex ) {
         }
 
-        runtime.setInfo( new OpenshiftRuntimeInfo( runtime.getId(), runtime.getId(), runtime.getConfig() ));
+        runtime.setInfo( new OpenshiftRuntimeInfo( runtime.getId(), runtime.getId(), runtime.getConfig() ) );
 
         String selector = runtime.getConfig().getProperties().get( "label" );
-        FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource = 
-                    ( ( OpenshiftProviderService ) providerService ).getKubernetesClient().pods().withLabel( "app", selector );
+        FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podResource =
+                ( (OpenshiftProviderService) providerService ).getKubernetesClient().pods().withLabel( "app", selector );
         PodList list = podResource.list();
         boolean empty = list.getItems().isEmpty();
         if ( empty ) {
@@ -165,22 +167,22 @@ public class OpenshiftRuntimeService implements RuntimeService {
             runtime.setState( new OpenshiftRuntimeState( state, startTime ) );
 
         }
-        
+
         serviceName = runtime.getConfig().getProperties().get( "serviceName" );
-        OpenShiftClient osClient = ( ( OpenshiftProviderService ) providerService ).getKubernetesClient().adapt( OpenShiftClient.class );
-        FilterWatchListDeletable<Route, RouteList, Boolean, Watch, Watcher<Route>> routeResources = 
-                                                    osClient.routes().withLabel("name", serviceName );
+        OpenShiftClient osClient = ( (OpenshiftProviderService) providerService ).getKubernetesClient().adapt( OpenShiftClient.class );
+        FilterWatchListDeletable<Route, RouteList, Boolean, Watch, Watcher<Route>> routeResources =
+                osClient.routes().withLabel( "name", serviceName );
         List<Route> items = routeResources.list().getItems();
         RouteSpec spec = items.get( 0 ).getSpec();
         String host = spec.getHost();
 
         Integer port = 80;
-        if(spec.getPort() != null){
+        if ( spec.getPort() != null ) {
             port = spec.getPort().getTargetPort().getIntVal();
         }
-        
+
         String context = runtime.getConfig().getProperties().get( "context" );
-        runtime.setEndpoint( new BaseRuntimeEndpoint( host, port, context ));
+        runtime.setEndpoint( new BaseRuntimeEndpoint( host, port, context ) );
 
     }
 

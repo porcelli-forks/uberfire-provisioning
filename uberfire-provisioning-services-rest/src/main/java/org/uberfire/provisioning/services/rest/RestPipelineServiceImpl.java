@@ -24,30 +24,28 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import org.uberfire.provisioning.pipeline.Pipeline;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
 import org.uberfire.provisioning.pipeline.events.PipelineEventHandler;
 import org.uberfire.provisioning.pipeline.simple.provider.PipelineInstanceImpl;
 import org.uberfire.provisioning.registry.PipelineRegistry;
 import org.uberfire.provisioning.services.api.PipelineService;
 import org.uberfire.provisioning.services.exceptions.BusinessException;
-import org.uberfire.provisioning.pipeline.Pipeline;
-import org.uberfire.provisioning.pipeline.PipelineInstance;
-import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
 @ApplicationScoped
 public class RestPipelineServiceImpl implements PipelineService {
 
     @Inject
     private PipelineRegistry pipelineRegistry;
-    
+
     @Inject
     @Any
     private Instance<PipelineEventHandler> eventHandlers;
-    
-    
 
     @PostConstruct
     public void init() {
-       
+
     }
 
     @Override
@@ -65,14 +63,14 @@ public class RestPipelineServiceImpl implements PipelineService {
 
     @Override
     public void runPipeline( final String name ) throws BusinessException {
-        
+
         PipelineInstance newPipelineInstance = new PipelineInstanceImpl( pipelineRegistry.getPipelineByName( name ) );
-        
-        for(PipelineEventHandler peh : eventHandlers){
+
+        for ( PipelineEventHandler peh : eventHandlers ) {
             newPipelineInstance.registerEventHandler( peh );
         }
         PipelineDataContext results = newPipelineInstance.execute();
-        
+
     }
 
 }

@@ -31,8 +31,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -70,7 +68,9 @@ import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Prov
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderService;
 import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10ProviderType;
 
-@RunWith( Arquillian.class )
+import static org.junit.Assert.*;
+
+@RunWith(Arquillian.class)
 public class SimpleRuntimeAPITest {
 
     @Deployment

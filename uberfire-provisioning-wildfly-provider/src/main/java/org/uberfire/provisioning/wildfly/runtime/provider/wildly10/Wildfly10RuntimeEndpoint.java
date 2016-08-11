@@ -23,7 +23,9 @@ public class Wildfly10RuntimeEndpoint extends BaseRuntimeEndpoint {
     public Wildfly10RuntimeEndpoint() {
     }
 
-    public Wildfly10RuntimeEndpoint( String host, int port, String context ) {
+    public Wildfly10RuntimeEndpoint( String host,
+                                     int port,
+                                     String context ) {
         super( host, port, context );
     }
 

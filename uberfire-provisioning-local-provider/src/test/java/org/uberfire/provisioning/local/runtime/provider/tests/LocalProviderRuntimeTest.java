@@ -32,10 +32,13 @@ import org.junit.runner.RunWith;
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.local.runtime.provider.LocalProvider;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderConfiguration;
+import org.uberfire.provisioning.local.runtime.provider.LocalProviderService;
 import org.uberfire.provisioning.local.runtime.provider.LocalProviderType;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntime;
 import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeConfiguration;
+import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeService;
 import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.providers.ProviderService;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
 
 import static java.lang.System.*;
@@ -43,14 +46,11 @@ import static java.lang.Thread.*;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.*;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.*;
 import static org.junit.Assert.*;
-import org.uberfire.provisioning.local.runtime.provider.LocalProviderService;
-import org.uberfire.provisioning.local.runtime.provider.LocalRuntimeService;
-import org.uberfire.provisioning.runtime.providers.ProviderService;
 
 /**
  * @author salaboy
  */
-@RunWith( Arquillian.class )
+@RunWith(Arquillian.class)
 public class LocalProviderRuntimeTest {
 
     @Deployment

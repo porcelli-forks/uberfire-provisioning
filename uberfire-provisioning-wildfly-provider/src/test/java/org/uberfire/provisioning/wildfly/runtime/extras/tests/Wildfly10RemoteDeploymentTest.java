@@ -26,7 +26,6 @@ import org.uberfire.provisioning.wildfly.runtime.provider.extras.Wildfly10Remote
 
 import static java.lang.System.*;
 
-
 public class Wildfly10RemoteDeploymentTest {
 
     public Wildfly10RemoteDeploymentTest() {

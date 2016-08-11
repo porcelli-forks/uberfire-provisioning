@@ -18,16 +18,17 @@ package org.uberfire.provisioning.openshift.runtime.provider.stages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.uberfire.provisioning.exceptions.ProvisioningException;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProvider;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftProviderService;
 import org.uberfire.provisioning.openshift.runtime.provider.OpenshiftRuntimeConfBuilder;
 import org.uberfire.provisioning.pipeline.BaseStage;
 import org.uberfire.provisioning.pipeline.BaseStageBuilder;
+import org.uberfire.provisioning.pipeline.PipelineDataContext;
+import org.uberfire.provisioning.pipeline.PipelineInstance;
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.RuntimeConfiguration;
-import org.uberfire.provisioning.pipeline.PipelineInstance;
-import org.uberfire.provisioning.pipeline.PipelineDataContext;
 
 public class OpenshiftProvisionRuntimeStage extends BaseStage {
 
@@ -102,7 +103,8 @@ public class OpenshiftProvisionRuntimeStage extends BaseStage {
     }
 
     @Override
-    public void execute( PipelineInstance pipe, PipelineDataContext pipeData ) {
+    public void execute( PipelineInstance pipe,
+                         PipelineDataContext pipeData ) {
 
         RuntimeConfiguration openshiftRuntimeConfig = OpenshiftRuntimeConfBuilder.newConfig()
                 .setNamespace( getNamespace() )
@@ -112,7 +114,7 @@ public class OpenshiftProvisionRuntimeStage extends BaseStage {
                 .setInternalPort( getInternalPort() )
                 .get();
         RuntimeRegistry runtimeRegistry = pipe.getService( RuntimeRegistry.class );
-        OpenshiftProvider openshiftProvider = ( OpenshiftProvider ) runtimeRegistry.getProvider( getProviderName() );
+        OpenshiftProvider openshiftProvider = (OpenshiftProvider) runtimeRegistry.getProvider( getProviderName() );
         OpenshiftProviderService providerService = new OpenshiftProviderService( openshiftProvider );
 
         org.uberfire.provisioning.runtime.Runtime newOpenshiftRuntime;
@@ -123,7 +125,7 @@ public class OpenshiftProvisionRuntimeStage extends BaseStage {
             pipeData.setData( "${" + getRuntimeIdHolder() + "}", newOpenshiftRuntime.getId() );
         } catch ( ProvisioningException ex ) {
             ex.printStackTrace();
-            Logger.getLogger(OpenshiftProvisionRuntimeStage.class.getName() ).log( Level.SEVERE, null, ex );
+            Logger.getLogger( OpenshiftProvisionRuntimeStage.class.getName() ).log( Level.SEVERE, null, ex );
         }
     }
 

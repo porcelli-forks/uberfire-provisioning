@@ -20,11 +20,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.uberfire.provisioning.registry.RuntimeRegistry;
 import org.uberfire.provisioning.runtime.Runtime;
+import org.uberfire.provisioning.runtime.RuntimeId;
 import org.uberfire.provisioning.runtime.providers.Provider;
+import org.uberfire.provisioning.runtime.providers.ProviderId;
 import org.uberfire.provisioning.runtime.providers.ProviderType;
+
+import static org.uberfire.commons.validation.PortablePreconditions.*;
 
 /**
  * @TODO: This is a not thread-safe implementation for local testing. A
@@ -67,8 +72,8 @@ public class InMemoryRuntimeRegistry implements RuntimeRegistry {
 
     @Override
     public void registerProvider( Provider provider ) {
-        providers.put( provider.getName(), provider );
-        if ( providersByType.get( provider.getProviderType() ) == null ) {
+        providers.put( provider.getId(), provider );
+        if ( !providersByType.containsKey( provider.getProviderType() ) ) {
             providersByType.put( provider.getProviderType(), new ArrayList<>() );
         }
         providersByType.get( provider.getProviderType() ).add( provider );
@@ -92,13 +97,13 @@ public class InMemoryRuntimeRegistry implements RuntimeRegistry {
     @Override
     public void unregisterProvider( Provider provider ) {
         providersByType.get( provider.getProviderType() ).remove( provider );
-        providers.remove( provider.getName() );
+        providers.remove( provider.getId() );
     }
 
     @Override
     public void unregisterProvider( String providerName ) {
         for ( Provider p : providers.values() ) {
-            if ( p.getName().equals( providerName ) ) {
+            if ( p.getId().equals( providerName ) ) {
                 unregisterProvider( p );
             }
         }
@@ -106,10 +111,12 @@ public class InMemoryRuntimeRegistry implements RuntimeRegistry {
 
     @Override
     public void registerRuntime( Runtime runtime ) {
-        if ( runtimesByProviderType.get( runtime.getProvider().getProviderType() ) == null ) {
-            runtimesByProviderType.put( runtime.getProvider().getProviderType(), new ArrayList<>() );
+        final Provider provider = providers.get( runtime.getProviderId().getId() );
+
+        if ( !runtimesByProviderType.containsKey( provider.getProviderType() ) ) {
+            runtimesByProviderType.put( provider.getProviderType(), new ArrayList<>() );
         }
-        runtimesByProviderType.get( runtime.getProvider().getProviderType() ).add( runtime );
+        runtimesByProviderType.get( provider.getProviderType() ).add( runtime );
     }
 
     @Override
@@ -139,9 +146,24 @@ public class InMemoryRuntimeRegistry implements RuntimeRegistry {
     }
 
     @Override
-    public void unregisterRuntime( Runtime runtime ) {
-        runtimesByProviderType.get( runtime.getProvider().getProviderType() ).remove( runtime );
+    public <T extends Provider> Optional<T> getProvider( final ProviderId providerId,
+                                                         final Class<T> clazz ) {
+        checkNotNull( "providerId", providerId );
+        checkNotNull( "clazz", clazz );
+
+        final Provider value = providers.get( providerId.getId() );
+        if ( value == null ||
+                !value.getClass().isAssignableFrom( clazz ) ) {
+            return Optional.empty();
+        }
+        return Optional.of( clazz.cast( value ) );
     }
 
+    @Override
+    public void unregisterRuntime( final RuntimeId runtime ) {
+        final Provider provider = providers.get( runtime.getProviderId().getId() );
+
+        runtimesByProviderType.get( provider.getProviderType() ).remove( runtime );
+    }
 
 }

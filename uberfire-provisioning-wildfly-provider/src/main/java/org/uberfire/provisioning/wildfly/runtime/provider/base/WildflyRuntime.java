@@ -23,12 +23,9 @@ import org.uberfire.provisioning.wildfly.runtime.provider.wildly10.Wildfly10Prov
 public class WildflyRuntime extends BaseRuntime {
 
     public WildflyRuntime( String id,
-            RuntimeConfiguration config, Wildfly10Provider provider ) {
+                           RuntimeConfiguration config,
+                           Wildfly10Provider provider ) {
         super( id, config, provider );
     }
-
-    
-
-  
 
 }

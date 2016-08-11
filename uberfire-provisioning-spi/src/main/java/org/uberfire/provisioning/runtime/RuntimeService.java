@@ -16,24 +16,14 @@
 
 package org.uberfire.provisioning.runtime;
 
-import org.uberfire.provisioning.runtime.providers.ProviderService;
+public interface RuntimeService<T extends Runtime> {
 
-public interface RuntimeService {
+    void start( T runtime );
 
-    void start();
+    void stop( T runtime );
 
-    void stop();
+    void restart( T runtime );
 
-    void restart();
-
-    void refresh();
-
-    ProviderService getProviderService();
-
-    void setProviderService( ProviderService providerService );
-
-    Runtime getRuntime();
-
-    void setRuntime( Runtime runtime );
+    void refresh( T runtime );
 
 }

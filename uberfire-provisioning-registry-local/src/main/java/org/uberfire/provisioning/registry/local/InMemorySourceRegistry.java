@@ -25,6 +25,7 @@ import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.build.Project;
 import org.uberfire.provisioning.registry.SourceRegistry;
 import org.uberfire.provisioning.source.Repository;
+import org.uberfire.provisioning.source.Source;
 
 /**
  * @author salaboy
@@ -106,6 +107,18 @@ public class InMemorySourceRegistry implements SourceRegistry {
     @Override
     public Repository getRepositoryById( String repositoryId ) {
         return repositorySourcesPath.get( pathByRepositoryId.get( repositoryId ) );
+    }
+
+    @Override
+    public void registerSource( final Repository repo,
+                                final Source source ) {
+
+    }
+
+    @Override
+    public void registerProject( final Source source,
+                                 final Project projectConfig ) {
+
     }
 
 }

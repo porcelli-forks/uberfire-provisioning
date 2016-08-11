@@ -361,7 +361,7 @@ Returns the temporary directory where the project sources are:
 POST http://localhost:8082/api/sources/db0e9df7-93f/
 ```
 {
-    "org.uberfire.provisioning.build.maven.MavenProject":{
+    "org.uberfire.provisioning.build.maven.model.MavenProject":{
         "name":"users-new",
         "rootPath":"/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161",
         "path": "users-new",
@@ -375,7 +375,7 @@ POST http://localhost:8082/api/sources/db0e9df7-93f/
 POST http://localhost:8082/api/builds/
 ```
   {
-    "org.uberfire.provisioning.build.maven.MavenProject": {
+    "org.uberfire.provisioning.build.maven.model.MavenProject": {
       "id": "bc24c200-fb6",
       "name": "users-new",
       "type": "Maven",
@@ -391,12 +391,12 @@ By doing a GET http://localhost:8082/api/builds/ we can get all the registered b
 ```
 [
   {
-    "org.uberfire.provisioning.build.maven.MavenBinary": {
+    "org.uberfire.provisioning.build.maven.model.MavenBinary": {
       "location": "/private/var/folders/zl/qhjypfyd5k7bbtpgf276w0ww0000gn/T/uf-source2026886451401276161/users-new/target/users-new.war",
       "type": "Maven",
       "name": "users-new.war",
       "sourceProject": {
-        "org.uberfire.provisioning.build.maven.MavenProject": {
+        "org.uberfire.provisioning.build.maven.model.MavenProject": {
           "id": "bc24c200-fb6",
           "name": "users-new",
           "type": "Maven",
@@ -451,7 +451,7 @@ Before creating a new docker runtime we need to create the docker image based on
 POST http://localhost:8082/api/builds/docker
 ```
  {
-    "org.uberfire.provisioning.build.maven.MavenProject": {
+    "org.uberfire.provisioning.build.maven.model.MavenProject": {
       "id": "91aec094-c5e",
       "name": "users-new",
       "type": "Maven",
@@ -467,7 +467,7 @@ This will create a new docker image called: salaboy/users-new . Look at the exam
 POST http://localhost:8082/api/runtimes/ (notice "docker local" is our provider name)
 ```
 {
-    "org.uberfire.provisioning.docker.runtime.provider.DockerRuntimeConfiguration":{
+    "org.uberfire.provisioning.docker.config.DockerRuntimeConfiguration":{
         "providerName":"docker local",
         "image":"salaboy/users-new"
         

@@ -28,6 +28,7 @@ import org.uberfire.java.nio.file.Path;
 import org.uberfire.provisioning.source.Host;
 import org.uberfire.provisioning.source.Repository;
 import org.uberfire.provisioning.source.Source;
+import org.uberfire.provisioning.source.git.model.GitSource;
 
 import static org.uberfire.commons.validation.PortablePreconditions.*;
 

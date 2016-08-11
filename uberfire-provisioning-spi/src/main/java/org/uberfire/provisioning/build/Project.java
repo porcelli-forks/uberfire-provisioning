@@ -18,6 +18,7 @@ package org.uberfire.provisioning.build;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.uberfire.java.nio.file.Path;
+import org.uberfire.provisioning.config.ProjectConfig;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
@@ -27,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
  *         Generic Project type to be used by the Build service.
  */
 @JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
-public interface Project {
+public interface Project extends ProjectConfig {
 
     String getId();
 
